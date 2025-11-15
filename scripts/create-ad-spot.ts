@@ -24,21 +24,27 @@ async function createAdSpotFromSession() {
       return;
     }
 
-    // Create ad spot
-    const adSpot = await prisma.adSpot.create({
+    // Create ad slot
+    const adSlot = await prisma.adSlot.create({
       data: {
-        saasName: session.metadata.saasName,
-        logoUrl: session.metadata.logoUrl,
-        targetUrl: session.metadata.targetUrl,
-        plan: session.metadata.plan,
-        customerEmail: session.customer_email || "unknown@example.com",
-        stripeSessionId: session.id,
+        position: 1,
+        side: "recto",
+        price: parseFloat(session.amount_total?.toString() || "0") / 100,
         expiresAt: new Date(Date.now() + parseInt(session.metadata.duration) * 24 * 60 * 60 * 1000),
         isActive: true,
+        advertisers: {
+          create: {
+            saasName: session.metadata.saasName,
+            logoUrl: session.metadata.logoUrl,
+            targetUrl: session.metadata.targetUrl,
+            customerEmail: session.customer_email || "unknown@example.com",
+            stripeSessionId: session.id,
+          }
+        },
       },
     });
 
-    console.log("✅ AdSpot créé:", adSpot);
+    console.log("✅ AdSlot créé:", adSlot);
   } catch (error) {
     console.error("❌ Erreur:", error);
   } finally {

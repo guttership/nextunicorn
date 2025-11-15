@@ -2,8 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default function AdSuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
 
@@ -54,5 +55,17 @@ export default function AdSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-900 via-black to-black">
+        <div className="text-white">Chargement...</div>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 }
