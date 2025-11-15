@@ -27,6 +27,8 @@ PRICING VALIDATION:
 - B2C: $1-50/month (mass market apps can start at €1-2/month)
 - Focus on productivity gains, time savings, or revenue generation for customers
 
+IMPORTANT: Return your response in JSON format with the following structure:
+
 Each idea:
 {
   "title": "Professional name (max 3 words)",
@@ -44,7 +46,7 @@ DIVERSE profitable niches to explore:
 B2B: Developer tools, sales automation, practice management, legal tech, SMB finance, team collaboration, e-commerce ops, HR automation, customer support
 B2C/Prosumer: Creator tools, personal finance, productivity apps, learning platforms, health tracking, side hustle enablers
 
-Return ONLY: {"ideas": [10 objects]}`;
+Return ONLY valid JSON: {"ideas": [10 objects]}`;
 
 export async function generateDailySaaSIdeas(existingTitles: string[] = []): Promise<GeneratedIdea[]> {
   try {
@@ -60,7 +62,7 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
     const randomContext = `\n\nGeneration timestamp: ${Date.now()}. Focus on PROFITABLE, MONETIZABLE ideas with clear business models.${existingContext}`;
     
     const completion = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
