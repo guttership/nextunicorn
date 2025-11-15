@@ -34,6 +34,7 @@ export async function seedDailyIdeas() {
             title: idea.title,
             slogan: idea.slogan,
             description: idea.description,
+            aiPrompt: idea.description, // Use description as aiPrompt for now
             aiPromptId: idea.aiPromptId,
             isDaily: true,
           },
