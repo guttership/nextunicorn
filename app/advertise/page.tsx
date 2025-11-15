@@ -53,7 +53,22 @@ export default function AdvertisePage() {
     );
   }
 
-  const plans = {
+  const plans: {
+    monthly: { 
+      price: number;
+      name: string;
+      duration: string;
+      spots: string;
+      save?: string;
+    };
+    yearly: { 
+      price: number;
+      name: string;
+      duration: string;
+      spots: string;
+      save?: string;
+    };
+  } = {
     monthly: { 
       price: pricing.pricing.monthly, 
       name: t("monthlySpot", lang), 
