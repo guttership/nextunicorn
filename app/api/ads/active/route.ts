@@ -26,10 +26,20 @@ export async function GET(request: Request) {
     const n = advertisers.length;
     const totalFaces = n + 1; // Always n+1 faces total (exactly one more than advertisers)
 
+    type Advertiser = typeof advertisers[number] | null;
+
     // Fill faces sequentially: L-recto, L-verso, R-recto, R-verso, repeat
     // Each line has exactly 2 cards (left/right), each card has 2 faces (recto/verso)
-    const lines = [];
-    let currentLine = { left: { recto: null, verso: null }, right: { recto: null, verso: null } };
+    const lines: Array<{ 
+      left: { recto: Advertiser; verso: Advertiser }; 
+      right: { recto: Advertiser; verso: Advertiser }; 
+      _hasLeft?: boolean; 
+      _hasRight?: boolean; 
+    }> = [];
+    let currentLine: { left: { recto: Advertiser; verso: Advertiser }; right: { recto: Advertiser; verso: Advertiser } } = { 
+      left: { recto: null, verso: null }, 
+      right: { recto: null, verso: null } 
+    };
     let lineHasLeftContent = false;
     let lineHasRightContent = false;
 
