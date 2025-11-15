@@ -1,0 +1,25 @@
+{
+  "name": "nextunicorn",
+  "displayName": "NextUnicorn - SaaS Idea Battle",
+  "description": "Daily SaaS idea battles with community voting and leaderboard",
+  "version": "1.0.0",
+  "author": "Your Name",
+  "license": "MIT",
+  "keywords": [
+    "saas",
+    "ideas",
+    "voting",
+    "gamification",
+    "next.js",
+    "prisma",
+    "postgresql"
+  ],
+  "homepage": "https://nextunicorn.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nextunicorn"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/nextunicorn/issues"
+  }
+}

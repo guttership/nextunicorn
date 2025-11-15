@@ -1,8 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+NextUnicorn - SaaS Idea Battle Platform
 
-## Getting Started
+Une plateforme where utilisateurs votent pour leurs idées SaaS préférées lors de duels aléatoires quotidiens.
 
-First, run the development server:
+Caractéristiques principales
+- Duels d'idées SaaS générés aléatoirement
+- Système de vote avec gamification
+- Classement communautaire en temps réel
+- Génération automatique d'idées via Gemini AI
+- Minimum 10 nouvelles idées par jour
+
+Stack Technique
+- Next.js 16 (App Router)
+- Prisma ORM
+- PostgreSQL (Supabase compatible)
+- Google Generative AI (Gemini 1.5 Flash)
+- shadcn/ui
+- Tailwind CSS
+- TypeScript
+
+Mise en place
+
+1. Prérequis
+- Node.js 18+ et npm
+- PostgreSQL (local ou Supabase)
+- Clé API Google Generative AI
+
+2. Installation des dépendances
+
+npm install
+
+3. Configuration de l'environnement
+
+Créez un fichier .env.local:
+
+DATABASE_URL="postgresql://user:password@localhost:5432/nextunicorn"
+GEMINI_API_KEY="votre-clé-gemini"
+
+Obtenez votre clé Gemini: https://ai.google.dev/
+
+4. Configuration de la base de données
+
+Initialisez Prisma avec votre base de données:
+
+npx prisma migrate dev --name init
+
+5. Lancement du serveur
+
+npm run dev
+
+6. Initialisation des idées
+
+Visitez http://localhost:3000/api/seed pour générer les 10 premières idées du jour.
+
 
 ```bash
 npm run dev

@@ -1,0 +1,2 @@
+DELETE FROM Vote;
+DELETE FROM Idea;

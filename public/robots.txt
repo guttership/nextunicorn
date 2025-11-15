@@ -1,0 +1,11 @@
+# NextUnicorn - SaaS Ideas Repository for Entrepreneurs & Developers
+User-agent: *
+Allow: /
+Allow: /leaderboard
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://nextunicorn.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
