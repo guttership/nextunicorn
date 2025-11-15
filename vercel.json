@@ -1,16 +1,4 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "env": [
-    {
-      "key": "DATABASE_URL",
-      "description": "PostgreSQL connection string"
-    },
-    {
-      "key": "GEMINI_API_KEY",
-      "description": "Google Generative AI API key"
-    }
-  ]
+  "buildCommand": "npx prisma generate && next build",
+  "framework": "nextjs"
 }
