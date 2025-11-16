@@ -52,8 +52,10 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
 
   const getIdeaText = (idea: Idea) => {
     // Try manual translations first
-    const translated = getTranslatedIdea(idea.aiPromptId, lang);
-    if (translated) return translated;
+    if (idea.aiPromptId) {
+      const translated = getTranslatedIdea(idea.aiPromptId, lang);
+      if (translated) return translated;
+    }
 
     // If no manual translation and lang is not English, check AI translations
     if (lang !== 'en' && idea.translations) {
