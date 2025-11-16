@@ -245,9 +245,9 @@ export default function DuelPage() {
         }
       `}</style>
 
-      <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+      <div className="flex flex-col min-h-screen w-full overflow-x-hidden pb-24">
         {/* Main flex row for ads and content */}
-        <div className="flex flex-col lg:flex-row gap-4 flex-1 max-w-7xl mx-auto w-full pb-20">
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 max-w-7xl mx-auto w-full">
           {/* Left Ad Spot - Hidden on mobile/tablet */}
           <div className="hidden lg:block shrink-0 pt-24">
             <div className="text-[10px] text-slate-500 font-mono mb-2 text-center">Sponsors :</div>
@@ -277,9 +277,9 @@ export default function DuelPage() {
             </div>
 
             {/* Titre avec licorne */}
-            <div className="text-center py-4 px-4 shrink-0">
-              <div className="mb-4 flex justify-center">
-                <div className="relative w-20 h-20 sm:w-32 sm:h-32 flex items-center justify-center">
+            <div className="text-center py-6 px-4 shrink-0 mb-8 sm:mb-0">
+              <div className="mb-6 flex justify-center">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
                   <div className="absolute inset-0 bg-linear-to-r from-white/20 via-pink-300/40 to-rose-400/30 blur-3xl rounded-full scale-150"></div>
                   <Image 
                     src="/unicorne.png" 
@@ -291,10 +291,10 @@ export default function DuelPage() {
                   />
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-normal text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-rose-500 mb-2" style={{ fontFamily: 'var(--font-clicker)' }}>
+              <h1 className="text-6xl sm:text-6xl lg:text-8xl font-normal text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-rose-500 mb-4" style={{ fontFamily: 'var(--font-clicker)' }}>
                 {t("title", lang)}
               </h1>
-              <div className="text-slate-400 font-mono text-xs sm:text-sm space-y-2">
+              <div className="text-slate-400 font-mono text-[10px] sm:text-sm space-y-1">
                 <p>{t("signature_line1", lang)}</p>
                 <p className="text-pink-600 font-semibold">{t("signature_line2", lang)}</p>
               </div>

@@ -241,7 +241,7 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
 
   return (
     <div
-      className="w-full max-w-md mx-auto px-4"
+      className="w-full max-w-md mx-auto px-4 pb-32"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
