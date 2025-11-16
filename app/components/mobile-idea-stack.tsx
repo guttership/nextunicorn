@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/ca
 import { Language, t } from "@/app/lib/i18n";
 import { ThumbsUp, X } from "lucide-react";
 import Image from "next/image";
+import { getTranslatedIdea } from "@/app/lib/ideas-translations";
 
 interface Idea {
   id: number;
@@ -12,6 +13,13 @@ interface Idea {
   slogan: string;
   description: string;
   aiPrompt?: string;
+  aiPromptId?: string;
+  translations?: Array<{
+    language: string;
+    title: string;
+    slogan: string;
+    description: string;
+  }>;
 }
 
 interface Advertiser {
@@ -41,6 +49,33 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
   const [startX, setStartX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
+
+  const getIdeaText = (idea: Idea) => {
+    // Try manual translations first
+    const translated = getTranslatedIdea(idea.aiPromptId, lang);
+    if (translated) return translated;
+
+    // If no manual translation and lang is not English, check AI translations
+    if (lang !== 'en' && idea.translations) {
+      const translation = idea.translations.find(t => t.language === lang);
+      console.log('Mobile - Looking for translation:', { ideaId: idea.id, lang, translations: idea.translations, found: translation });
+      if (translation) {
+        return {
+          title: translation.title,
+          slogan: translation.slogan,
+          description: translation.description,
+        };
+      }
+    }
+
+    // Fallback to English
+    console.log('Mobile - Using fallback for idea:', idea.id, 'lang:', lang, 'has translations:', !!idea.translations);
+    return {
+      title: idea.title,
+      slogan: idea.slogan,
+      description: idea.description
+    };
+  };
 
   useEffect(() => {
     loadIdeas();
@@ -258,16 +293,16 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
         <Card className="bg-slate-900 border-slate-800 shadow-xl h-full overflow-hidden flex flex-col">
           <CardHeader className="pb-2 shrink-0">
             <CardTitle className="text-lg font-mono text-slate-100">
-              {idea.title}
+              {getIdeaText(idea).title}
             </CardTitle>
             <p className="text-xs font-mono text-slate-300 mt-2">
-              &quot;{idea.slogan}&quot;
+              &quot;{getIdeaText(idea).slogan}&quot;
             </p>
           </CardHeader>
 
           <CardContent className="overflow-y-auto flex-1">
             <p className="text-slate-300 mb-4 text-sm leading-relaxed">
-              {idea.description}
+              {getIdeaText(idea).description}
             </p>
             {idea.aiPrompt && (
               <p className="text-slate-400 mb-4 text-xs italic border-l-2 border-pink-500 pl-3 bg-slate-800/50 py-2 px-3 rounded">

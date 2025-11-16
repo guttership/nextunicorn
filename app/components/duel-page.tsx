@@ -75,9 +75,10 @@ export default function DuelPage() {
     // If no manual translation and lang is not English, check AI translations
     if (lang !== 'en' && idea.translations) {
       const translation = idea.translations.find(t => t.language === lang);
+      console.log('Duel - Looking for translation:', { ideaId: idea.id, lang, translations: idea.translations, found: translation });
       if (translation) {
         return {
-          title: idea.title,
+          title: translation.title,
           slogan: translation.slogan,
           description: translation.description,
         };
@@ -85,6 +86,7 @@ export default function DuelPage() {
     }
 
     // Fallback to English
+    console.log('Duel - Using fallback for idea:', idea.id, 'lang:', lang, 'has translations:', !!idea.translations);
     return {
       title: idea.title,
       slogan: idea.slogan,
