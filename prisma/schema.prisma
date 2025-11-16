@@ -39,6 +39,7 @@ model IdeaTranslation {
   id          Int    @id @default(autoincrement())
   ideaId      Int
   language    String // 'fr', 'de', 'es'
+  title       String
   slogan      String
   description String
   

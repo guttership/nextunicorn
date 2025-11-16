@@ -6,9 +6,9 @@ export interface GeneratedIdea {
   description: string;
   aiPrompt: string;
   translations: {
-    fr: { slogan: string; description: string };
-    de: { slogan: string; description: string };
-    es: { slogan: string; description: string };
+    fr: { title: string; slogan: string; description: string };
+    de: { title: string; slogan: string; description: string };
+    es: { title: string; slogan: string; description: string };
   };
 }
 
@@ -36,9 +36,9 @@ Each idea:
   "description": "Specific problem + solution (max 20 words, be concrete)",
   "aiPrompt": "Real use case scenario showing ROI (1 sentence)",
   "translations": {
-    "fr": {"slogan": "French translation", "description": "French translation"},
-    "de": {"slogan": "German translation", "description": "German translation"},
-    "es": {"slogan": "Spanish translation", "description": "Spanish translation"}
+    "fr": {"title": "French title", "slogan": "French translation", "description": "French translation"},
+    "de": {"title": "German title", "slogan": "German translation", "description": "German translation"},
+    "es": {"title": "Spanish title", "slogan": "Spanish translation", "description": "Spanish translation"}
   }
 }
 
@@ -101,15 +101,18 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
       // Ensure translations exist with default values if missing
       if (!idea.translations) {
         idea.translations = {
-          fr: { slogan: idea.slogan, description: idea.description },
-          de: { slogan: idea.slogan, description: idea.description },
-          es: { slogan: idea.slogan, description: idea.description }
+          fr: { title: idea.title, slogan: idea.slogan, description: idea.description },
+          de: { title: idea.title, slogan: idea.slogan, description: idea.description },
+          es: { title: idea.title, slogan: idea.slogan, description: idea.description }
         };
       }
       // Validate each translation has required fields
       ['fr', 'de', 'es'].forEach(lang => {
         if (!idea.translations[lang]) {
-          idea.translations[lang] = { slogan: idea.slogan, description: idea.description };
+          idea.translations[lang] = { title: idea.title, slogan: idea.slogan, description: idea.description };
+        }
+        if (!idea.translations[lang].title) {
+          idea.translations[lang].title = idea.title;
         }
         if (!idea.translations[lang].slogan) {
           idea.translations[lang].slogan = idea.slogan;

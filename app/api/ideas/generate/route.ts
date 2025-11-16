@@ -69,6 +69,7 @@ export async function POST() {
             data: {
               ideaId: createdIdea.id,
               language: 'fr',
+              title: idea.translations.fr.title,
               slogan: idea.translations.fr.slogan,
               description: idea.translations.fr.description,
             },
@@ -77,6 +78,7 @@ export async function POST() {
             data: {
               ideaId: createdIdea.id,
               language: 'de',
+              title: idea.translations.de.title,
               slogan: idea.translations.de.slogan,
               description: idea.translations.de.description,
             },
@@ -85,6 +87,7 @@ export async function POST() {
             data: {
               ideaId: createdIdea.id,
               language: 'es',
+              title: idea.translations.es.title,
               slogan: idea.translations.es.slogan,
               description: idea.translations.es.description,
             },
