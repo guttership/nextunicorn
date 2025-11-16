@@ -22,20 +22,27 @@ CRITICAL REQUIREMENTS:
 - Avoid technical niches, developer tools, or industry-specific solutions
 - NO buzzwords, NO complex terminology, NO niche markets
 
+ORIGINALITY IS KEY:
+- AVOID common SaaS clichés: NO password managers, NO to-do apps, NO email tools
+- AVOID saturated markets: NO meditation apps, NO habit trackers, NO generic schedulers
+- AVOID obvious AI wrappers: NO "AI assistant for X", NO "chatbot for Y"
+- Think FRESH angles on real problems - what hasn't been done yet?
+- Look for EMERGING needs, not crowded spaces
+
 CLARITY OVER COMPLEXITY:
 - If you need to explain what industry/sector it's for, it's TOO NICHE
-- Examples of GOOD (clear): "Automated receipt tracking", "Video meeting scheduler", "Password manager for families"
-- Examples of BAD (too niche): "API testing suite", "Kubernetes monitoring", "Legal practice management"
+- Examples of GOOD (clear + original): "Shared grocery list with smart suggestions", "Voice-to-text for meeting notes", "Auto-split bills from photos"
+- Examples of BAD (cliché or niche): "Password manager", "Meditation app", "API testing suite", "Another CRM"
 
-UNIVERSAL PROBLEMS TO SOLVE:
-- Time management & productivity (scheduling, reminders, to-do lists)
-- Money management (budgets, expense tracking, invoicing)
-- Communication (email, messaging, video calls)
-- Content creation (writing, design, video editing)
-- Learning & education (courses, tutorials, skill building)
-- Health & wellness (fitness, meal planning, sleep tracking)
-- Home & family (shopping lists, chores, family calendar)
-- Small business basics (invoicing, CRM, bookkeeping)
+UNIVERSAL PROBLEMS TO SOLVE (find NEW angles):
+- Time management & productivity (but NOT basic to-do lists)
+- Money management (but NOT generic budgeting apps)
+- Communication (but NOT another messaging app)
+- Content creation (fresh tools, not the 1000th video editor)
+- Learning & education (innovative approaches only)
+- Health & wellness (skip meditation/fitness tracking)
+- Home & family (practical helpers, not obvious apps)
+- Small business basics (fresh takes on old problems)
 
 PRICING VALIDATION:
 - B2B: €10-100/month for small businesses
