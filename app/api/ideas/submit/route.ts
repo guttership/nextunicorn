@@ -93,6 +93,7 @@ export async function POST(request: Request) {
           title: translations[lang]?.title || title,
           slogan: translations[lang]?.slogan || slogan,
           description: translations[lang]?.description || description,
+          aiPrompt: translations[lang]?.aiPrompt || moderation.aiPrompt,
         },
       });
     }

@@ -1,6 +1,6 @@
 import { Language } from "./i18n";
 
-export const ideaTranslations: Record<Language, Record<string, { title: string; slogan: string; description: string }>> = {
+export const ideaTranslations: Record<Language, Record<string, { title: string; slogan: string; description: string; aiPrompt?: string }>> = {
   en: {
     email_summarizer_1: {
       title: "AI-Powered Email Summarizer",

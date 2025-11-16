@@ -26,6 +26,7 @@ interface Idea {
     title: string;
     slogan: string;
     description: string;
+    aiPrompt: string;
   }>;
 }
 
@@ -82,6 +83,7 @@ export default function DuelPage() {
           title: translation.title,
           slogan: translation.slogan,
           description: translation.description,
+          aiPrompt: translation.aiPrompt,
         };
       }
     }
@@ -91,7 +93,8 @@ export default function DuelPage() {
     return {
       title: idea.title,
       slogan: idea.slogan,
-      description: idea.description
+      description: idea.description,
+      aiPrompt: idea.aiPrompt
     };
   };
 
@@ -390,9 +393,9 @@ export default function DuelPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-300 mb-6 text-xs sm:text-sm leading-relaxed">{getIdeaText(duel.ideaA).description}</p>
-                {duel.ideaA.aiPrompt && (
+                {getIdeaText(duel.ideaA).aiPrompt && (
                   <p className="text-slate-400 mb-6 text-xs italic border-l-2 border-pink-500 pl-3 bg-slate-800/50 py-2 px-3 rounded">
-                    &quot;{duel.ideaA.aiPrompt}&quot;
+                    &quot;{getIdeaText(duel.ideaA).aiPrompt}&quot;
                   </p>
                 )}
                 <button
@@ -434,9 +437,9 @@ export default function DuelPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-300 mb-6 text-xs sm:text-sm leading-relaxed">{getIdeaText(duel.ideaB).description}</p>
-                {duel.ideaB.aiPrompt && (
+                {getIdeaText(duel.ideaB).aiPrompt && (
                   <p className="text-slate-400 mb-6 text-xs italic border-l-2 border-pink-500 pl-3 bg-slate-800/50 py-2 px-3 rounded">
-                    &quot;{duel.ideaB.aiPrompt}&quot;
+                    &quot;{getIdeaText(duel.ideaB).aiPrompt}&quot;
                   </p>
                 )}
                 <button

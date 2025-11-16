@@ -6,9 +6,9 @@ export interface GeneratedIdea {
   description: string;
   aiPrompt: string;
   translations: {
-    fr: { title: string; slogan: string; description: string };
-    de: { title: string; slogan: string; description: string };
-    es: { title: string; slogan: string; description: string };
+    fr: { title: string; slogan: string; description: string; aiPrompt: string };
+    de: { title: string; slogan: string; description: string; aiPrompt: string };
+    es: { title: string; slogan: string; description: string; aiPrompt: string };
   };
 }
 
@@ -58,9 +58,9 @@ Each idea:
   "description": "The problem + how it helps (max 20 words, conversational tone)",
   "aiPrompt": "Concrete example anyone can relate to (1 sentence)",
   "translations": {
-    "fr": {"title": "French title", "slogan": "French translation", "description": "French translation"},
-    "de": {"title": "German title", "slogan": "German translation", "description": "German translation"},
-    "es": {"title": "Spanish title", "slogan": "Spanish translation", "description": "Spanish translation"}
+    "fr": {"title": "French title", "slogan": "French translation", "description": "French translation", "aiPrompt": "French example"},
+    "de": {"title": "German title", "slogan": "German translation", "description": "German translation", "aiPrompt": "German example"},
+    "es": {"title": "Spanish title", "slogan": "Spanish translation", "description": "Spanish translation", "aiPrompt": "Spanish example"}
   }
 }
 
@@ -119,15 +119,15 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
       // Ensure translations exist with default values if missing
       if (!idea.translations) {
         idea.translations = {
-          fr: { title: idea.title, slogan: idea.slogan, description: idea.description },
-          de: { title: idea.title, slogan: idea.slogan, description: idea.description },
-          es: { title: idea.title, slogan: idea.slogan, description: idea.description }
+          fr: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt },
+          de: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt },
+          es: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt }
         };
       }
       // Validate each translation has required fields
       ['fr', 'de', 'es'].forEach(lang => {
         if (!idea.translations[lang]) {
-          idea.translations[lang] = { title: idea.title, slogan: idea.slogan, description: idea.description };
+          idea.translations[lang] = { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt };
         }
         if (!idea.translations[lang].title) {
           idea.translations[lang].title = idea.title;
@@ -137,6 +137,9 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
         }
         if (!idea.translations[lang].description) {
           idea.translations[lang].description = idea.description;
+        }
+        if (!idea.translations[lang].aiPrompt) {
+          idea.translations[lang].aiPrompt = idea.aiPrompt;
         }
       });
     });

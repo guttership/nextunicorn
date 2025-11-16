@@ -86,6 +86,7 @@ export async function GET(request: Request) {
               title: idea.translations.fr.title,
               slogan: idea.translations.fr.slogan,
               description: idea.translations.fr.description,
+              aiPrompt: idea.translations.fr.aiPrompt,
             },
           }),
           prisma.ideaTranslation.create({
@@ -95,6 +96,7 @@ export async function GET(request: Request) {
               title: idea.translations.de.title,
               slogan: idea.translations.de.slogan,
               description: idea.translations.de.description,
+              aiPrompt: idea.translations.de.aiPrompt,
             },
           }),
           prisma.ideaTranslation.create({
@@ -104,6 +106,7 @@ export async function GET(request: Request) {
               title: idea.translations.es.title,
               slogan: idea.translations.es.slogan,
               description: idea.translations.es.description,
+              aiPrompt: idea.translations.es.aiPrompt,
             },
           }),
         ]);
@@ -114,27 +117,13 @@ export async function GET(request: Request) {
 
     console.log(`Created ${createdIdeas.length} ideas with translations`);
 
-    // 6. Expire old ad slots
-    const now = new Date();
-    const expiredSlots = await prisma.adSlot.updateMany({
-      where: {
-        isActive: true,
-        expiresAt: {
-          lte: now,
-        },
-      },
-      data: {
-        isActive: false,
-      },
-    });
-
-    console.log(`Expired ${expiredSlots.count} ad slots`);
+    // 6. Note: Ad slots expire after 3 months minimum, managed manually
+    // No automatic expiration in daily cron
 
     return NextResponse.json({ 
       success: true,
       champion: champion?.title || 'none',
       ideasGenerated: createdIdeas.length,
-      adsExpired: expiredSlots.count,
       timestamp: new Date().toISOString()
     });
 

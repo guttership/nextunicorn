@@ -72,6 +72,7 @@ export async function POST() {
               title: idea.translations.fr.title,
               slogan: idea.translations.fr.slogan,
               description: idea.translations.fr.description,
+              aiPrompt: idea.translations.fr.aiPrompt,
             },
           }),
           prisma.ideaTranslation.create({
@@ -81,6 +82,7 @@ export async function POST() {
               title: idea.translations.de.title,
               slogan: idea.translations.de.slogan,
               description: idea.translations.de.description,
+              aiPrompt: idea.translations.de.aiPrompt,
             },
           }),
           prisma.ideaTranslation.create({
@@ -90,6 +92,7 @@ export async function POST() {
               title: idea.translations.es.title,
               slogan: idea.translations.es.slogan,
               description: idea.translations.es.description,
+              aiPrompt: idea.translations.es.aiPrompt,
             },
           }),
         ]);

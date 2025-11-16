@@ -19,6 +19,7 @@ interface Idea {
     title: string;
     slogan: string;
     description: string;
+    aiPrompt: string;
   }>;
 }
 
@@ -66,6 +67,7 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
           title: translation.title,
           slogan: translation.slogan,
           description: translation.description,
+          aiPrompt: translation.aiPrompt,
         };
       }
     }
@@ -75,7 +77,8 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
     return {
       title: idea.title,
       slogan: idea.slogan,
-      description: idea.description
+      description: idea.description,
+      aiPrompt: idea.aiPrompt
     };
   };
 
@@ -306,9 +309,9 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
             <p className="text-slate-300 mb-4 text-sm leading-relaxed">
               {getIdeaText(idea).description}
             </p>
-            {idea.aiPrompt && (
+            {getIdeaText(idea).aiPrompt && (
               <p className="text-slate-400 mb-4 text-xs italic border-l-2 border-pink-500 pl-3 bg-slate-800/50 py-2 px-3 rounded">
-                &quot;{idea.aiPrompt}&quot;
+                &quot;{getIdeaText(idea).aiPrompt}&quot;
               </p>
             )}
           </CardContent>

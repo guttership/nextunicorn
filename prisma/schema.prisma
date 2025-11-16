@@ -42,6 +42,7 @@ model IdeaTranslation {
   title       String
   slogan      String
   description String
+  aiPrompt    String
   
   idea        Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
   
