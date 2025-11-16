@@ -30,8 +30,10 @@ export async function POST(request: Request) {
     // AI Moderation
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     
+    const model = process.env.OPENAI_MODEL || "raptor-mini";
+
     const moderationResponse = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+      model,
       messages: [
         { role: "system", content: MODERATION_PROMPT },
         { 
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
 
     // Auto-translate with AI
     const translationResponse = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+      model,
       messages: [
         { 
           role: "user", 

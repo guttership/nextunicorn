@@ -61,8 +61,10 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
     
     const randomContext = `\n\nGeneration timestamp: ${Date.now()}. Focus on PROFITABLE, MONETIZABLE ideas with clear business models.${existingContext}`;
     
+    const model = process.env.OPENAI_MODEL || "raptor-mini";
+
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model,
       messages: [
         {
           role: "system",

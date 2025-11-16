@@ -192,7 +192,7 @@ export default function DuelPage() {
   };
 
   return (
-    <div className="h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-8 overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-8">
       <style>{`
         * {
           -webkit-overflow-scrolling: touch;
@@ -245,17 +245,17 @@ export default function DuelPage() {
         }
       `}</style>
 
-      <div className="flex flex-col h-screen w-full overflow-x-hidden">
+      <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
         {/* Main flex row for ads and content */}
-        <div className="flex flex-col lg:flex-row gap-4 flex-1 max-w-7xl mx-auto w-full overflow-hidden pb-20">
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 max-w-7xl mx-auto w-full pb-20">
           {/* Left Ad Spot - Hidden on mobile/tablet */}
           <div className="hidden lg:block shrink-0 pt-24">
             <div className="text-[10px] text-slate-500 font-mono mb-2 text-center">Sponsors :</div>
             <AdCard position="left" />
           </div>
 
-          {/* Center Content - Scrollable */}
-          <div className="flex-1 flex flex-col w-full overflow-y-auto overflow-x-hidden">
+          {/* Center Content */}
+          <div className="flex-1 flex flex-col w-full">
             {/* Header avec langues, bouton génération et leaderboard */}
             <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 pt-4 sm:pt-6 pb-4 gap-3 sm:gap-0 shrink-0">
               <LanguageSelector currentLang={lang} onChange={(newLang) => {

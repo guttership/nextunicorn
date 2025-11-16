@@ -27,8 +27,9 @@ async function generateIdeas() {
       const prompt = SAAS_PROMPTS[i];
       console.log(`\n[${i + 1}/${SAAS_PROMPTS.length}] Generating idea: "${prompt}"`);
 
+      const model = process.env.OPENAI_MODEL || "raptor-mini";
       const response = await openai.chat.completions.create({
-        model: "gpt-5-mini",
+        model,
         messages: [
           {
             role: "user",

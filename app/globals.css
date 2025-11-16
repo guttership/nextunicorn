@@ -17,16 +17,12 @@
 
 html {
   color-scheme: dark;
-  overflow: hidden;
-  height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-typewriter), monospace;
-  overflow: hidden;
-  height: 100%;
 }
 
 /* Tailwind dark mode */
