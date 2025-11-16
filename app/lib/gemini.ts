@@ -12,39 +12,50 @@ export interface GeneratedIdea {
   };
 }
 
-const IDEA_GENERATION_PROMPT = `Generate 10 profitable and monetizable SaaS ideas for serious entrepreneurs.
+const IDEA_GENERATION_PROMPT = `Generate 10 profitable and monetizable SaaS ideas that ANYONE can understand.
 
 CRITICAL REQUIREMENTS:
-- Ideas MUST solve real pain points that people/businesses will PAY for
-- Mix of B2B (70%) and B2C/prosumer (30%) opportunities
-- Target specific niches with proven demand
-- Ideas must be technically feasible and launchable
-- Avoid saturated markets (no generic "social media for X" or obvious clones)
+- Ideas MUST be IMMEDIATELY understandable by the general public (no jargon!)
+- Solve OBVIOUS everyday problems that everyone faces or can relate to
+- Clear, visible value proposition that makes sense in 5 seconds
+- Mix of B2B (50%) and B2C (50%) - all must be easy to grasp
+- Avoid technical niches, developer tools, or industry-specific solutions
+- NO buzzwords, NO complex terminology, NO niche markets
+
+CLARITY OVER COMPLEXITY:
+- If you need to explain what industry/sector it's for, it's TOO NICHE
+- Examples of GOOD (clear): "Automated receipt tracking", "Video meeting scheduler", "Password manager for families"
+- Examples of BAD (too niche): "API testing suite", "Kubernetes monitoring", "Legal practice management"
+
+UNIVERSAL PROBLEMS TO SOLVE:
+- Time management & productivity (scheduling, reminders, to-do lists)
+- Money management (budgets, expense tracking, invoicing)
+- Communication (email, messaging, video calls)
+- Content creation (writing, design, video editing)
+- Learning & education (courses, tutorials, skill building)
+- Health & wellness (fitness, meal planning, sleep tracking)
+- Home & family (shopping lists, chores, family calendar)
+- Small business basics (invoicing, CRM, bookkeeping)
 
 PRICING VALIDATION:
-- Each idea should have clear monetization path (subscription, usage-based, freemium)
-- B2B: $50/month minimum (no upper limit for enterprise solutions)
-- B2C: $1-50/month (mass market apps can start at €1-2/month)
-- Focus on productivity gains, time savings, or revenue generation for customers
+- B2B: €10-100/month for small businesses
+- B2C: €3-15/month for individuals/families
+- Focus on OBVIOUS value: save time, save money, make money, reduce stress
 
 IMPORTANT: Return your response in JSON format with the following structure:
 
 Each idea:
 {
-  "title": "Professional name (max 3 words)",
-  "slogan": "Clear value proposition in 6-8 words",
-  "description": "Specific problem + solution (max 20 words, be concrete)",
-  "aiPrompt": "Real use case scenario showing ROI (1 sentence)",
+  "title": "Simple, clear name (2-3 words max, NO jargon)",
+  "slogan": "What it does in plain language (6-8 words)",
+  "description": "The problem + how it helps (max 20 words, conversational tone)",
+  "aiPrompt": "Concrete example anyone can relate to (1 sentence)",
   "translations": {
     "fr": {"title": "French title", "slogan": "French translation", "description": "French translation"},
     "de": {"title": "German title", "slogan": "German translation", "description": "German translation"},
     "es": {"title": "Spanish title", "slogan": "Spanish translation", "description": "Spanish translation"}
   }
 }
-
-DIVERSE profitable niches to explore:
-B2B: Developer tools, sales automation, practice management, legal tech, SMB finance, team collaboration, e-commerce ops, HR automation, customer support
-B2C/Prosumer: Creator tools, personal finance, productivity apps, learning platforms, health tracking, side hustle enablers
 
 Return ONLY valid JSON: {"ideas": [10 objects]}`;
 
