@@ -23,6 +23,7 @@ interface Idea {
   aiPrompt?: string;
   translations?: Array<{
     language: string;
+    title: string;
     slogan: string;
     description: string;
   }>;
