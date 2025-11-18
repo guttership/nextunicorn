@@ -17,7 +17,7 @@ const clickerScript = Clicker_Script({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nextunicorn.com'),
+  metadataBase: new URL('https://nextunicorn.app'),
   title: {
     default: 'NextUnicorn - Unlimited SaaS Ideas for Entrepreneurs & Developers',
     template: '%s | NextUnicorn'
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: ['fr_FR', 'de_DE', 'es_ES'],
-    url: 'https://nextunicorn.com',
+    url: 'https://nextunicorn.app',
     title: 'NextUnicorn - Unlimited SaaS Ideas for Entrepreneurs & Developers',
     description: 'Daily AI-generated SaaS ideas repository. Perfect for entrepreneurs, developers, and indie hackers looking for their next profitable project.',
     siteName: 'NextUnicorn',
@@ -84,13 +84,13 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
-  alternates: {
-    canonical: 'https://nextunicorn.com',
+    alternates: {
+    canonical: 'https://nextunicorn.app',
     languages: {
-      'en-US': 'https://nextunicorn.com',
-      'fr-FR': 'https://nextunicorn.com/fr',
-      'de-DE': 'https://nextunicorn.com/de',
-      'es-ES': 'https://nextunicorn.com/es',
+      'en-US': 'https://nextunicorn.app',
+      'fr-FR': 'https://nextunicorn.app/fr',
+      'de-DE': 'https://nextunicorn.app/de',
+      'es-ES': 'https://nextunicorn.app/es',
     },
   },
 };
@@ -106,7 +106,7 @@ export default function RootLayout({
     name: 'NextUnicorn',
     applicationCategory: 'BusinessApplication',
     description: 'Free repository of AI-generated SaaS ideas for entrepreneurs, developers, and indie hackers. Discover validated startup ideas daily.',
-    url: 'https://nextunicorn.com',
+    url: 'https://nextunicorn.app',
     operatingSystem: 'Any',
     audience: {
       '@type': 'Audience',
@@ -129,7 +129,7 @@ export default function RootLayout({
     },
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://nextunicorn.com/search?q={search_term_string}',
+      target: 'https://nextunicorn.app/search?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };

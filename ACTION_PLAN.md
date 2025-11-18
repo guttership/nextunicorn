@@ -29,7 +29,7 @@
 ### **MARDI (Jour 2)** - 1h total
 - [ ] **Google Search Console** (30 min)
   - Créer compte Search Console
-  - Ajouter propriété nextunicorn.com
+  - Ajouter propriété nextunicorn.app
   - Vérifier propriété (via GA ou DNS)
   - Soumettre sitemap.xml
 

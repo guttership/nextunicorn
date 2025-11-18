@@ -71,7 +71,7 @@ Contenu :
 - Logo NextUnicorn 🦄
 - "Battle Arena for SaaS Ideas"
 - Screenshot du duel
-- nextunicorn.com en bas
+  - nextunicorn.app en bas
 
 Tool : Canva (gratuit)
 ```
@@ -84,7 +84,7 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-Sitemap: https://nextunicorn.com/sitemap.xml
+Sitemap: https://nextunicorn.app/sitemap.xml
 ```
 
 #### 3. Installer Google Analytics (15 min)
@@ -132,8 +132,8 @@ export async function generateMetadata({ params }) {
 ```
 
 **URL exemple** : 
-- `nextunicorn.com/ideas/creative-pilot`
-- `nextunicorn.com/ideas/task-flow-pro`
+- `nextunicorn.app/ideas/creative-pilot`
+- `nextunicorn.app/ideas/task-flow-pro`
 
 #### 6. Blog SEO (système minimal)
 Créer : `app/blog/page.tsx` + `app/blog/[slug]/page.tsx`
@@ -162,7 +162,7 @@ export default async function sitemap() {
   const ideas = await getAllIdeas();
   
   const ideaUrls = ideas.map(idea => ({
-    url: `https://nextunicorn.com/ideas/${idea.slug}`,
+  url: `https://nextunicorn.app/ideas/${idea.slug}`,
     lastModified: idea.updatedAt,
     changeFrequency: 'weekly',
     priority: 0.6,

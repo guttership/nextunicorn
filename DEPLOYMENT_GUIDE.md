@@ -337,7 +337,7 @@ npx prisma db seed
 ### **6.1 - Configurer le domaine custom** (optionnel)
 
 1. Vercel Dashboard → Ton projet → "Settings" → "Domains"
-2. Add domain : `nextunicorn.com`
+2. Add domain : `nextunicorn.app`
 3. Configure DNS chez ton registrar :
    - Type : `CNAME`
    - Name : `@` ou `www`
@@ -347,19 +347,19 @@ npx prisma db seed
 
 Dans `.env.production` (Vercel) :
 ```env
-NEXT_PUBLIC_APP_URL=https://nextunicorn.com
+NEXT_PUBLIC_APP_URL=https://nextunicorn.app
 ```
 
 Dans `app/layout.tsx` :
 ```typescript
-metadataBase: new URL('https://nextunicorn.com'),
+metadataBase: new URL('https://nextunicorn.app'),
 ```
 
 ### **6.3 - Configurer Stripe Webhooks**
 
 1. Dashboard Stripe → "Developers" → "Webhooks"
 2. "Add endpoint"
-3. URL : `https://nextunicorn.com/api/stripe/webhook`
+3. URL : `https://nextunicorn.app/api/stripe/webhook`
 4. Events : `checkout.session.completed`
 5. Copie le "Signing secret" (`whsec_...`)
 6. Ajoute dans Vercel env vars : `STRIPE_WEBHOOK_SECRET`
