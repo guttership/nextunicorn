@@ -31,23 +31,6 @@ ORIGINALITY IS KEY:
 
 CLARITY OVER COMPLEXITY:
 - If you need to explain what industry/sector it's for, it's TOO NICHE
-- Examples of GOOD (clear + original): "Shared grocery list with smart suggestions", "Voice-to-text for meeting notes", "Auto-split bills from photos"
-- Examples of BAD (cliché or niche): "Password manager", "Meditation app", "API testing suite", "Another CRM"
-
-UNIVERSAL PROBLEMS TO SOLVE (find NEW angles):
-- Time management & productivity (but NOT basic to-do lists)
-- Money management (but NOT generic budgeting apps)
-- Communication (but NOT another messaging app)
-- Content creation (fresh tools, not the 1000th video editor)
-- Learning & education (innovative approaches only)
-- Health & wellness (skip meditation/fitness tracking)
-- Home & family (practical helpers, not obvious apps)
-- Small business basics (fresh takes on old problems)
-
-PRICING VALIDATION:
-- B2B: €10-100/month for small businesses
-- B2C: €3-15/month for individuals/families
-- Focus on OBVIOUS value: save time, save money, make money, reduce stress
 
 IMPORTANT: Return your response in JSON format with the following structure:
 
@@ -66,6 +49,43 @@ Each idea:
 
 Return ONLY valid JSON: {"ideas": [10 objects]}`;
 
+// New, improved prompt (variant B) — more structured, action-focused and validation-oriented
+const IDEA_GENERATION_PROMPT_B = `Generate 10 original SaaS ideas in JSON. For each idea return the following fields:
+
+- title: short name (<=6 words, no jargon)
+- problem: one-sentence problem statement in plain language
+- target: who benefits (e.g. "freelancers who invoice manually")
+- whyNow: one line why this is timely
+- features: array of top 3 features (short phrases)
+- mvpSteps: array of 3 actionable MVP steps (each 1 sentence)
+- estTimeHours: estimated dev time for MVP (number)
+- validationTests: array of 3 low-cost validation tests (each 1 sentence)
+- aiPrompt: one-sentence concrete example anyone can relate to
+- translations: { fr, de, es } with title, slogan, description, aiPrompt (fallback to English if unclear)
+
+REQUIREMENTS:
+- Use plain language, avoid buzzwords and jargon
+- No password managers, to-do apps, meditation apps, or crowded categories
+- Prefer ideas that are easy to validate and build an MVP for in under 100 hours
+- Provide JSON only — exact structure: {"ideas": [ ... ]}
+
+Example item (JSON):
+{
+  "title": "QuickSplit",
+  "problem": "People struggle to split group bills from photos",
+  "target": "friends & families",
+  "whyNow": "more digital payments and social spending",
+  "features": ["Photo bill parsing","Auto-split suggestions","One-click payment links"],
+  "mvpSteps": ["Parse bill from image","Compute shares","Send payment links"],
+  "estTimeHours": 40,
+  "validationTests": ["Post idea on subreddit","Run 5 user interviews","Collect 50 email signups via landing page"],
+  "aiPrompt": "Take a photo of a pizza receipt and split by items",
+  "translations": {"fr": {"title":"PartageFacture","slogan":"Partager l'addition en un clic","description":"Prendre une photo d'une facture, la diviser et payer","aiPrompt":"Prendre une photo de l'addition et diviser"},"de": {...},"es": {...}}
+}
+`;
+
+const PROMPT_VARIANT = (process.env.IDEA_PROMPT_VARIANT || 'A').toUpperCase();
+
 export async function generateDailySaaSIdeas(existingTitles: string[] = []): Promise<GeneratedIdea[]> {
   try {
     const openai = new OpenAI({
@@ -81,6 +101,8 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
     
     const model = process.env.OPENAI_MODEL || "gpt-5-mini-2025-08-07";
 
+    const selectedPrompt = PROMPT_VARIANT === 'B' ? IDEA_GENERATION_PROMPT_B : IDEA_GENERATION_PROMPT;
+
     const completion = await openai.chat.completions.create({
       model,
       messages: [
@@ -90,7 +112,7 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
         },
         {
           role: "user",
-          content: IDEA_GENERATION_PROMPT + randomContext
+          content: selectedPrompt + randomContext
         }
       ],
       response_format: { type: "json_object" }
