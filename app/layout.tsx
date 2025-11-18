@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Clicker_Script } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -150,6 +151,7 @@ export default function RootLayout({
         className={`${jetbrainsMono.variable} ${clickerScript.variable} antialiased bg-slate-950 text-slate-100`}
       >
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
