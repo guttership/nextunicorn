@@ -285,6 +285,12 @@ export default function AdvertisePage() {
             >
               {loading ? t("processing", lang) : `${t("payButton", lang)} ${formatPrice(plans[selectedPlan].price, lang)}`}
             </Button>
+
+            {(selectedPlan === "monthly" || selectedPlan === "yearly") && (
+              <p className="text-xs text-slate-400 text-center mt-4 font-mono">
+                {t("cancelSubscription", lang)}
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>

@@ -494,9 +494,98 @@ export default function DuelPage() {
           </div>
         </div>
 
+        {/* SEO Content - Hidden but crawlable */}
+        <div className="sr-only" aria-hidden="true">
+          {/* French SEO */}
+          <h1>NextUnicorn - Idées de SaaS et Business pour Entrepreneurs</h1>
+          <h2>Trouvez votre prochaine idée de startup profitable</h2>
+          <p>
+            NextUnicorn est la plateforme gratuite qui vous aide à trouver des idées de business innovantes. 
+            Que vous cherchiez des idées de SaaS pour développeurs, des idées de micro-SaaS, 
+            des idées de projets side-project, ou des idées d'entreprise à monter, notre repository 
+            d'idées générées par IA vous offre une source inépuisable d'inspiration.
+          </p>
+          <p>
+            Pour les entrepreneurs, développeurs, indie hackers et créateurs : découvrez quotidiennement 
+            de nouvelles idées de startups, idées de business en ligne, idées de SaaS B2B, idées pour 
+            bootstrapper votre entreprise. Votez pour vos idées préférées et trouvez l'inspiration 
+            pour votre prochain projet rentable.
+          </p>
+          <p>
+            Idées de business 2025, idées de SaaS rentables, idées pour développeurs, idées de micro-entreprise, 
+            idées de projets tech, idées d'applications web, idées de startups innovantes, idées pour makers, 
+            idées de side hustles, idées de business models SaaS.
+          </p>
+
+          {/* English SEO */}
+          <h1>NextUnicorn - SaaS Ideas and Business Ideas for Entrepreneurs</h1>
+          <h2>Find your next profitable startup idea</h2>
+          <p>
+            NextUnicorn is the free platform that helps you find innovative business ideas. 
+            Whether you're looking for SaaS ideas for developers, micro-SaaS ideas, 
+            side project ideas, or business ideas to launch, our repository of 
+            AI-generated ideas offers you an endless source of inspiration.
+          </p>
+          <p>
+            For entrepreneurs, developers, indie hackers and makers: discover daily 
+            new startup ideas, online business ideas, B2B SaaS ideas, ideas to 
+            bootstrap your company. Vote for your favorite ideas and find inspiration 
+            for your next profitable project.
+          </p>
+          <p>
+            Business ideas 2025, profitable SaaS ideas, ideas for developers, micro-business ideas, 
+            tech project ideas, web application ideas, innovative startup ideas, maker ideas, 
+            side hustle ideas, SaaS business model ideas.
+          </p>
+
+          {/* German SEO */}
+          <h1>NextUnicorn - SaaS-Ideen und Geschäftsideen für Unternehmer</h1>
+          <h2>Finden Sie Ihre nächste profitable Startup-Idee</h2>
+          <p>
+            NextUnicorn ist die kostenlose Plattform, die Ihnen hilft, innovative Geschäftsideen zu finden. 
+            Ob Sie nach SaaS-Ideen für Entwickler, Micro-SaaS-Ideen, 
+            Nebenprojekt-Ideen oder Geschäftsideen zum Starten suchen, unser Repository von 
+            KI-generierten Ideen bietet Ihnen eine unerschöpfliche Inspirationsquelle.
+          </p>
+          <p>
+            Für Unternehmer, Entwickler, Indie-Hacker und Macher: entdecken Sie täglich 
+            neue Startup-Ideen, Online-Geschäftsideen, B2B-SaaS-Ideen, Ideen zum 
+            Bootstrappen Ihres Unternehmens. Stimmen Sie für Ihre Lieblingsideen ab und finden Sie Inspiration 
+            für Ihr nächstes profitables Projekt.
+          </p>
+          <p>
+            Geschäftsideen 2025, profitable SaaS-Ideen, Ideen für Entwickler, Micro-Business-Ideen, 
+            Tech-Projekt-Ideen, Webanwendungsideen, innovative Startup-Ideen, Maker-Ideen, 
+            Nebenverdienst-Ideen, SaaS-Geschäftsmodell-Ideen.
+          </p>
+
+          {/* Spanish SEO */}
+          <h1>NextUnicorn - Ideas de SaaS e Ideas de Negocio para Emprendedores</h1>
+          <h2>Encuentra tu próxima idea de startup rentable</h2>
+          <p>
+            NextUnicorn es la plataforma gratuita que te ayuda a encontrar ideas de negocio innovadoras. 
+            Ya sea que busques ideas de SaaS para desarrolladores, ideas de micro-SaaS, 
+            ideas de proyectos paralelos o ideas de negocio para lanzar, nuestro repositorio de 
+            ideas generadas por IA te ofrece una fuente inagotable de inspiración.
+          </p>
+          <p>
+            Para emprendedores, desarrolladores, indie hackers y creadores: descubre diariamente 
+            nuevas ideas de startups, ideas de negocios online, ideas de SaaS B2B, ideas para 
+            bootstrappear tu empresa. Vota por tus ideas favoritas y encuentra inspiración 
+            para tu próximo proyecto rentable.
+          </p>
+          <p>
+            Ideas de negocio 2025, ideas de SaaS rentables, ideas para desarrolladores, ideas de micro-empresas, 
+            ideas de proyectos tech, ideas de aplicaciones web, ideas de startups innovadoras, ideas para makers, 
+            ideas de side hustles, ideas de modelos de negocio SaaS.
+          </p>
+        </div>
+
         {/* Footer - Fixed at bottom */}
         <div className="fixed bottom-0 left-0 right-0 flex flex-wrap items-center justify-center gap-4 px-4 py-3 text-center text-slate-500 font-mono text-xs border-t border-slate-700 bg-slate-950 z-50">
           <Link href="/advertise" className="hover:text-pink-600 transition-colors">{t("advertise", lang)}</Link>
+          <span className="text-slate-600">•</span>
+          <Link href="/blog" className="hover:text-pink-600 transition-colors">Blog</Link>
           <span className="text-slate-600">•</span>
           <Link href="/cgu" className="hover:text-pink-600 transition-colors">CGU</Link>
           <span className="text-slate-600">•</span>
