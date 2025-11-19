@@ -7,12 +7,13 @@ export async function getDailyDuel(excludeIdeaId?: number) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Get today's ideas
+    // Get today's ideas (exclude reserved ones)
     let todayIdeas = await prisma.idea.findMany({
       where: {
         generatedAt: {
           gte: today,
         },
+        isReserved: false,
       },
       include: {
         translations: true,
@@ -25,6 +26,9 @@ export async function getDailyDuel(excludeIdeaId?: number) {
     // If not enough ideas for today, get the best ideas from all time
     if (todayIdeas.length < 2) {
       todayIdeas = await prisma.idea.findMany({
+        where: {
+          isReserved: false,
+        },
         include: {
           translations: true,
         },
@@ -215,6 +219,9 @@ export async function handleVote(
 export async function getIdeaRanking(limit: number = 10) {
   try {
     const ideas = await prisma.idea.findMany({
+      where: {
+        isReserved: false,
+      },
       orderBy: {
         score: "desc",
       },
@@ -232,6 +239,7 @@ export async function getIdeaRanking(limit: number = 10) {
       description: idea.description,
       score: idea.score,
       aiPromptId: idea.aiPromptId,
+      isReserved: idea.isReserved,
       translations: idea.translations,
     }));
   } catch (error) {

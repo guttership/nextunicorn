@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
 import { getIdeaRanking } from "@/app/lib/actions/duel";
 import Link from "next/link";
-import { Trophy, Flame, X } from "lucide-react";
+import { Trophy, Flame, X, Lock } from "lucide-react";
 import { Language, detectLanguage, t, formatPrice } from "@/app/lib/i18n";
 import { getTranslatedIdea } from "@/app/lib/ideas-translations";
 import { LanguageSelector } from "@/app/components/language-selector";
 import Image from "next/image";
 import { Card } from "@/app/components/ui/card";
+import { Button } from "@/app/components/ui/button";
 
 interface RankedIdea {
   id: number;
@@ -18,6 +19,7 @@ interface RankedIdea {
   description?: string;
   score: number;
   aiPromptId?: string;
+  isReserved?: boolean;
   translations?: Array<{
     language: string;
     slogan: string;
@@ -43,6 +45,8 @@ export default function LeaderboardPage() {
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState<Language>("en");
   const [selectedIdea, setSelectedIdea] = useState<RankedIdea | null>(null);
+  const [reserveEmail, setReserveEmail] = useState("");
+  const [reserveLoading, setReserveLoading] = useState(false);
 
   useEffect(() => {
     setLang(detectLanguage());
@@ -54,7 +58,13 @@ export default function LeaderboardPage() {
     try {
       setLoading(true);
       const data = await getIdeaRanking(1000);
-      setRanking(data);
+      console.log('[DEBUG] Ideas loaded:', data.length);
+      const reservedCount = data.filter((idea: RankedIdea) => idea.isReserved).length;
+      console.log('[DEBUG] Reserved ideas:', reservedCount);
+      // Filter out reserved ideas client-side as well (double check)
+      const filtered = data.filter((idea: RankedIdea) => !idea.isReserved);
+      console.log('[DEBUG] After filtering:', filtered.length);
+      setRanking(filtered);
     } catch (error) {
       console.error("Failed to load ranking:", error);
     } finally {
@@ -95,6 +105,33 @@ export default function LeaderboardPage() {
       slogan: idea.slogan,
       description: idea.description || idea.slogan
     };
+  };
+
+  const handleReserveIdea = async () => {
+    if (!selectedIdea || !reserveEmail) return;
+
+    setReserveLoading(true);
+    try {
+      const response = await fetch(`/api/ideas/${selectedIdea.id}/reserve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: reserveEmail }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.url;
+      } else {
+        alert("Error creating checkout session");
+      }
+    } catch (error) {
+      console.error("Failed to reserve idea:", error);
+      alert("Failed to reserve idea");
+    } finally {
+      setReserveLoading(false);
+    }
   };
 
   if (loading) {
@@ -341,6 +378,50 @@ export default function LeaderboardPage() {
                   </p>
                 </div>
               )}
+
+              {/* Reserve section */}
+              <div className="mt-8 pt-6 border-t border-pink-600/30">
+                <div className="bg-gradient-to-r from-pink-600/20 to-purple-600/20 border border-pink-600/50 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Lock className="w-5 h-5 text-pink-500" />
+                    <h3 className="text-lg font-mono font-bold text-pink-500">
+                      {lang === "fr" ? "RÉSERVER CETTE IDÉE" : lang === "de" ? "IDEE RESERVIEREN" : lang === "es" ? "RESERVAR ESTA IDEA" : "RESERVE THIS IDEA"}
+                    </h3>
+                  </div>
+                  
+                  <p className="text-sm font-mono text-slate-300 mb-4">
+                    {lang === "fr" ? "Payez 19€ en one-shot pour retirer cette idée du site et la garder pour vous seul." : 
+                     lang === "de" ? "Zahlen Sie einmalig 19€, um diese Idee von der Website zu entfernen und sie exklusiv für sich zu behalten." :
+                     lang === "es" ? "Paga 19€ de una sola vez para quitar esta idea del sitio y guardarla solo para ti." :
+                     "Pay €19 one-time to remove this idea from the site and keep it exclusively for yourself."}
+                  </p>
+
+                  <div className="space-y-3">
+                    <input
+                      type="email"
+                      placeholder={lang === "fr" ? "Votre email" : lang === "de" ? "Ihre E-Mail" : lang === "es" ? "Tu email" : "Your email"}
+                      value={reserveEmail}
+                      onChange={(e) => setReserveEmail(e.target.value)}
+                      className="w-full px-4 py-2 bg-slate-900 border border-pink-600/50 rounded text-slate-100 font-mono text-sm focus:outline-none focus:border-pink-500"
+                    />
+                    
+                    <Button
+                      onClick={handleReserveIdea}
+                      disabled={!reserveEmail || reserveLoading}
+                      className="w-full bg-pink-600 hover:bg-pink-700 text-white font-mono font-bold py-3 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {reserveLoading ? (
+                        lang === "fr" ? "CHARGEMENT..." : lang === "de" ? "LADEN..." : lang === "es" ? "CARGANDO..." : "LOADING..."
+                      ) : (
+                        <>
+                          <Lock className="w-4 h-4 inline mr-2" />
+                          {lang === "fr" ? "RÉSERVER POUR 19€" : lang === "de" ? "FÜR 19€ RESERVIEREN" : lang === "es" ? "RESERVAR POR 19€" : "RESERVE FOR €19"}
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

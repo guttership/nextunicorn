@@ -8,24 +8,29 @@ datasource db {
 }
 
 model Idea {
-  id            Int               @id @default(autoincrement())
-  title         String
-  slogan        String
-  description   String
-  aiPrompt      String
-  generatedAt   DateTime          @default(now())
-  isChampion    Boolean           @default(false)
-  createdAt     DateTime          @default(now())
-  score         Int               @default(0)
-  isDaily       Boolean           @default(true)
-  aiPromptId    String
-  translations  IdeaTranslation[]
-  votesAsLoser  Vote[]            @relation("LoserIdea")
-  votesAsWinner Vote[]            @relation("WinnerIdea")
+  id               Int               @id @default(autoincrement())
+  title            String
+  slogan           String
+  description      String
+  aiPrompt         String
+  generatedAt      DateTime          @default(now())
+  isChampion       Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  score            Int               @default(0)
+  isDaily          Boolean           @default(true)
+  aiPromptId       String
+  isReserved       Boolean           @default(false)
+  reservedAt       DateTime?
+  reservedBy       String?
+  reservationPrice Float?            @default(19.0)
+  translations     IdeaTranslation[]
+  votesAsLoser     Vote[]            @relation("LoserIdea")
+  votesAsWinner    Vote[]            @relation("WinnerIdea")
 
   @@index([score])
   @@index([createdAt])
   @@index([generatedAt])
+  @@index([isReserved])
 }
 
 model IdeaTranslation {
