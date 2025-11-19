@@ -23,7 +23,7 @@ export default function BlogPostCommentTrouver() {
             <ArrowLeft className="w-4 h-4" />
             <span>Blog</span>
           </Link>
-          <LanguageSelector lang={lang} setLang={setLang} />
+          <LanguageSelector currentLang={lang} onChange={setLang} />
         </div>
       </div>
 

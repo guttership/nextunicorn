@@ -77,7 +77,7 @@ export default function BlogPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>{lang === "fr" ? "Retour" : lang === "de" ? "Zurück" : lang === "es" ? "Volver" : "Back"}</span>
           </Link>
-          <LanguageSelector lang={lang} setLang={setLang} />
+          <LanguageSelector currentLang={lang} onChange={setLang} />
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function BlogPage() {
       <div className="max-w-5xl mx-auto px-4 py-12 pb-24">
         {/* Title */}
         <div className="mb-12 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
             {lang === "fr" ? "Blog NextUnicorn" : "NextUnicorn Blog"}
           </h1>
           <p className="text-slate-400 font-mono text-sm md:text-base max-w-2xl mx-auto">
@@ -116,7 +116,7 @@ export default function BlogPage() {
                       {post.readTime}
                     </span>
                   </div>
-                  <CardTitle className="text-xl text-slate-100 group-hover:text-pink-400 transition-colors" style={{ fontFamily: 'var(--font-clicker)' }}>
+                  <CardTitle className="text-2xl md:text-3xl text-slate-100 group-hover:text-pink-400 transition-colors" style={{ fontFamily: 'var(--font-clicker)' }}>
                     {post.title}
                   </CardTitle>
                 </CardHeader>
