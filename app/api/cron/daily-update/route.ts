@@ -5,7 +5,7 @@ import { generateDailySaaSIdeas } from "@/app/lib/gemini";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     console.log('[CRON] Starting daily update...');
     const startTime = Date.now();
