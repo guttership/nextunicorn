@@ -36,6 +36,7 @@ export default function AdvertisePage() {
   const [logoUrl, setLogoUrl] = useState("");
   const [targetUrl, setTargetUrl] = useState("");
   const [email, setEmail] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pricing, setPricing] = useState<PricingData | null>(null);
 
@@ -98,6 +99,17 @@ export default function AdvertisePage() {
   };
 
   const handleCheckout = async () => {
+    if (!acceptedTerms) {
+      alert(lang === "fr" 
+        ? "Vous devez accepter les conditions générales de vente"
+        : lang === "de"
+        ? "Sie müssen die Geschäftsbedingungen akzeptieren"
+        : lang === "es"
+        ? "Debe aceptar los términos y condiciones"
+        : "You must accept the terms and conditions");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -243,6 +255,27 @@ export default function AdvertisePage() {
                 placeholder={t("emailPlaceholder", lang)}
                 className="w-full bg-slate-800 border border-slate-700 text-white rounded px-3 sm:px-4 py-2 sm:py-3 font-mono text-xs sm:text-sm md:text-base focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20 transition-all placeholder:text-slate-500"
               />
+            </div>
+
+            <div className="flex items-start gap-3 p-4 bg-slate-800/50 border border-slate-700 rounded">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 text-pink-500 bg-slate-700 border-slate-600 rounded focus:ring-pink-500 focus:ring-2 cursor-pointer"
+              />
+              <label htmlFor="terms" className="text-xs sm:text-sm font-mono text-slate-300 cursor-pointer">
+                {lang === "fr" ? (
+                  <>J'accepte les <a href="/terms" target="_blank" className="text-pink-400 hover:text-pink-300 underline">conditions générales de vente</a> et comprends que tout contenu inapproprié sera supprimé sans remboursement.</>
+                ) : lang === "de" ? (
+                  <>Ich akzeptiere die <a href="/terms" target="_blank" className="text-pink-400 hover:text-pink-300 underline">Geschäftsbedingungen</a> und verstehe, dass unangemessene Inhalte ohne Rückerstattung entfernt werden.</>
+                ) : lang === "es" ? (
+                  <>Acepto los <a href="/terms" target="_blank" className="text-pink-400 hover:text-pink-300 underline">términos y condiciones</a> y entiendo que el contenido inapropiado será eliminado sin reembolso.</>
+                ) : (
+                  <>I accept the <a href="/terms" target="_blank" className="text-pink-400 hover:text-pink-300 underline">terms and conditions</a> and understand that inappropriate content will be removed without refund.</>
+                )}
+              </label>
             </div>
 
             <Button
