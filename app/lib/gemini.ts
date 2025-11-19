@@ -135,9 +135,25 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
 
     // Validate each idea has required fields
     ideas.forEach((idea, index) => {
-      if (!idea.title || !idea.slogan || !idea.description || !idea.aiPrompt) {
-        throw new Error(`Idea ${index} is missing required fields`);
+      if (!idea.title || !idea.aiPrompt) {
+        throw new Error(`Idea ${index} is missing required fields (title or aiPrompt)`);
       }
+      
+      // Convert prompt B format to prompt A format if needed
+      if (idea.problem && !idea.slogan) {
+        // Prompt B format detected - convert to prompt A
+        idea.slogan = idea.problem; // Use problem as slogan
+        idea.description = idea.target ? `For ${idea.target}. ${idea.whyNow || ''}` : idea.problem;
+      }
+      
+      // Ensure slogan and description exist
+      if (!idea.slogan) {
+        idea.slogan = idea.title;
+      }
+      if (!idea.description) {
+        idea.description = idea.slogan;
+      }
+      
       // Ensure translations exist with default values if missing
       if (!idea.translations) {
         idea.translations = {
