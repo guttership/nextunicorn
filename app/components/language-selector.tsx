@@ -9,11 +9,11 @@ interface LanguageSelectorProps {
 }
 
 export function LanguageSelector({ currentLang, onChange }: LanguageSelectorProps) {
-  const languages: { code: Language; label: string; flag: string }[] = [
-    { code: "en", label: "EN", flag: "🇺🇸" },
-    { code: "fr", label: "FR", flag: "🇫🇷" },
-    { code: "de", label: "DE", flag: "🇩🇪" },
-    { code: "es", label: "ES", flag: "🇪🇸" },
+  const languages: { code: Language; label: string }[] = [
+    { code: "en", label: "EN" },
+    { code: "fr", label: "FR" },
+    { code: "de", label: "DE" },
+    { code: "es", label: "ES" },
   ];
 
   return (
@@ -31,7 +31,7 @@ export function LanguageSelector({ currentLang, onChange }: LanguageSelectorProp
             }`}
             title={lang.label}
           >
-            {lang.flag}
+            {lang.label}
           </button>
         ))}
       </div>
