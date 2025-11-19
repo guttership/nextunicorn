@@ -13,36 +13,37 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('Starting daily update...');
+    console.log('[CRON] Starting daily update...');
     const startTime = new Date();
     
-    // Respond immediately to avoid timeout
-    // The actual work continues in background
-    const response = NextResponse.json({ 
+    // Launch background processing (don't await - function continues after response)
+    performDailyUpdate().catch(error => {
+      console.error("[CRON] Background daily update FAILED:", error);
+    });
+
+    // Respond immediately to avoid cron-job.org timeout
+    return NextResponse.json({ 
       success: true,
-      message: 'Daily update started',
+      message: 'Daily update started in background',
       timestamp: startTime.toISOString()
     });
 
-    // Continue processing in background (don't await)
-    performDailyUpdate().catch(error => {
-      console.error("Background daily update error:", error);
-    });
-
-    return response;
-
   } catch (error) {
-    console.error("Daily update error:", error);
+    console.error("[CRON] Daily update error:", error);
     const message = error instanceof Error ? error.message : "Failed to start update";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
 async function performDailyUpdate() {
+  const startTime = Date.now();
+  console.log('[CRON-BG] Background process started');
+  
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   // 1. Mark old champion as no longer champion
+  console.log('[CRON-BG] Updating champions...');
   await prisma.idea.updateMany({
     where: { isChampion: true },
     data: { isChampion: false },
@@ -72,21 +73,26 @@ async function performDailyUpdate() {
         generatedAt: today 
       },
     });
-    console.log(`Champion updated: ${champion.title}`);
+    console.log(`[CRON-BG] Champion updated: ${champion.title}`);
+  } else {
+    console.log('[CRON-BG] No champion found from yesterday');
   }
 
   // 3. Get existing ideas to avoid duplicates
+  console.log('[CRON-BG] Fetching existing ideas...');
   const existingIdeas = await prisma.idea.findMany({
     select: { title: true }
   });
   const existingTitles = existingIdeas.map(i => i.title);
+  console.log(`[CRON-BG] Found ${existingTitles.length} existing ideas`);
 
   // 4. Generate 10 new ideas
-  console.log('Generating new ideas...');
+  console.log('[CRON-BG] Calling OpenAI to generate new ideas...');
   const newIdeas = await generateDailySaaSIdeas(existingTitles);
-  console.log(`Generated ${newIdeas.length} new ideas`);
+  console.log(`[CRON-BG] Generated ${newIdeas.length} new ideas from OpenAI`);
 
   // 5. Create ideas with translations
+  console.log('[CRON-BG] Saving ideas to database...');
   const createdIdeas = await Promise.all(
     newIdeas.map(async (idea, index) => {
       const createdIdea = await prisma.idea.create({
@@ -136,10 +142,14 @@ async function performDailyUpdate() {
         }),
       ]);
 
+      console.log(`[CRON-BG] Created idea: ${idea.title}`);
       return createdIdea;
     })
   );
 
-  console.log(`Created ${createdIdeas.length} ideas with translations`);
-  console.log(`Daily update completed successfully`);
+  const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+  console.log(`[CRON-BG] ✅ Daily update completed successfully!`);
+  console.log(`[CRON-BG] - Champion: ${champion?.title || 'none'}`);
+  console.log(`[CRON-BG] - Ideas created: ${createdIdeas.length}`);
+  console.log(`[CRON-BG] - Duration: ${duration}s`);
 }
