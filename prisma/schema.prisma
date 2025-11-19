@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,21 +8,20 @@ datasource db {
 }
 
 model Idea {
-  id          Int     @id @default(autoincrement())
-  title       String
-  slogan      String
-  description String
-  aiPrompt    String
-  generatedAt DateTime @default(now())
-  isChampion  Boolean @default(false)
-  createdAt   DateTime @default(now())
-  score       Int     @default(0)
-  isDaily     Boolean @default(true)
-  aiPromptId  String
-
-  votesAsWinner Vote[] @relation("WinnerIdea")
-  votesAsLoser  Vote[] @relation("LoserIdea")
+  id            Int               @id @default(autoincrement())
+  title         String
+  slogan        String
+  description   String
+  aiPrompt      String
+  generatedAt   DateTime          @default(now())
+  isChampion    Boolean           @default(false)
+  createdAt     DateTime          @default(now())
+  score         Int               @default(0)
+  isDaily       Boolean           @default(true)
+  aiPromptId    String
   translations  IdeaTranslation[]
+  votesAsLoser  Vote[]            @relation("LoserIdea")
+  votesAsWinner Vote[]            @relation("WinnerIdea")
 
   @@index([score])
   @@index([createdAt])
@@ -38,27 +31,25 @@ model Idea {
 model IdeaTranslation {
   id          Int    @id @default(autoincrement())
   ideaId      Int
-  language    String // 'fr', 'de', 'es'
-  title       String
+  language    String
   slogan      String
   description String
+  title       String
   aiPrompt    String
-  
   idea        Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
-  
+
   @@unique([ideaId, language])
 }
 
 model Vote {
-  id            Int     @id @default(autoincrement())
-  voterId       String
-  winnerIdeaId  Int
-  loserIdeaId   Int
-  duelId        String
-  createdAt     DateTime @default(now())
-
-  winnerIdea    Idea    @relation("WinnerIdea", fields: [winnerIdeaId], references: [id], onDelete: Cascade)
-  loserIdea     Idea    @relation("LoserIdea", fields: [loserIdeaId], references: [id], onDelete: Cascade)
+  id           Int      @id @default(autoincrement())
+  voterId      String
+  winnerIdeaId Int
+  loserIdeaId  Int
+  duelId       String
+  createdAt    DateTime @default(now())
+  loserIdea    Idea     @relation("LoserIdea", fields: [loserIdeaId], references: [id], onDelete: Cascade)
+  winnerIdea   Idea     @relation("WinnerIdea", fields: [winnerIdeaId], references: [id], onDelete: Cascade)
 
   @@unique([voterId, duelId])
   @@index([voterId])
@@ -67,15 +58,14 @@ model Vote {
 }
 
 model AdSlot {
-  id              Int         @id @default(autoincrement())
-  position        Int         // 1, 2, 3, etc. (ordre des cards)
-  side            String      // 'recto' ou 'verso'
-  price           Float       // Prix de cet emplacement
-  expiresAt       DateTime
-  isActive        Boolean     @default(true)
-  createdAt       DateTime    @default(now())
-  
-  advertisers     Advertiser[]
+  id          Int          @id @default(autoincrement())
+  position    Int
+  side        String
+  price       Float
+  expiresAt   DateTime
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  advertisers Advertiser[]
 
   @@unique([position, side])
   @@index([isActive])
@@ -83,18 +73,17 @@ model AdSlot {
 }
 
 model Advertiser {
-  id              Int       @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   saasName        String
   logoUrl         String
   targetUrl       String
   customerEmail   String
-  stripeSessionId String    @unique
-  clicks          Int       @default(0)
-  isApproved      Boolean   @default(false)
-  createdAt       DateTime  @default(now())
-  
+  stripeSessionId String   @unique
+  clicks          Int      @default(0)
+  isApproved      Boolean  @default(false)
+  createdAt       DateTime @default(now())
   adSlotId        Int
-  adSlot          AdSlot    @relation(fields: [adSlotId], references: [id], onDelete: Cascade)
+  adSlot          AdSlot   @relation(fields: [adSlotId], references: [id], onDelete: Cascade)
 
   @@index([adSlotId])
   @@index([isApproved])

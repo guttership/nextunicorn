@@ -53,7 +53,7 @@ export default function LeaderboardPage() {
   const loadRanking = async () => {
     try {
       setLoading(true);
-      const data = await getIdeaRanking(50);
+      const data = await getIdeaRanking(1000);
       setRanking(data);
     } catch (error) {
       console.error("Failed to load ranking:", error);
