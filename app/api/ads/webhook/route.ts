@@ -29,6 +29,31 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     const metadata = session.metadata!;
 
+    // Check if it's an idea reservation (has ideaId in metadata)
+    if (metadata.ideaId) {
+      try {
+        const ideaId = parseInt(metadata.ideaId);
+        const email = metadata.email || session.customer_email;
+
+        await prisma.idea.update({
+          where: { id: ideaId },
+          data: {
+            isReserved: true,
+            reservedAt: new Date(),
+            reservedBy: email!,
+            reservationPrice: 19.0,
+          },
+        });
+
+        console.log(`[RESERVATION] Idea ${ideaId} reserved by ${email}`);
+        return NextResponse.json({ received: true });
+      } catch (err) {
+        console.error("Error processing idea reservation:", err);
+        return NextResponse.json({ error: "Failed to reserve idea" }, { status: 500 });
+      }
+    }
+
+    // Otherwise, it's an ad purchase
     try {
       // Get next available position
       const maxPositionSlot = await prisma.adSlot.findFirst({
