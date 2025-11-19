@@ -61,7 +61,7 @@ export default function BlogPostCommentTrouver() {
               <div className="space-y-4 text-slate-300">
                 <p><strong className="text-red-400">1. "J'ai une idée géniale !"</strong> → Vous n'avez pas validé si quelqu'un paierait pour ça</p>
                 <p><strong className="text-red-400">2. "Je vais construire d'abord, vendre ensuite"</strong> → 6 mois de dev, 0 clients</p>
-                <p><strong className="text-red-400">3. "Mon produit se vendra tout seul"</strong> → Distribution > Product, toujours</p>
+                <p><strong className="text-red-400">3. "Mon produit se vendra tout seul"</strong> → Distribution &gt; Product, toujours</p>
               </div>
             </CardContent>
           </Card>
@@ -140,7 +140,7 @@ export default function BlogPostCommentTrouver() {
                           <li>• Pouvez-vous les contacter directement ?</li>
                           <li>• Avez-vous accès à une audience existante ?</li>
                         </ul>
-                        <p className="text-pink-400 text-sm mt-2">→ Distribution > Product, toujours</p>
+                        <p className="text-pink-400 text-sm mt-2">→ Distribution &gt; Product, toujours</p>
                       </div>
                     </div>
                   </div>

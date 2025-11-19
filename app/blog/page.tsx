@@ -116,7 +116,7 @@ export default function BlogPage() {
                       {post.readTime}
                     </span>
                   </div>
-                  <CardTitle className="text-xl group-hover:text-pink-400 transition-colors">
+                  <CardTitle className="text-xl text-slate-100 group-hover:text-pink-400 transition-colors" style={{ fontFamily: 'var(--font-clicker)' }}>
                     {post.title}
                   </CardTitle>
                 </CardHeader>

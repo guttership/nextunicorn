@@ -108,7 +108,7 @@ export default function BlogPostMicroSaaS() {
 
             <Card className="bg-slate-900/50 border-slate-800">
               <CardContent className="pt-6">
-                <h3 className="text-lg font-bold text-pink-400 mb-3">Règle #2 : Niche > Large marché</h3>
+                <h3 className="text-lg font-bold text-pink-400 mb-3">Règle #2 : Niche &gt; Large marché</h3>
                 <div className="space-y-3 text-slate-300 text-sm">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="p-4 bg-red-900/20 border border-red-800/50 rounded">
@@ -139,7 +139,7 @@ export default function BlogPostMicroSaaS() {
 
             <Card className="bg-slate-900/50 border-slate-800">
               <CardContent className="pt-6">
-                <h3 className="text-lg font-bold text-pink-400 mb-3">Règle #3 : B2B > B2C (toujours)</h3>
+                <h3 className="text-lg font-bold text-pink-400 mb-3">Règle #3 : B2B &gt; B2C (toujours)</h3>
                 <div className="space-y-3 text-slate-300 text-sm">
                   <p>Pour un bootstrapper solo, le B2B est 10x plus rentable :</p>
                   <div className="overflow-x-auto">
@@ -294,7 +294,7 @@ export default function BlogPostMicroSaaS() {
                   </div>
                   <div className="p-3 bg-slate-800/50 rounded">
                     <p className="font-bold text-pink-300">→ Pas de plan gratuit (sauf freemium calculé)</p>
-                    <p className="text-xs mt-1">Gratuit = support infini + 0 revenus. Trial 14 jours > Free tier.</p>
+                    <p className="text-xs mt-1">Gratuit = support infini + 0 revenus. Trial 14 jours &gt; Free tier.</p>
                   </div>
                 </div>
               </CardContent>

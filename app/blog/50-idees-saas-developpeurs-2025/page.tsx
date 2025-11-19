@@ -155,10 +155,10 @@ export default function BlogPost50IdeesSaaS() {
             <CardContent className="pt-6">
               <div className="space-y-4 text-slate-300">
                 <p><strong className="text-pink-400">1. Choisissez un problème que VOUS avez</strong> - Vous serez votre premier client</p>
-                <p><strong className="text-pink-400">2. Validez avant de coder</strong> - 10 conversations > 10 semaines de dev</p>
+                <p><strong className="text-pink-400">2. Validez avant de coder</strong> - 10 conversations &gt; 10 semaines de dev</p>
                 <p><strong className="text-pink-400">3. Commencez micro</strong> - Une seule fonctionnalité, excellente</p>
                 <p><strong className="text-pink-400">4. Pricing dès le jour 1</strong> - Si personne ne paie, pivotez</p>
-                <p><strong className="text-pink-400">5. Distribution > Product</strong> - La meilleure idée sans users = 0€</p>
+                <p><strong className="text-pink-400">5. Distribution &gt; Product</strong> - La meilleure idée sans users = 0€</p>
               </div>
             </CardContent>
           </Card>
