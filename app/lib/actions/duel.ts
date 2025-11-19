@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/app/lib/db/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function getDailyDuel(excludeIdeaId?: number) {
   try {
@@ -218,6 +219,9 @@ export async function handleVote(
 
 export async function getIdeaRanking(limit: number = 10) {
   try {
+    // Force revalidation to avoid cache issues
+    revalidatePath('/leaderboard');
+    
     const ideas = await prisma.idea.findMany({
       where: {
         isReserved: false,
