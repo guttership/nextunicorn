@@ -291,12 +291,22 @@ export default function BlogPostHowToFind() {
               <p className="text-slate-300 mb-4">
                 Need inspiration for your next idea? Discover hundreds of validated ideas on NextUnicorn.
               </p>
-              <Link 
-                href="/"
-                className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
-              >
-                See today's ideas →
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+                <Link 
+                  href="/"
+                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                >
+                  See today's ideas →
+                </Link>
+              </div>
+              <div className="mt-6 pt-6 border-t border-slate-800">
+                <p className="text-slate-400 text-sm mb-3">Related articles:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Link href="/blog/50-saas-ideas-developers-2025" className="text-pink-400 hover:text-pink-300 text-sm underline">
+                    50 SaaS ideas for developers
+                  </Link>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>

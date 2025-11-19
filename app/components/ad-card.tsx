@@ -157,7 +157,7 @@ function SingleCard({ cardData }: { cardData: CardData }) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={recto.logoUrl}
-                    alt={recto.saasName}
+                    alt={`${recto.saasName} - SaaS sponsor on NextUnicorn`}
                     style={{
                       width: "auto",
                       objectFit: "contain"
@@ -206,7 +206,7 @@ function SingleCard({ cardData }: { cardData: CardData }) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={verso.logoUrl}
-                    alt={verso.saasName}
+                    alt={`${verso.saasName} - SaaS sponsor on NextUnicorn`}
                     style={{
                       width: "auto",
                       objectFit: "contain"

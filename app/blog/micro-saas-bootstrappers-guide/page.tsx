@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/app/components/ui/card";
 import Link from "next/link";
 import { Language, detectLanguage } from "@/app/lib/i18n";
 import { LanguageSelector } from "@/app/components/language-selector";
-import { ArrowLeft, Calendar, Clock, DollarSign, Users, Zap } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, TrendingUp, Users, DollarSign, Zap } from "lucide-react";
 
 export default function BlogPostMicroSaaS() {
   const [lang, setLang] = useState<Language>("en");
@@ -527,12 +527,26 @@ export default function BlogPostMicroSaaS() {
               <p className="text-slate-300 mb-4">
                 Prêt à lancer votre micro-SaaS ? Trouvez l'inspiration parmi des centaines d'idées validées.
               </p>
-              <Link 
-                href="/"
-                className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
-              >
-                Découvrir les idées NextUnicorn →
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+                <Link 
+                  href="/"
+                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                >
+                  Découvrir les idées NextUnicorn →
+                </Link>
+              </div>
+              <div className="mt-6 pt-6 border-t border-slate-800">
+                <p className="text-slate-400 text-sm mb-3">Articles liés :</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Link href="/blog/50-idees-saas-developpeurs-2025" className="text-pink-400 hover:text-pink-300 text-sm underline">
+                    50 idées de SaaS pour développeurs
+                  </Link>
+                  <span className="text-slate-600">•</span>
+                  <Link href="/blog/comment-trouver-idee-business-profitable" className="text-pink-400 hover:text-pink-300 text-sm underline">
+                    Comment trouver une idée profitable
+                  </Link>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>

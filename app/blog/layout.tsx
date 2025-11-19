@@ -20,6 +20,25 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Blog NextUnicorn - Idées de SaaS et Stratégies pour Entrepreneurs",
     description: "Guides, listes d'idées validées et stratégies pour réussir votre projet SaaS",
+    url: "https://nextunicorn.app/blog",
+    siteName: "NextUnicorn",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "NextUnicorn Blog - Idées de SaaS pour Entrepreneurs",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog NextUnicorn - Idées de SaaS et Stratégies",
+    description: "Guides pratiques et listes d'idées validées pour réussir votre projet SaaS",
+    images: ["/og-image.png"],
+    creator: "@nextunicorn",
   },
 };
 
