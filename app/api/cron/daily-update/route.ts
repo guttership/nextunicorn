@@ -7,12 +7,6 @@ export const maxDuration = 300; // 5 minutes max
 
 export async function GET(request: Request) {
   try {
-    // Verify the request is from cron service
-    const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     console.log('[CRON] Starting daily update...');
     const startTime = Date.now();
     
