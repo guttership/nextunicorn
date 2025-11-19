@@ -367,7 +367,7 @@ export default function DuelPage() {
             </div>
             
             {/* Desktop Duel View - Side by Side */}
-            <div className={`hidden md:grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl px-12 py-12 relative overflow-hidden`}>
+            <div className={`hidden md:grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl px-12 pt-24 pb-12 relative overflow-hidden`}>
             {/* VS Badge */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
               <div className="bg-linear-to-r from-pink-500 to-rose-500 rounded-full w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center shadow-2xl border-4 border-slate-900">
@@ -376,6 +376,14 @@ export default function DuelPage() {
             </div>
             
             {/* IDEA A - Vote */}
+            <div className="relative">
+              {isEntering && selectedCard !== "A" && (
+                <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-20 -rotate-12">
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 via-yellow-300 to-yellow-500 font-black text-4xl tracking-wider drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]" style={{ fontFamily: 'var(--font-clicker)' }}>
+                    {t("winner", lang)}
+                  </span>
+                </div>
+              )}
             <Card className={`bg-slate-900 border-slate-800 shadow-xl transition-all duration-300 will-change-transform ${
               isExiting ? "animate-slide-out-left" : isEntering ? "animate-slide-in-left" : ""
             } ${
@@ -418,8 +426,17 @@ export default function DuelPage() {
                 </button>
               </CardContent>
             </Card>
+            </div>
 
             {/* IDEA B - Vote */}
+            <div className="relative">
+              {isEntering && (
+                <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-20 rotate-12">
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 via-yellow-300 to-yellow-500 font-black text-4xl tracking-wider drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]" style={{ fontFamily: 'var(--font-clicker)' }}>
+                    {t("challenger", lang)}
+                  </span>
+                </div>
+              )}
             <Card className={`bg-slate-900 border-slate-800 shadow-xl transition-all duration-300 will-change-transform ${
               isExiting ? "animate-slide-out-right" : isEntering ? "animate-slide-in-right" : ""
             } ${
@@ -462,6 +479,7 @@ export default function DuelPage() {
                 </button>
               </CardContent>
             </Card>
+            </div>
             </div>
           </>
           )}

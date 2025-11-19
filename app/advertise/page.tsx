@@ -31,7 +31,7 @@ export default function AdvertisePage() {
     }
     return "en";
   });
-  const [selectedPlan, setSelectedPlan] = useState<"monthly" | "yearly">("monthly");
+  const [selectedPlan, setSelectedPlan] = useState<"one-shot" | "monthly" | "yearly">("monthly");
   const [saasName, setSaasName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [targetUrl, setTargetUrl] = useState("");
@@ -54,6 +54,13 @@ export default function AdvertisePage() {
   }
 
   const plans: {
+    "one-shot": { 
+      price: number;
+      name: string;
+      duration: string;
+      spots: string;
+      save?: string;
+    };
     monthly: { 
       price: number;
       name: string;
@@ -69,15 +76,21 @@ export default function AdvertisePage() {
       save?: string;
     };
   } = {
+    "one-shot": { 
+      price: pricing.pricing.monthly, 
+      name: lang === "fr" ? "Paiement unique" : lang === "de" ? "Einmalzahlung" : lang === "es" ? "Pago único" : "One-Time", 
+      duration: "30 " + t("days", lang), 
+      spots: t("rotatingSpot", lang) 
+    },
     monthly: { 
       price: pricing.pricing.monthly, 
-      name: t("monthlySpot", lang), 
+      name: t("monthlySpot", lang) + " (Subscription)", 
       duration: t("durationMonth", lang), 
       spots: t("rotatingSpot", lang) 
     },
     yearly: { 
       price: pricing.pricing.yearly, 
-      name: t("yearlySpot", lang), 
+      name: t("yearlySpot", lang) + " (Subscription)", 
       duration: t("durationYear", lang), 
       spots: t("rotatingSpot", lang), 
       save: `${t("save", lang)} ${formatPrice(pricing.pricing.yearlySavings, lang)}!` 
@@ -143,11 +156,11 @@ export default function AdvertisePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-12 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-12 max-w-6xl mx-auto">
           {Object.entries(plans).map(([key, plan]) => (
             <Card
               key={key}
-              onClick={() => setSelectedPlan(key as "monthly" | "yearly")}
+              onClick={() => setSelectedPlan(key as "one-shot" | "monthly" | "yearly")}
               className={`cursor-pointer transition-all shadow-xl ${
                 selectedPlan === key
                   ? "bg-slate-900 border-pink-500 border-2 shadow-pink-500/30"
