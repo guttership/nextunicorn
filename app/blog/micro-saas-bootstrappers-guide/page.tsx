@@ -1,19 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/app/components/ui/card";
 import Link from "next/link";
-import { Language, detectLanguage } from "@/app/lib/i18n";
-import { LanguageSelector } from "@/app/components/language-selector";
-import { ArrowLeft, Calendar, Clock, TrendingUp, Users, DollarSign, Zap } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Users, DollarSign, Zap } from "lucide-react";
 
 export default function BlogPostMicroSaaS() {
-  const [lang, setLang] = useState<Language>("en");
-
-  useEffect(() => {
-    setLang(detectLanguage());
-  }, []);
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* Header */}
@@ -23,7 +14,6 @@ export default function BlogPostMicroSaaS() {
             <ArrowLeft className="w-4 h-4" />
             <span>Blog</span>
           </Link>
-          <LanguageSelector currentLang={lang} onChange={setLang} />
         </div>
       </div>
 
@@ -42,7 +32,7 @@ export default function BlogPostMicroSaaS() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           Micro-SaaS pour Bootstrappers : Le Guide Complet
         </h1>
 
