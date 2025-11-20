@@ -47,5 +47,14 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1944732612792038"
+        crossOrigin="anonymous"
+      ></script>
+      {children}
+    </>
+  );
 }
