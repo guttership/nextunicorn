@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/app/components/ui/card";
 import Link from "next/link";
+import { LanguageSelector } from "@/app/components/language-selector";
 import { ArrowLeft, Calendar, Clock, Users, DollarSign, Zap } from "lucide-react";
 
 export default function BlogPostMicroSaaS() {
@@ -14,6 +15,7 @@ export default function BlogPostMicroSaaS() {
             <ArrowLeft className="w-4 h-4" />
             <span>Blog</span>
           </Link>
+          <LanguageSelector currentLang="fr" />
         </div>
       </div>
 
