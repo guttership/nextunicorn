@@ -229,7 +229,6 @@ export async function getIdeaRanking(limit: number = 10) {
       orderBy: {
         score: "desc",
       },
-      take: limit,
       include: {
         translations: true,
       },

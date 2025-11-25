@@ -49,14 +49,26 @@ export function LanguageSelector({ currentLang, onChange }: LanguageSelectorProp
     "/blog/micro-saas-bootstrappers-guide": {
       fr: "/blog/micro-saas-bootstrappers-guide",
       en: "/blog/micro-saas-bootstrappers-guide-en",
-      de: "/blog/micro-saas-bootstrappers-guide", // Pas encore traduit
-      es: "/blog/micro-saas-bootstrappers-guide", // Pas encore traduit
+      de: "/blog/micro-saas-bootstrappers-guide-de",
+      es: "/blog/micro-saas-bootstrappers-guide-es",
     },
     "/blog/micro-saas-bootstrappers-guide-en": {
       fr: "/blog/micro-saas-bootstrappers-guide",
       en: "/blog/micro-saas-bootstrappers-guide-en",
-      de: "/blog/micro-saas-bootstrappers-guide-en",
-      es: "/blog/micro-saas-bootstrappers-guide-en",
+      de: "/blog/micro-saas-bootstrappers-guide-de",
+      es: "/blog/micro-saas-bootstrappers-guide-es",
+    },
+    "/blog/micro-saas-bootstrappers-guide-de": {
+      fr: "/blog/micro-saas-bootstrappers-guide",
+      en: "/blog/micro-saas-bootstrappers-guide-en",
+      de: "/blog/micro-saas-bootstrappers-guide-de",
+      es: "/blog/micro-saas-bootstrappers-guide-es",
+    },
+    "/blog/micro-saas-bootstrappers-guide-es": {
+      fr: "/blog/micro-saas-bootstrappers-guide",
+      en: "/blog/micro-saas-bootstrappers-guide-en",
+      de: "/blog/micro-saas-bootstrappers-guide-de",
+      es: "/blog/micro-saas-bootstrappers-guide-es",
     },
   };
 

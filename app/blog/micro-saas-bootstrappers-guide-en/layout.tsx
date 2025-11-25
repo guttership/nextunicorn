@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     languages: {
       'fr': '/blog/micro-saas-bootstrappers-guide',
       'en': '/blog/micro-saas-bootstrappers-guide-en',
+      'de': '/blog/micro-saas-bootstrappers-guide-de',
+      'es': '/blog/micro-saas-bootstrappers-guide-es',
     }
   },
   openGraph: {
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
     description: "Complete playbook to launch a profitable micro-SaaS solo. B2B strategies, pricing, and distribution tactics.",
     url: "https://nextunicorn.app/blog/micro-saas-bootstrappers-guide-en",
     locale: "en_US",
-    alternateLocale: ["fr_FR"],
+    alternateLocale: ["fr_FR", "de_DE", "es_ES"],
   }
 };
 

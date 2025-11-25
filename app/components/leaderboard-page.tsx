@@ -57,7 +57,7 @@ export default function LeaderboardPage() {
   const loadRanking = async () => {
     try {
       setLoading(true);
-      const data = await getIdeaRanking(1000);
+      const data = await getIdeaRanking(999999);
       console.log('[DEBUG] Ideas loaded:', data.length);
       const reservedCount = data.filter((idea: RankedIdea) => idea.isReserved).length;
       console.log('[DEBUG] Reserved ideas:', reservedCount);

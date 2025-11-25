@@ -19,11 +19,17 @@ const clickerScript = Clicker_Script({
 export const metadata: Metadata = {
   metadataBase: new URL('https://nextunicorn.app'),
   title: {
-    default: 'NextUnicorn - Unlimited SaaS Ideas for Entrepreneurs & Developers',
+    default: 'NextUnicorn - Find Your Next Unicorn Startup Idea | SaaS Ideas for Developers',
     template: '%s | NextUnicorn'
   },
-  description: 'Daily AI-generated SaaS ideas for entrepreneurs and developers. Build your next profitable startup from our growing repository of validated, innovative project ideas. Free forever.',
+  description: 'Discover your next unicorn startup idea with daily AI-generated SaaS concepts. Build the next unicorn app from our repository of validated, profitable business ideas for developers and entrepreneurs. Free forever.',
   keywords: [
+    'next unicorn',
+    'next unicorn startup',
+    'next unicorn app',
+    'next unicorn saas ideas',
+    'find next unicorn idea',
+    'next unicorn business ideas',
     'SaaS ideas for developers',
     'startup ideas for entrepreneurs',
     'side project ideas',
@@ -41,7 +47,8 @@ export const metadata: Metadata = {
     'maker ideas',
     'tech startup ideas',
     'AI generated business ideas',
-    'validated startup ideas'
+    'validated startup ideas',
+    'unicorn startup ideas'
   ],
   authors: [{ name: 'NextUnicorn Team' }],
   creator: 'NextUnicorn',
@@ -51,8 +58,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     alternateLocale: ['fr_FR', 'de_DE', 'es_ES'],
     url: 'https://nextunicorn.app',
-    title: 'NextUnicorn - Unlimited SaaS Ideas for Entrepreneurs & Developers',
-    description: 'Daily AI-generated SaaS ideas repository. Perfect for entrepreneurs, developers, and indie hackers looking for their next profitable project.',
+    title: 'NextUnicorn - Find Your Next Unicorn Startup Idea | SaaS Ideas',
+    description: 'Discover your next unicorn startup with daily AI-generated SaaS ideas. Build the next unicorn app from validated, profitable business ideas for developers and entrepreneurs.',
     siteName: 'NextUnicorn',
     images: [
       {
@@ -65,8 +72,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NextUnicorn - Unlimited SaaS Ideas for Entrepreneurs & Developers',
-    description: 'Daily AI-generated SaaS ideas repository. Find your next profitable project idea today.',
+    title: 'NextUnicorn - Find Your Next Unicorn Startup Idea',
+    description: 'Discover your next unicorn startup with daily AI-generated SaaS ideas. Build the next unicorn app today.',
     images: ['/og-image.png'],
     creator: '@nextunicorn'
   },
