@@ -90,14 +90,25 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
     try {
       setLoading(true);
       // Get top ideas
-      const ideasResponse = await fetch("/api/ranking?limit=100");
+      const ideasResponse = await fetch("/api/ranking");
       const ideasData = await ideasResponse.json();
       setIdeas(ideasData);
 
       // Get ads
       const adsResponse = await fetch("/api/ads/active?position=left");
       const adsData = await adsResponse.json();
-      const adsList = adsData.cards?.[0]?.recto ? [adsData.cards[0].recto] : [];
+      console.log('[MOBILE] Ads response:', adsData);
+      
+      // Extract all recto faces from cards
+      const adsList: Advertiser[] = [];
+      if (adsData.cards && Array.isArray(adsData.cards)) {
+        adsData.cards.forEach((card: any) => {
+          if (card.recto && card.recto.id) {
+            adsList.push(card.recto);
+          }
+        });
+      }
+      console.log('[MOBILE] Extracted ads:', adsList);
       setAds(adsList);
 
       // Build stack
