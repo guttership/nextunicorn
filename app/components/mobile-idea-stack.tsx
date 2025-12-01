@@ -117,9 +117,10 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
 
       ideasData.forEach((idea: Idea, index: number) => {
         newStack.push({ type: "idea", data: idea });
-        // Add ad every 3 ideas
-        if ((index + 1) % 3 === 0 && adIndex < adsList.length) {
-          newStack.push({ type: "ad", data: adsList[adIndex++] });
+        // Add ad every 3 ideas (rotate through ads if we have any)
+        if ((index + 1) % 3 === 0 && adsList.length > 0) {
+          newStack.push({ type: "ad", data: adsList[adIndex % adsList.length] });
+          adIndex++;
         }
       });
 
