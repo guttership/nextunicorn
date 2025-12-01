@@ -5,20 +5,68 @@ import { generateDailySaaSIdeas } from "@/app/lib/gemini";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max
 
+// Helper function to retry database operations (for Neon cold starts)
+async function retryOperation<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3,
+  delayMs = 2000
+): Promise<T> {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error: any) {
+      const isLastRetry = i === maxRetries - 1;
+      const errorMessage = error?.message || String(error);
+      
+      // Log the error
+      console.log(`[CRON] Attempt ${i + 1}/${maxRetries} failed: ${errorMessage}`);
+      
+      if (isLastRetry) {
+        console.log('[CRON] All retries exhausted, throwing error');
+        throw error;
+      }
+      
+      // Wait before retry (exponential backoff: 2s, 4s, 8s)
+      const waitTime = delayMs * Math.pow(2, i);
+      console.log(`[CRON] Waiting ${waitTime}ms before retry ${i + 2}/${maxRetries}...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+  }
+  throw new Error('Max retries reached');
+}
+
+// Test database connection with retry
+async function ensureDatabaseConnection(maxRetries = 3): Promise<void> {
+  console.log('[CRON] Testing database connection...');
+  await retryOperation(
+    async () => {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('[CRON] Database connection successful');
+    },
+    maxRetries,
+    3000 // 3 seconds initial delay for cold start
+  );
+}
+
 export async function GET() {
   try {
     console.log('[CRON] Starting daily update...');
     const startTime = Date.now();
     
+    // Ensure database is awake before doing anything
+    await ensureDatabaseConnection();
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // 1. Mark old champion as no longer champion
+    // 1. Mark old champion as no longer champion (with retry for cold start)
     console.log('[CRON] Updating champions...');
-    await prisma.idea.updateMany({
-      where: { isChampion: true },
-      data: { isChampion: false },
-    });
+    await retryOperation(() =>
+      prisma.idea.updateMany({
+        where: { isChampion: true },
+        data: { isChampion: false },
+      })
+    );
 
     // 2. Find yesterday's top idea and make it today's champion
     const yesterday = new Date(today);
