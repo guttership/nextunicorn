@@ -3,17 +3,14 @@
 import { prisma } from "@/app/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function getDailyDuel(excludeIdeaId?: number) {
+export async function getDailyDuel(excludeIdeaId?: number, voterId?: string) {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Get today's ideas (exclude reserved ones)
-    let todayIdeas = await prisma.idea.findMany({
+    // Get ALL ideas (not just today's) - exclude reserved ones
+    const allIdeas = await prisma.idea.findMany({
       where: {
-        generatedAt: {
-          gte: today,
-        },
         isReserved: false,
       },
       include: {
@@ -24,42 +21,24 @@ export async function getDailyDuel(excludeIdeaId?: number) {
       },
     });
 
-    // If not enough ideas for today, get the best ideas from all time
-    if (todayIdeas.length < 2) {
-      todayIdeas = await prisma.idea.findMany({
-        where: {
-          isReserved: false,
-        },
-        include: {
-          translations: true,
-        },
-        orderBy: {
-          score: "desc",
-        },
-        take: 100, // Get top 100 ideas overall
-      });
-    }
-
-    if (todayIdeas.length < 2) {
+    if (allIdeas.length < 2) {
       return null;
     }
 
-    // Get votes from today to exclude already-voted pairs
-    const todayVotes = await prisma.vote.findMany({
+    // Get ALL votes from THIS VOTER to exclude already-voted pairs
+    const voterVotes = voterId ? await prisma.vote.findMany({
       where: {
-        createdAt: {
-          gte: today,
-        },
+        voterId: voterId,
       },
       select: {
         winnerIdeaId: true,
         loserIdeaId: true,
       },
-    });
+    }) : [];
 
-    // Create set of voted pairs (normalized)
+    // Create set of voted pairs by THIS voter (normalized)
     const votedPairs = new Set(
-      todayVotes.map((vote) => {
+      voterVotes.map((vote) => {
         const min = Math.min(vote.winnerIdeaId, vote.loserIdeaId);
         const max = Math.max(vote.winnerIdeaId, vote.loserIdeaId);
         return `${min}-${max}`;
@@ -68,24 +47,18 @@ export async function getDailyDuel(excludeIdeaId?: number) {
 
     // If we need to exclude an idea (winner from previous battle)
     if (excludeIdeaId) {
-      const winnerIdea = todayIdeas.find((idea) => idea.id === excludeIdeaId);
+      const winnerIdea = allIdeas.find((idea) => idea.id === excludeIdeaId);
       if (winnerIdea) {
-        // Get available opponents (not already voted with this idea)
-        const availableOpponents = todayIdeas.filter((idea) => {
+        // Get available opponents (not already voted with this idea by THIS voter)
+        const availableOpponents = allIdeas.filter((idea) => {
           if (idea.id === excludeIdeaId) return false;
           const pairKey = `${Math.min(excludeIdeaId, idea.id)}-${Math.max(excludeIdeaId, idea.id)}`;
           return !votedPairs.has(pairKey);
         });
 
         if (availableOpponents.length === 0) {
-          // All opponents already voted, pick any except winner
-          const ideaB = todayIdeas.find((idea) => idea.id !== excludeIdeaId);
-          if (!ideaB) return null;
-          
-          return {
-            ideaA: winnerToObject(winnerIdea),
-            ideaB: ideaToObject(ideaB),
-          };
+          // No more opponents available for this voter
+          return { noMoreDuels: true };
         }
 
         const ideaB = availableOpponents[Math.floor(Math.random() * availableOpponents.length)];
@@ -93,48 +66,47 @@ export async function getDailyDuel(excludeIdeaId?: number) {
         return {
           ideaA: winnerToObject(winnerIdea),
           ideaB: ideaToObject(ideaB),
+          noMoreDuels: false,
         };
       }
     }
 
-    // Check if there's a champion from yesterday
-    const champion = todayIdeas.find((idea) => idea.isChampion);
+    // Priority: Get today's new ideas and oppose them to ALL existing ideas
+    const todayIdeas = allIdeas.filter((idea) => {
+      const ideaDate = new Date(idea.generatedAt);
+      ideaDate.setHours(0, 0, 0, 0);
+      return ideaDate.getTime() === today.getTime();
+    });
 
-    if (champion) {
-      // Get available opponents for champion
-      const availableOpponents = todayIdeas.filter((idea) => {
-        if (idea.id === champion.id) return false;
-        const pairKey = `${Math.min(champion.id, idea.id)}-${Math.max(champion.id, idea.id)}`;
+    // If there are today's ideas, prioritize them
+    if (todayIdeas.length > 0) {
+      // Pick a random new idea
+      const newIdea = todayIdeas[Math.floor(Math.random() * todayIdeas.length)];
+      
+      // Find available opponents (from ALL ideas, not just today)
+      const availableOpponents = allIdeas.filter((idea) => {
+        if (idea.id === newIdea.id) return false;
+        const pairKey = `${Math.min(newIdea.id, idea.id)}-${Math.max(newIdea.id, idea.id)}`;
         return !votedPairs.has(pairKey);
       });
 
-      if (availableOpponents.length === 0) {
-        // All opponents already voted, pick any except champion
-        const ideaB = todayIdeas.find((idea) => idea.id !== champion.id);
-        if (!ideaB) return null;
-        
+      if (availableOpponents.length > 0) {
+        const opponent = availableOpponents[Math.floor(Math.random() * availableOpponents.length)];
         return {
-          ideaA: ideaToObject(champion),
-          ideaB: ideaToObject(ideaB),
+          ideaA: ideaToObject(newIdea),
+          ideaB: ideaToObject(opponent),
+          noMoreDuels: false,
         };
       }
-
-      const ideaB = availableOpponents[Math.floor(Math.random() * availableOpponents.length)];
-
-      return {
-        ideaA: ideaToObject(champion),
-        ideaB: ideaToObject(ideaB),
-      };
     }
 
-    // Two random ideas that haven't voted together
-    // Build list of all unvoted pairs
+    // No today's ideas or all paired already - build list of ALL unvoted pairs
     const unvotedPairs: Array<[any, any]> = [];
-    for (let i = 0; i < todayIdeas.length; i++) {
-      for (let j = i + 1; j < todayIdeas.length; j++) {
-        const pairKey = `${todayIdeas[i].id}-${todayIdeas[j].id}`;
+    for (let i = 0; i < allIdeas.length; i++) {
+      for (let j = i + 1; j < allIdeas.length; j++) {
+        const pairKey = `${allIdeas[i].id}-${allIdeas[j].id}`;
         if (!votedPairs.has(pairKey)) {
-          unvotedPairs.push([todayIdeas[i], todayIdeas[j]]);
+          unvotedPairs.push([allIdeas[i], allIdeas[j]]);
         }
       }
     }
@@ -145,19 +117,12 @@ export async function getDailyDuel(excludeIdeaId?: number) {
       return {
         ideaA: ideaToObject(ideaA),
         ideaB: ideaToObject(ideaB),
+        noMoreDuels: false,
       };
     }
 
-    // All pairs have been voted on, so just return any two different ideas
-    const ideaA = todayIdeas[0];
-    const ideaB = todayIdeas.find((idea) => idea.id !== ideaA.id);
-    
-    if (!ideaB) throw new Error("No valid opponent found");
-    
-    return {
-      ideaA: ideaToObject(ideaA),
-      ideaB: ideaToObject(ideaB),
-    };
+    // This voter has voted on ALL possible pairs!
+    return { noMoreDuels: true };
   } catch (error) {
     console.error("Error getting daily duel:", error);
     throw error;
@@ -233,6 +198,8 @@ export async function getIdeaRanking(limit: number = 10) {
         translations: true,
       },
     });
+
+    console.log('[DEBUG getIdeaRanking] Total ideas found:', ideas.length);
 
     return ideas.map((idea, index: number) => ({
       rank: index + 1,

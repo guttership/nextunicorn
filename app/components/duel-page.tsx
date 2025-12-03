@@ -33,6 +33,7 @@ interface Idea {
 interface DuelData {
   ideaA: Idea;
   ideaB: Idea;
+  noMoreDuels?: boolean;
 }
 
 export default function DuelPage() {
@@ -104,12 +105,16 @@ export default function DuelPage() {
       setError(null);
       setSelectedCard(null);
       setLoserCard(null);
-      const duelData = await getDailyDuel(excludeId);
+      const duelData = await getDailyDuel(excludeId, voterId);
+      
       if (!duelData) {
         setError("no-ideas");
         setDuel(null);
-      } else {
-        setDuel(duelData);
+      } else if ('noMoreDuels' in duelData && duelData.noMoreDuels) {
+        setError("no-more-duels");
+        setDuel(null);
+      } else if ('ideaA' in duelData && 'ideaB' in duelData) {
+        setDuel(duelData as DuelData);
       }
     } catch (error) {
       console.error("Failed to load duel:", error);
@@ -337,7 +342,7 @@ export default function DuelPage() {
           {!loading && error === "no-ideas" && (
             <div className="text-center max-w-md px-4">
               <div className="mb-6">
-                <span className="text-6xl"></span>
+                <span className="text-6xl">🦄</span>
               </div>
               <h2 className="text-2xl font-bold text-slate-100 font-mono mb-4">
                 {lang === "fr" ? "Pas d'idées en base" : "No Ideas Yet"}
@@ -356,6 +361,35 @@ export default function DuelPage() {
                   ? (lang === "fr" ? "Génération..." : "Generating...") 
                   : (lang === "fr" ? "Générer les idées" : "Generate Ideas")}
               </button>
+            </div>
+          )}
+
+          {!loading && error === "no-more-duels" && (
+            <div className="text-center max-w-md px-4">
+              <div className="mb-6">
+                <span className="text-6xl">🎉</span>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-100 font-mono mb-4">
+                {lang === "fr" ? "Vous avez tout voté !" : "You've voted on everything!"}
+              </h2>
+              <p className="text-slate-400 mb-6 font-mono text-sm">
+                {lang === "fr" 
+                  ? "Bravo ! Vous avez participé à tous les duels possibles. Revenez demain pour découvrir 10 nouvelles idées fraîches !" 
+                  : "Congrats! You've voted on all possible duels. Come back tomorrow for 10 fresh new ideas!"}
+              </p>
+              <div className="space-y-3">
+                <a
+                  href="/leaderboard"
+                  className="block bg-pink-600 hover:bg-pink-700 text-white font-mono font-bold py-3 px-6 rounded-lg transition-all"
+                >
+                  {lang === "fr" ? "Voir le classement" : "View Hall of Fame"}
+                </a>
+                <p className="text-xs text-slate-500 font-mono">
+                  {lang === "fr" 
+                    ? "Nouvelles idées générées tous les jours à 2h du matin" 
+                    : "New ideas generated daily at 2 AM"}
+                </p>
+              </div>
             </div>
           )}
 
@@ -519,12 +553,12 @@ export default function DuelPage() {
 
           {/* English SEO */}
           <h1>NextUnicorn - SaaS Ideas and Business Ideas for Entrepreneurs</h1>
-          <h2>Find your next profitable startup idea</h2>
+          <h2>Find your next unicorn startup idea - Vote on the next unicorn app</h2>
           <p>
-            NextUnicorn is the free platform that helps you find innovative business ideas. 
-            Whether you're looking for SaaS ideas for developers, micro-SaaS ideas, 
+            NextUnicorn is the free platform that helps you discover your next unicorn startup idea. 
+            Whether you're looking for the next unicorn app, SaaS ideas for developers, micro-SaaS ideas, 
             side project ideas, or business ideas to launch, our repository of 
-            AI-generated ideas offers you an endless source of inspiration.
+            AI-generated ideas offers you an endless source of inspiration to find the next unicorn.
           </p>
           <p>
             For entrepreneurs, developers, indie hackers and makers: discover daily 
@@ -594,6 +628,20 @@ export default function DuelPage() {
           <Link href="/mentions" className="hover:text-pink-600 transition-colors">Mentions Légales</Link>
           <span className="text-slate-600">•</span>
           <a href="mailto:designmoiunmouton@gmail.com" className="hover:text-pink-600 transition-colors">designmoiunmouton@gmail.com</a>
+          <span className="text-slate-600">•</span>
+          <a 
+            href="https://www.saashub.com/nextunicorn-app?utm_source=badge&utm_campaign=badge&utm_content=nextunicorn-app&badge_variant=color&badge_kind=approved" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:opacity-80 transition-opacity"
+          >
+            <img 
+              src="https://cdn-b.saashub.com/img/badges/approved-color.png?v=1" 
+              alt="NextUnicorn App badge" 
+              style={{ maxWidth: '150px' }}
+              className="h-5"
+            />
+          </a>
           <span className="text-slate-600">•</span>
           <a 
             href="https://dmum.eu" 
