@@ -621,6 +621,8 @@ export default function DuelPage() {
           <span className="text-slate-600">•</span>
           <Link href="/about" className="hover:text-pink-600 transition-colors">About</Link>
           <span className="text-slate-600">•</span>
+          <Link href="/contact" className="hover:text-pink-600 transition-colors">Contact</Link>
+          <span className="text-slate-600">•</span>
           <Link href="/blog" className="hover:text-pink-600 transition-colors">Blog</Link>
           <span className="text-slate-600">•</span>
           <Link href="/cgu" className="hover:text-pink-600 transition-colors">CGU</Link>
