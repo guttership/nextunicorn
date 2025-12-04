@@ -619,6 +619,8 @@ export default function DuelPage() {
         <div className="fixed bottom-0 left-0 right-0 flex flex-wrap items-center justify-center gap-4 px-4 py-3 text-center text-slate-500 font-mono text-xs border-t border-slate-700 bg-slate-950 z-50">
           <Link href="/advertise" className="hover:text-pink-600 transition-colors">{t("advertise", lang)}</Link>
           <span className="text-slate-600">•</span>
+          <Link href="/about" className="hover:text-pink-600 transition-colors">About</Link>
+          <span className="text-slate-600">•</span>
           <Link href="/blog" className="hover:text-pink-600 transition-colors">Blog</Link>
           <span className="text-slate-600">•</span>
           <Link href="/cgu" className="hover:text-pink-600 transition-colors">CGU</Link>
