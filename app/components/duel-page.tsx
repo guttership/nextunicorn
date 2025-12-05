@@ -648,6 +648,21 @@ export default function DuelPage() {
           </a>
           <span className="text-slate-600">•</span>
           <a 
+            href="https://www.producthunt.com/products/nextunicorn?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-nextunicorn" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:opacity-80 transition-opacity"
+          >
+            <img 
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1046541&theme=dark&t=1764944139684" 
+              alt="NextUnicorn - Tinder for SaaS ideas - Vote & discover tomorrow's unicorns | Product Hunt" 
+              style={{ width: '150px', height: '32px' }}
+              width={150}
+              height={32}
+            />
+          </a>
+          <span className="text-slate-600">•</span>
+          <a 
             href="https://dmum.eu" 
             target="_blank" 
             rel="noopener noreferrer" 
