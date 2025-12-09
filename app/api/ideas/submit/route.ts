@@ -1,8 +1,39 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import OpenAI from "openai";
 
 const prisma = new PrismaClient();
+
+// Rate limiting for submissions (stricter than votes)
+const submitRateLimit = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const MAX_SUBMISSIONS_PER_HOUR = 3; // Max 3 submissions per hour per IP
+
+function isSubmitRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = submitRateLimit.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    submitRateLimit.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  
+  if (record.count >= MAX_SUBMISSIONS_PER_HOUR) {
+    return true;
+  }
+  
+  record.count++;
+  return false;
+}
+
+// Input sanitization
+function sanitizeInput(str: string, maxLength: number): string {
+  return str
+    .trim()
+    .slice(0, maxLength)
+    .replace(/<[^>]*>/g, "") // Remove HTML tags
+    .replace(/[<>\"\'`;]/g, ""); // Remove potential injection chars
+}
 
 const MODERATION_PROMPT = `You are a content moderator for a SaaS ideas platform. Analyze this user-submitted idea and determine:
 
@@ -19,12 +50,35 @@ Return JSON:
   "category": "one of: tech, health, finance, education, marketing, other"
 }`;
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const { title, slogan, description } = await request.json();
+    // Get client IP for rate limiting
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || 
+               request.headers.get("x-real-ip") || 
+               "unknown";
+    
+    // Check rate limit
+    if (isSubmitRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many submissions. Please wait an hour before submitting again." },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+    let { title, slogan, description } = body;
 
     if (!title || !slogan || !description) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // Sanitize and validate inputs
+    title = sanitizeInput(title, 100);
+    slogan = sanitizeInput(slogan, 200);
+    description = sanitizeInput(description, 1000);
+
+    if (title.length < 3 || slogan.length < 5 || description.length < 20) {
+      return NextResponse.json({ error: "Content too short" }, { status: 400 });
     }
 
     // AI Moderation
