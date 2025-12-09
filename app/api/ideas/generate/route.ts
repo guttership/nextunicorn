@@ -1,9 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateDailySaaSIdeas } from "@/app/lib/gemini";
 import { prisma } from "@/app/lib/db/prisma";
 
-export async function POST() {
+// Secret key for API protection (should match CRON_SECRET in .env)
+const API_SECRET = process.env.CRON_SECRET || process.env.API_SECRET;
+
+export async function POST(request: NextRequest) {
   try {
+    // Check authorization
+    const authHeader = request.headers.get("authorization");
+    const providedSecret = authHeader?.replace("Bearer ", "");
+    
+    // Also check for Vercel Cron header
+    const isVercelCron = request.headers.get("x-vercel-cron") === "true";
+    
+    if (!isVercelCron && providedSecret !== API_SECRET) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     // Get existing ideas to avoid duplicates
     const existingIdeas = await prisma.idea.findMany({
       select: { title: true, slogan: true }
