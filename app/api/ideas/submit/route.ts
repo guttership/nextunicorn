@@ -86,23 +86,45 @@ export async function POST(request: NextRequest) {
 
     // AI Moderation (skip gracefully if OpenAI isn't configured or fails)
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const model = process.env.OPENAI_MODEL || "raptor-mini";
+    const preferredModel = process.env.OPENAI_MODEL;
+    const modelCandidates = [preferredModel, "gpt-5-mini", "gpt-4o-mini", "gpt-4-mini"].filter(Boolean) as string[];
+
+    async function callChatWithFallback(opts: { messages: any[]; response_format?: any }) {
+      let lastErr: any;
+      for (const candidate of modelCandidates) {
+        try {
+          console.log(`Trying model: ${candidate}`);
+          const resp = await openai.chat.completions.create({ model: candidate, messages: opts.messages, response_format: opts.response_format || { type: "json_object" } });
+          console.log(`Model ${candidate} succeeded`);
+          // attach used model for debugging
+          return { response: resp, model: candidate };
+        } catch (err: any) {
+          lastErr = err;
+          // If OpenAI returns model_not_found, try next candidate
+          const code = err?.code || err?.status || err?.response?.status;
+          const message = String(err?.message || "");
+          if (message?.includes("model_not_found") || code === 404 || /model .* not found/i.test(message)) {
+            console.warn(`Model ${candidate} not available, trying next candidate`);
+            continue;
+          }
+          // For other errors, rethrow
+          throw err;
+        }
+      }
+      console.warn("All models failed for chat call", { lastErr });
+      throw lastErr;
+    }
 
     let moderation: { approved: boolean; aiPrompt?: string; reason?: string } = { approved: true, aiPrompt: "" };
     if (process.env.OPENAI_API_KEY) {
       try {
-        const moderationResponse = await openai.chat.completions.create({
-          model,
+        const { response: moderationResponse, model: moderationModel } = await callChatWithFallback({
           messages: [
             { role: "system", content: MODERATION_PROMPT },
-            {
-              role: "user",
-              content: `Title: ${title}\nSlogan: ${slogan}\nDescription: ${description}`,
-            },
+            { role: "user", content: `Title: ${title}\nSlogan: ${slogan}\nDescription: ${description}` },
           ],
-          response_format: { type: "json_object" },
         });
-
+        console.log("Moderation model used:", moderationModel);
         const moderationResult = JSON.parse(moderationResponse.choices[0].message.content || "{}");
         moderation = { approved: !!moderationResult.approved, aiPrompt: moderationResult.aiPrompt || "", reason: moderationResult.reason };
       } catch (mErr) {
@@ -125,12 +147,18 @@ export async function POST(request: NextRequest) {
 
     let translations: Record<string, any> = {};
     try {
-      const translationResponse = await openai.chat.completions.create({
-        model,
-        messages: [{ role: "user", content: translationPrompt }],
-        response_format: { type: "json_object" },
-      });
-      translations = JSON.parse(translationResponse.choices[0].message.content || "{}");
+      console.log("Requesting translations");
+      const { response: translationResponse, model: translationModel } = await callChatWithFallback({ messages: [{ role: "user", content: translationPrompt }], response_format: { type: "json_object" } });
+      console.log("Translation model used:", translationModel);
+      const content = translationResponse.choices?.[0]?.message?.content;
+      console.log("Translation raw response:", content);
+      translations = typeof content === "string" ? JSON.parse(content || "{}") : (content || {});
+      console.log("Parsed translations keys:", Object.keys(translations));
+      // Normalize keys like 'fr-FR' -> 'fr'
+      for (const key of Object.keys(translations)) {
+        const short = key.split("-")[0];
+        if (!translations[short]) translations[short] = translations[key];
+      }
     } catch (tErr) {
       console.warn("Translation generation failed, continuing without translations:", tErr);
       translations = {};
@@ -158,9 +186,9 @@ export async function POST(request: NextRequest) {
           data: {
             ideaId: idea.id,
             language: lang,
-            title: translations[lang]?.title || title,
-            slogan: translations[lang]?.slogan || slogan,
-            description: translations[lang]?.description || description,
+            title: translations[lang]?.title || translations[lang]?.title || title,
+            slogan: translations[lang]?.slogan || translations[lang]?.slogan || slogan,
+            description: translations[lang]?.description || translations[lang]?.description || description,
             aiPrompt: translations[lang]?.aiPrompt || moderation.aiPrompt || "",
           },
         });

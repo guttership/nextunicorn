@@ -35,6 +35,8 @@ Créez un fichier .env.local:
 
 DATABASE_URL="postgresql://user:password@localhost:5432/nextunicorn"
 GEMINI_API_KEY="votre-clé-gemini"
+OPENAI_API_KEY="votre-clé-openai"
+OPENAI_MODEL="gpt-5-mini" # Default model for translations/moderation; fallback to gpt-4o-mini/gpt-4-mini if not available
 
 Obtenez votre clé Gemini: https://ai.google.dev/
 
