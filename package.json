@@ -43,6 +43,7 @@
     "shadcn-ui": "^0.9.5",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "uuid": "^13.0.0"
   }
 }

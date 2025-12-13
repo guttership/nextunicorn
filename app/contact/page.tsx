@@ -20,7 +20,7 @@ export default function ContactPage() {
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+          <Link href="/" className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-pink-600 to-purple-600">
             🦄 NextUnicorn
           </Link>
           <Link href="/" className="text-sm text-slate-400 hover:text-pink-600 transition-colors">
@@ -34,11 +34,11 @@ export default function ContactPage() {
         <div className="space-y-12">
           {/* Hero Section */}
           <div className="text-center space-y-4">
-            <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+            <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-pink-600 to-purple-600">
               Get in Touch
             </h1>
             <p className="text-xl text-slate-400">
-              We'd love to hear from you! Whether you have feedback, questions, or partnership ideas.
+              We&apos;d love to hear from you! Whether you have feedback, questions, or partnership ideas.
             </p>
           </div>
 
@@ -78,7 +78,7 @@ export default function ContactPage() {
           </div>
 
           {/* Advertising & Partnerships */}
-          <div className="bg-gradient-to-br from-pink-900/20 to-purple-900/20 border border-pink-800/30 rounded-lg p-8 space-y-4">
+          <div className="bg-linear-to-br from-pink-900/20 to-purple-900/20 border border-pink-800/30 rounded-lg p-8 space-y-4">
             <div className="text-4xl">💼</div>
             <h2 className="text-2xl font-bold text-pink-600">Advertising & Partnerships</h2>
             <p className="text-slate-300">
@@ -91,7 +91,7 @@ export default function ContactPage() {
             </ul>
             <a 
               href="/advertise"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all"
+              className="inline-block px-6 py-3 bg-linear-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all"
             >
               View Advertising Options
             </a>
@@ -99,7 +99,7 @@ export default function ContactPage() {
 
           {/* FAQ */}
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-linear-to-r from-pink-600 to-purple-600">
               Frequently Asked Questions
             </h2>
             
@@ -110,7 +110,7 @@ export default function ContactPage() {
                   <span className="text-slate-600 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="mt-4 text-slate-400">
-                  Click the "Submit Your Idea" button on the homepage. Fill in your idea's title, tagline, and description. Our team will review it within 24-48 hours and publish it if it meets our quality guidelines.
+                  Click the &quot;Submit Your Idea&quot; button on the homepage. Fill in your idea&apos;s title, tagline, and description. Our team will review it within 24-48 hours and publish it if it meets our quality guidelines.
                 </p>
               </details>
 
@@ -120,7 +120,7 @@ export default function ContactPage() {
                   <span className="text-slate-600 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="mt-4 text-slate-400">
-                  We present two ideas head-to-head. Vote for the one you find most promising. Your vote helps determine each idea's Elo rating, creating a dynamic leaderboard of the most popular SaaS concepts.
+                  We present two ideas head-to-head. Vote for the one you find most promising. Your vote helps determine each idea&apos;s Elo rating, creating a dynamic leaderboard of the most popular SaaS concepts.
                 </p>
               </details>
 
@@ -140,13 +140,13 @@ export default function ContactPage() {
                   <span className="text-slate-600 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="mt-4 text-slate-400">
-                  We're open to collaborations! Email us with your proposal, and we'll get back to you within 2-3 business days to discuss opportunities.
+                  We&apos;re open to collaborations! Email us with your proposal, and we&apos;ll get back to you within 2-3 business days to discuss opportunities.
                 </p>
               </details>
 
               <details className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 group">
                 <summary className="text-xl font-semibold text-pink-600 cursor-pointer list-none flex items-center justify-between">
-                  What's your response time?
+                  What&apos;s your response time?
                   <span className="text-slate-600 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="mt-4 text-slate-400">
@@ -158,7 +158,7 @@ export default function ContactPage() {
 
           {/* Bottom CTA */}
           <div className="text-center bg-slate-900/50 border border-slate-800 rounded-lg p-8 space-y-4">
-            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-pink-600 to-purple-600">
               Ready to Dive In?
             </h2>
             <p className="text-slate-400">
@@ -166,7 +166,7 @@ export default function ContactPage() {
             </p>
             <Link
               href="/"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-lg rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-pink-600/50"
+              className="inline-block px-8 py-4 bg-linear-to-r from-pink-600 to-purple-600 text-white font-bold text-lg rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-pink-600/50"
             >
               Start Voting Now →
             </Link>

@@ -15,15 +15,15 @@ import { Button } from "@/app/components/ui/button";
 interface RankedIdea {
   id: number;
   title: string;
-  slogan: string;
-  description?: string;
-  score: number;
-  aiPromptId?: string;
+  slogan?: string | null;
+  description?: string | null;
+  score?: number;
+  aiPromptId?: string | null;
   isReserved?: boolean;
   translations?: Array<{
     language: string;
-    slogan: string;
-    description: string;
+    slogan: string | null;
+    description: string | null;
   }>;
 }
 
@@ -381,7 +381,7 @@ export default function LeaderboardPage() {
 
               {/* Reserve section */}
               <div className="mt-8 pt-6 border-t border-pink-600/30">
-                <div className="bg-gradient-to-r from-pink-600/20 to-purple-600/20 border border-pink-600/50 rounded-lg p-6">
+                <div className="bg-linear-to-r from-pink-600/20 to-purple-600/20 border border-pink-600/50 rounded-lg p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Lock className="w-5 h-5 text-pink-500" />
                     <h3 className="text-lg font-mono font-bold text-pink-500">

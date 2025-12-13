@@ -42,7 +42,7 @@ export default function BlogPost50IdeasEN() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           50 SaaS Ideas for Developers in 2025
         </h1>
 
@@ -150,7 +150,7 @@ export default function BlogPost50IdeasEN() {
           </Card>
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">🚀 How to choose?</h2>
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <div className="space-y-4 text-slate-300">
                 <p><strong className="text-pink-400">1. Choose a problem YOU have</strong> - You'll be your first customer</p>
@@ -182,7 +182,7 @@ export default function BlogPost50IdeasEN() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   See today's ideas →
                 </Link>

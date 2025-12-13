@@ -30,7 +30,7 @@ export default function BlogPostNextUnicorn() {
           </span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           How to Find the Next Unicorn Startup Idea in 2025
         </h1>
 
@@ -54,7 +54,7 @@ export default function BlogPostNextUnicorn() {
                   <li>✓ Perfect <strong className="text-pink-400">timing</strong> (technology + market readiness)</li>
                   <li>✓ <strong className="text-pink-400">Network effects</strong> or high retention</li>
                 </ul>
-                <div className="mt-4 p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                <div className="mt-4 p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                   <p className="font-bold text-pink-300 mb-2">Real examples of next unicorn patterns:</p>
                   <ul className="space-y-1 text-sm">
                     <li>• Airbnb: 10x cheaper than hotels + trust via reviews</li>
@@ -145,7 +145,7 @@ export default function BlogPostNextUnicorn() {
                         <li>• <strong>Sustainability:</strong> Conscious consumers choosing green options</li>
                         <li>• <strong>Async Work:</strong> Teams working across time zones need new tools</li>
                       </ul>
-                      <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-4">
+                      <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-4">
                         <p className="font-bold text-pink-300 mb-2">Historical pattern:</p>
                         <p className="text-xs">Instagram capitalized on mobile photography. TikTok on short-form video. What&apos;s the next behavior shift?</p>
                       </div>
@@ -211,7 +211,7 @@ export default function BlogPostNextUnicorn() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">🚀 Next Unicorn Startup Ideas for 2025</h2>
 
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <p className="text-slate-300 mb-4">
                 Based on current trends, here are potential next unicorn opportunities:
@@ -254,7 +254,7 @@ export default function BlogPostNextUnicorn() {
                   <li>4. <strong>Solve your own problem</strong> (you&apos;re the perfect first customer)</li>
                   <li>5. <strong>Validate fast</strong> (talk to users, get paying customers ASAP)</li>
                 </ul>
-                <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
+                <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
                   <p className="font-bold text-pink-300 mb-2">Remember:</p>
                   <p className="text-xs">The next unicorn won&apos;t look obvious. If it was, someone would have built it already. Look for ideas that seem crazy but are secretly genius.</p>
                 </div>
@@ -270,7 +270,7 @@ export default function BlogPostNextUnicorn() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   Find Your Next Unicorn Idea →
                 </Link>

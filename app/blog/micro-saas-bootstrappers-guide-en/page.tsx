@@ -30,7 +30,7 @@ export default function BlogPostMicroSaaSEN() {
           </span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           Micro-SaaS for Bootstrappers: The Complete Guide
         </h1>
 
@@ -54,7 +54,7 @@ export default function BlogPostMicroSaaSEN() {
                   <li>✓ Doesn&apos;t require fundraising</li>
                   <li>✓ Targets a specific niche</li>
                 </ul>
-                <div className="mt-4 p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                <div className="mt-4 p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                   <p className="font-bold text-pink-300 mb-2">Real examples:</p>
                   <ul className="space-y-1 text-sm">
                     <li>• Auto backup tool for PostgreSQL databases → $8k MRR</li>
@@ -197,7 +197,7 @@ export default function BlogPostMicroSaaSEN() {
                   </p>
                 </div>
 
-                <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                   <p className="font-bold text-pink-300 mb-2">⚠️ Avoid these mistakes:</p>
                   <ul className="space-y-1 text-slate-300">
                     <li>❌ Microservices (you&apos;re ALONE, not Netflix)</li>
@@ -286,7 +286,7 @@ export default function BlogPostMicroSaaSEN() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">📈 Distribution: How to Find Your First Customers</h2>
 
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <p className="font-bold text-pink-300 mb-4">
                 The painful truth: Your product will NOT sell itself.
@@ -435,7 +435,7 @@ export default function BlogPostMicroSaaSEN() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">🎯 Launch Checklist</h2>
 
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <div className="space-y-2 text-slate-300 text-sm">
                 <p className="font-bold text-pink-300 mb-3">Before launching:</p>
@@ -481,7 +481,7 @@ export default function BlogPostMicroSaaSEN() {
                   </div>
                 </div>
 
-                <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
+                <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
                   <p className="font-bold text-pink-300 mb-3">Golden rules:</p>
                   <ul className="space-y-2 text-xs">
                     <li>1. <strong>Ship fast</strong> - Perfect is the enemy of done</li>
@@ -505,7 +505,7 @@ export default function BlogPostMicroSaaSEN() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   Discover NextUnicorn Ideas →
                 </Link>

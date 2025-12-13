@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950">
       <div className="max-w-4xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400 mb-4 font-mono">
+          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-rose-400 mb-4 font-mono">
             About NextUnicorn
           </h1>
           <p className="text-xl text-slate-300 font-mono">
@@ -36,7 +36,7 @@ export default function AboutPage() {
             <p className="text-slate-300 leading-relaxed mb-4">
               NextUnicorn was born from a simple observation: <strong className="text-pink-400">validation should come before building</strong>. 
               We created a platform where AI-generated SaaS ideas battle against each other in a Tinder-style 
-              voting arena, powered by real entrepreneurs who vote on what they'd actually use.
+              voting arena, powered by real entrepreneurs who vote on what they&apos;d actually use.
             </p>
             <p className="text-slate-300 leading-relaxed">
               Our mission is to democratize startup idea validation. No more building in the dark. 
@@ -56,11 +56,11 @@ export default function AboutPage() {
               beautiful code, elegant UI, zero customers.
             </p>
             <p className="text-slate-300 leading-relaxed mb-4">
-              The breakthrough came when realizing that <strong className="text-pink-400">the problem wasn't execution—it was idea selection</strong>. 
-              Most founders don't lack the skills to build; they lack the data to know what to build.
+              The breakthrough came when realizing that <strong className="text-pink-400">the problem wasn&apos;t execution—it was idea selection</strong>. 
+              Most founders don&apos;t lack the skills to build; they lack the data to know what to build.
             </p>
             <p className="text-slate-300 leading-relaxed">
-              In November 2024, NextUnicorn was born. The concept was simple but powerful: combine AI's 
+              In November 2024, NextUnicorn was born. The concept was simple but powerful: combine AI&apos;s 
               ability to generate endless creative ideas with the wisdom of the crowd to separate winners 
               from losers. A battle arena where ideas fight for survival, and only the strongest rise to the top.
             </p>
@@ -75,7 +75,7 @@ export default function AboutPage() {
               <h3 className="text-xl font-bold text-pink-400 mb-3 font-mono">1. AI Generation</h3>
               <p className="text-slate-300 leading-relaxed">
                 Every day at 2 AM UTC, our AI system generates 10 fresh SaaS ideas using advanced language models. 
-                These aren't random concepts—they're carefully crafted ideas based on current market trends, 
+                These aren&apos;t random concepts—they&apos;re carefully crafted ideas based on current market trends, 
                 technological capabilities, and real-world pain points. Each idea includes a catchy title, 
                 compelling slogan, detailed description, and the original AI prompt used to generate it.
               </p>
@@ -85,8 +85,8 @@ export default function AboutPage() {
               <h3 className="text-xl font-bold text-pink-400 mb-3 font-mono">2. Community Voting</h3>
               <p className="text-slate-300 leading-relaxed">
                 Ideas enter the battle arena where they face off against each other in head-to-head duels. 
-                Visitors vote Tinder-style: swipe right to upvote, swipe left to skip. On desktop, it's a 
-                side-by-side comparison. On mobile, it's a smooth card-swiping experience. Each vote matters, 
+                Visitors vote Tinder-style: swipe right to upvote, swipe left to skip. On desktop, it&apos;s a 
+                side-by-side comparison. On mobile, it&apos;s a smooth card-swiping experience. Each vote matters, 
                 and the winning ideas accumulate score points that determine their rank.
               </p>
             </div>
@@ -94,19 +94,19 @@ export default function AboutPage() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-xl font-bold text-pink-400 mb-3 font-mono">3. Hall of Fame</h3>
               <p className="text-slate-300 leading-relaxed">
-                The best ideas rise to the top in our Hall of Fame leaderboard. This isn't just a popularity 
-                contest—it's a real-time snapshot of what entrepreneurs find genuinely valuable. Ideas with 
+                The best ideas rise to the top in our Hall of Fame leaderboard. This isn&apos;t just a popularity 
+                contest—it&apos;s a real-time snapshot of what entrepreneurs find genuinely valuable. Ideas with 
                 the most votes prove they have market validation. Founders can browse the leaderboard, see 
-                what's trending, and get inspired by concepts that real people want to see built.
+                what&apos;s trending, and get inspired by concepts that real people want to see built.
               </p>
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-xl font-bold text-pink-400 mb-3 font-mono">4. Daily Champion</h3>
               <p className="text-slate-300 leading-relaxed">
-                Each day, the previous day's top-voted idea becomes the "Champion" and gets featured prominently 
-                in the next day's battles. This creates a dynamic where yesterday's winners must defend their 
-                position against fresh challengers. It's survival of the fittest in the startup idea ecosystem.
+                Each day, the previous day&apos;s top-voted idea becomes the &quot;Champion&quot; and gets featured prominently 
+                in the next day&apos;s battles. This creates a dynamic where yesterday&apos;s winners must defend their 
+                position against fresh challengers. It&apos;s survival of the fittest in the startup idea ecosystem.
               </p>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function AboutPage() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-lg font-bold text-pink-400 mb-3 font-mono">🚀 Aspiring Founders</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                You're ready to build your first SaaS but don't know where to start. NextUnicorn gives you 
+                You&apos;re ready to build your first SaaS but don&apos;t know where to start. NextUnicorn gives you 
                 validated ideas that real entrepreneurs have already voted on. Skip the guesswork and build 
                 something people actually want.
               </p>
@@ -128,8 +128,8 @@ export default function AboutPage() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-lg font-bold text-pink-400 mb-3 font-mono">💼 Indie Hackers</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                You've shipped products before but struggle with idea validation. Use NextUnicorn as your 
-                market research tool. See what's trending, test your own ideas, and tap into the collective 
+                You&apos;ve shipped products before but struggle with idea validation. Use NextUnicorn as your 
+                market research tool. See what&apos;s trending, test your own ideas, and tap into the collective 
                 wisdom of fellow builders.
               </p>
             </div>
@@ -137,7 +137,7 @@ export default function AboutPage() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-lg font-bold text-pink-400 mb-3 font-mono">🎯 Serial Entrepreneurs</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                You're constantly exploring new opportunities. NextUnicorn serves as your daily inspiration 
+                You&apos;re constantly exploring new opportunities. NextUnicorn serves as your daily inspiration 
                 feed. Browse hundreds of AI-generated concepts, vote on the best ones, and discover patterns 
                 in what the market values.
               </p>
@@ -162,15 +162,15 @@ export default function AboutPage() {
               <p className="text-slate-300 leading-relaxed">
                 Yes! Voting on ideas, browsing the Hall of Fame, and discovering new concepts is 100% free. 
                 We monetize through sponsored ideas where early-stage SaaS companies can promote their products 
-                to our community of entrepreneurs. You'll see these clearly marked as "sponsored" in the battle arena.
+                to our community of entrepreneurs. You&apos;ll see these clearly marked as &quot;sponsored&quot; in the battle arena.
               </p>
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-lg font-bold text-slate-100 mb-2 font-mono">Can I submit my own idea?</h3>
               <p className="text-slate-300 leading-relaxed">
-                Currently, all ideas are AI-generated to maintain quality and consistency. However, we're exploring 
-                a feature where users can submit their ideas for community validation. If you're interested, 
+                Currently, all ideas are AI-generated to maintain quality and consistency. However, we&apos;re exploring 
+                a feature where users can submit their ideas for community validation. If you&apos;re interested, 
                 sign up for our newsletter to be notified when this feature launches.
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function AboutPage() {
                 Ideas are cheap; execution is everything. The same idea can be built by 100 different people 
                 and produce 100 different outcomes. We believe in open idea sharing because validation and 
                 community feedback are more valuable than secrecy. If you find an idea you love, the real work 
-                begins with building, marketing, and selling it—that's where the value is created.
+                begins with building, marketing, and selling it—that&apos;s where the value is created.
               </p>
             </div>
 
@@ -209,7 +209,7 @@ export default function AboutPage() {
               <p className="text-slate-300 leading-relaxed">
                 Yes! High-scoring ideas in the Hall of Fame can be reserved by serious builders. This prevents 
                 multiple people from building the exact same thing and gives you exclusive rights to pursue that 
-                concept. Reservation requires verification that you're actively building (GitHub repo, landing page, etc.).
+                concept. Reservation requires verification that you&apos;re actively building (GitHub repo, landing page, etc.).
               </p>
             </div>
 
@@ -225,7 +225,7 @@ export default function AboutPage() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h3 className="text-lg font-bold text-slate-100 mb-2 font-mono">How can I advertise my SaaS?</h3>
               <p className="text-slate-300 leading-relaxed">
-                If you're building a SaaS product and want to get it in front of thousands of entrepreneurs, 
+                If you&apos;re building a SaaS product and want to get it in front of thousands of entrepreneurs, 
                 check out our <Link href="/advertise" className="text-pink-400 hover:underline">advertising page</Link>. 
                 For just €50/month, your product gets featured in the battle arena as a sponsored card, driving 
                 targeted traffic from our community of builders and founders.
@@ -235,7 +235,7 @@ export default function AboutPage() {
         </section>
 
         {/* The Vision */}
-        <section className="mb-16 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-500/30 rounded-lg p-8">
+        <section className="mb-16 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-500/30 rounded-lg p-8">
           <h2 className="text-3xl font-bold text-slate-100 mb-6 font-mono">The Vision</h2>
           <p className="text-slate-300 leading-relaxed mb-4">
             We envision a future where no entrepreneur wastes months building the wrong thing. Where validation 
@@ -243,13 +243,13 @@ export default function AboutPage() {
             individual builders make better decisions.
           </p>
           <p className="text-slate-300 leading-relaxed mb-4">
-            NextUnicorn is just the beginning. We're building features for idea tracking, builder communities, 
+            NextUnicorn is just the beginning. We&apos;re building features for idea tracking, builder communities, 
             success story showcases, and more. Our goal is to become the go-to platform where startup ideas 
             are born, validated, and transformed into successful businesses.
           </p>
           <p className="text-slate-300 leading-relaxed">
             Join us on this journey. Vote on ideas. Share your opinions. Build something amazing. 
-            Together, we'll discover the next unicorn. 🦄
+            Together, we&apos;ll discover the next unicorn. 🦄
           </p>
         </section>
 
@@ -257,7 +257,7 @@ export default function AboutPage() {
         <div className="text-center">
           <Link
             href="/"
-            className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-mono font-bold py-4 px-8 rounded-lg transition-all shadow-lg hover:shadow-pink-500/50"
+            className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-mono font-bold py-4 px-8 rounded-lg transition-all shadow-lg hover:shadow-pink-500/50"
           >
             Start Voting on Ideas
           </Link>

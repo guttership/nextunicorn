@@ -1,5 +1,7 @@
 export type Language = "en" | "fr" | "de" | "es";
 
+export const supportedLanguages: Language[] = ["en", "fr", "de", "es"];
+
 export function formatPrice(amount: number, lang: Language): string {
   switch (lang) {
     case "fr":

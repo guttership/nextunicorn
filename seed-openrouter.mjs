@@ -70,6 +70,7 @@ async function main() {
         aiPromptId: idea.title.toLowerCase().replace(/\s+/g, '-'),
         generatedAt: today,
         isChampion: false,
+        origin: 'AI',
         score: 0,
       },
     });

@@ -370,12 +370,12 @@ export default function DuelPage() {
                 <span className="text-6xl">🎉</span>
               </div>
               <h2 className="text-2xl font-bold text-slate-100 font-mono mb-4">
-                {lang === "fr" ? "Vous avez tout voté !" : "You've voted on everything!"}
+                {lang === "fr" ? "Vous avez tout voté !" : "You&apos;ve voted on everything!"}
               </h2>
               <p className="text-slate-400 mb-6 font-mono text-sm">
                 {lang === "fr" 
                   ? "Bravo ! Vous avez participé à tous les duels possibles. Revenez demain pour découvrir 10 nouvelles idées fraîches !" 
-                  : "Congrats! You've voted on all possible duels. Come back tomorrow for 10 fresh new ideas!"}
+                  : "Congrats! You&apos;ve voted on all possible duels. Come back tomorrow for 10 fresh new ideas!"}
               </p>
               <div className="space-y-3">
                 <a
@@ -556,7 +556,7 @@ export default function DuelPage() {
           <h2>Find your next unicorn startup idea - Vote on the next unicorn app</h2>
           <p>
             NextUnicorn is the free platform that helps you discover your next unicorn startup idea. 
-            Whether you're looking for the next unicorn app, SaaS ideas for developers, micro-SaaS ideas, 
+            Whether you&apos;re looking for the next unicorn app, SaaS ideas for developers, micro-SaaS ideas, 
             side project ideas, or business ideas to launch, our repository of 
             AI-generated ideas offers you an endless source of inspiration to find the next unicorn.
           </p>

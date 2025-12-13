@@ -14,6 +14,8 @@ export default function SubmitIdeaForm({ lang, onClose }: SubmitIdeaFormProps) {
   const [title, setTitle] = useState("");
   const [slogan, setSlogan] = useState("");
   const [description, setDescription] = useState("");
+  const [isIndieDev, setIsIndieDev] = useState(false);
+  const [audience, setAudience] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +29,7 @@ export default function SubmitIdeaForm({ lang, onClose }: SubmitIdeaFormProps) {
       const response = await fetch("/api/ideas/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, slogan, description }),
+        body: JSON.stringify({ title, slogan, description, audience }),
       });
 
       const result = await response.json();
@@ -62,8 +64,8 @@ export default function SubmitIdeaForm({ lang, onClose }: SubmitIdeaFormProps) {
               </CardTitle>
               <CardDescription className="text-sm font-mono text-slate-400 mt-2">
                 {lang === "fr" 
-                  ? "Votre idée sera modérée par IA avant publication" 
-                  : "Your idea will be AI-moderated before publication"}
+                  ? "Votre idée sera modérée par IA avant publication. Les soumissions validées par la communauté sont labellisées 'Community-submitted'." 
+                  : "Your idea will be AI-moderated before publication. Community-accepted submissions are labeled 'Community-submitted'."}
               </CardDescription>
             </div>
             <button
@@ -86,7 +88,7 @@ export default function SubmitIdeaForm({ lang, onClose }: SubmitIdeaFormProps) {
               <p className="text-sm text-slate-400 mt-2">
                 {lang === "fr" 
                   ? "Nous la modérons et elle apparaîtra bientôt" 
-                  : "We're reviewing it and it will appear soon"}
+                  : "We&apos;re reviewing it and it will appear soon"}
               </p>
             </div>
           ) : (
@@ -139,6 +141,21 @@ export default function SubmitIdeaForm({ lang, onClose }: SubmitIdeaFormProps) {
                 <p className="text-xs text-slate-500 mt-1 text-right">
                   {description.length}/300
                 </p>
+              </div>
+
+              <div className="flex items-center gap-3 mt-2">
+                <label className="inline-flex items-center gap-2 text-sm text-slate-300 font-mono">
+                  <input
+                    type="checkbox"
+                    checked={isIndieDev}
+                    onChange={(e) => {
+                      setIsIndieDev(e.target.checked);
+                      setAudience(e.target.checked ? "indie-dev" : null);
+                    }}
+                    className="form-checkbox h-4 w-4"
+                  />
+                  {lang === "fr" ? "Cible : développeurs/indie devs" : "Target: developers / indie devs"}
+                </label>
               </div>
 
               {error && (

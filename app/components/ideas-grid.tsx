@@ -12,6 +12,8 @@ interface Idea {
   description: string;
   votes: number;
   rank: number;
+  origin?: string;
+  isCommunityValidated?: boolean;
 }
 
 interface IdeasGridProps {
@@ -82,6 +84,15 @@ export default function IdeasGrid({ ideas, lang }: IdeasGridProps) {
                 <CardTitle className="text-lg font-mono text-slate-100 flex-1">
                   {idea.title}
                 </CardTitle>
+                <div className="flex items-center gap-2 ml-2">
+                  {idea.isCommunityValidated ? (
+                    <span className="bg-green-700 text-green-100 text-xs font-mono px-2 py-1 rounded">Community-validated</span>
+                  ) : idea.origin === 'COMMUNITY' ? (
+                    <span className="bg-orange-600 text-orange-100 text-xs font-mono px-2 py-1 rounded">Community-submitted</span>
+                  ) : (
+                    <span className="bg-slate-700 text-slate-200 text-xs font-mono px-2 py-1 rounded">AI-generated</span>
+                  )}
+                </div>
                 <div className="text-right shrink-0">
                   <div className="text-pink-400 font-bold text-lg">#{idea.rank}</div>
                 </div>

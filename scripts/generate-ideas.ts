@@ -56,6 +56,7 @@ async function generateIdeas() {
           generatedAt: new Date(),
           isDaily: true,
           score: 0,
+          origin: 'AI',
         },
       });
 

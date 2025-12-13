@@ -150,7 +150,7 @@ export default function BlogPostCommentTrouver() {
       step1Exercise: "Practical exercise:",
       step1ExerciseText: "List 10 things that frustrate you in your daily work. For each, ask yourself: \"How much would I pay to not have this problem anymore?\"",
       step2Title: "Step 2: Validate BEFORE coding",
-      step2Intro: "Don't touch your code editor until you've validated these 3 things:",
+      step2Intro: "Don&apos;t touch your code editor until you&apos;ve validated these 3 things:",
       step2ATitle: "A. The problem really exists",
       step2AText: "Talk to 20 people who potentially have this problem:",
       step2AQ1: "• \"Tell me about the last time you had [problem]\"",
@@ -177,7 +177,7 @@ export default function BlogPostCommentTrouver() {
       step3Day6: "Day 6-10: Contact 50 people directly (cold email/DM)",
       step3Day11: "Day 11-14: Analyze results",
       step3GoldenRule: "Golden rule:",
-      step3GoldenRuleText: "If you don't have at least 3 pre-sales at $50+ after 2 weeks → The idea isn't worth developing.",
+      step3GoldenRuleText: "If you don&apos;t have at least 3 pre-sales at $50+ after 2 weeks → The idea isn&apos;t worth developing.",
       step4Title: "Step 4: MVP in 2 weeks max",
       step4Intro: "You have pre-sales? Perfect. Now build the MINIMUM to deliver value.",
       step4NotMVP: "❌ NOT an MVP:",
@@ -193,7 +193,7 @@ export default function BlogPostCommentTrouver() {
       step4IsMVP4: "• Basic Stripe Checkout",
       step4IsMVP5: "• English only",
       step4Goal: "Goal:",
-      step4GoalText: "Deliver to the first 3 customers in 2 weeks. Not 2 months. Not \"when it's perfect\". In 2 weeks.",
+      step4GoalText: "Deliver to the first 3 customers in 2 weeks. Not 2 months. Not \"when it&apos;s perfect\". In 2 weeks.",
       step5Title: "Step 5: Iterate with REAL customers",
       step5Intro: "Your first 3-10 customers are GOLD. They tell you exactly what to build.",
       step5Week1: "Week 1 post-launch:",
@@ -209,7 +209,7 @@ export default function BlogPostCommentTrouver() {
       step5CycleGoal: "Goal: 1 release/week minimum for 3 months",
       checklistTitle: "🎯 Complete Validation Checklist",
       checklist1: "I've talked to 20 people who have this problem",
-      checklist2: "At least 15/20 confirm it's a real problem",
+      checklist2: "At least 15/20 confirm it&apos;s a real problem",
       checklist3: "Paid solutions already exist (= validated market)",
       checklist4: "I know exactly where to find 100+ potential customers",
       checklist5: "I have a landing page with clear pricing",
@@ -218,19 +218,19 @@ export default function BlogPostCommentTrouver() {
       checklist8: "I have a distribution plan for the first 3 months",
       pricingTitle: "💰 Pricing: The $1M Question",
       pricingRule1: "Rule #1: Charge from day 1",
-      pricingRule1Text: "A free product will NEVER be taken seriously. You won't get real feedback. People only value what they pay for.",
+      pricingRule1Text: "A free product will NEVER be taken seriously. You won&apos;t get real feedback. People only value what they pay for.",
       pricingRule2: "Rule #2: Start higher than you think",
       pricingRule2Intro: "Multiply your \"comfortable\" price by 3. Seriously.",
       pricingRule2Ex1: "• You think $10/month? → Try $30",
       pricingRule2Ex2: "• You think $50/month? → Try $150",
       pricingRule2Ex3: "• You think $200/month? → Try $600",
-      pricingRule2Conclusion: "If nobody says \"too expensive\", it's too cheap.",
+      pricingRule2Conclusion: "If nobody says \"too expensive\", it&apos;s too cheap.",
       pricingRule3: "Rule #3: Price based on VALUE, not cost",
       pricingRule3Q: "Your SaaS saves 5h/week for a dev earning $50/h?",
       pricingRule3A: "→ Value = $250/week = $1000/month",
       pricingRule3Conclusion: "You can charge $200-400/month easily, even if your costs = $5/month.",
       afterTitle: "🚀 What's next?",
-      afterIntro: "You've validated your idea, launched your MVP, and your first 10 customers are paying. Now what?",
+      afterIntro: "You&apos;ve validated your idea, launched your MVP, and your first 10 customers are paying. Now what?",
       afterMonth1: "Months 1-3: Goal = 10 → 25 paying customers",
       afterMonth4: "Months 4-6: Goal = 25 → 50 paying customers",
       afterMonth7: "Months 7-12: Goal = 50 → 100 paying customers",
@@ -499,7 +499,7 @@ export default function BlogPostCommentTrouver() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           {t.title}
         </h1>
 
@@ -612,7 +612,7 @@ export default function BlogPostCommentTrouver() {
                       {t.step3Intro}
                     </p>
                     <div className="space-y-3 text-slate-300">
-                      <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                      <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                         <p className="font-bold text-pink-300 mb-2">{t.step3Protocol}</p>
                         <ol className="space-y-2 text-sm">
                           <li>{t.step3Day1}</li>
@@ -707,7 +707,7 @@ export default function BlogPostCommentTrouver() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">{t.checklistTitle}</h2>
           
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <div className="space-y-2 text-slate-300 text-sm">
                 <div className="flex items-center gap-2">
@@ -802,7 +802,7 @@ export default function BlogPostCommentTrouver() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   {t.ctaButton}
                 </Link>

@@ -23,6 +23,10 @@ model Idea {
   reservedAt       DateTime?
   reservedBy       String?
   reservationPrice Float?            @default(19.0)
+  origin           Origin            @default(AI)
+  isCommunityValidated Boolean       @default(false)
+  communityValidatedAt DateTime?
+  audience         String?
   translations     IdeaTranslation[]
   votesAsLoser     Vote[]            @relation("LoserIdea")
   votesAsWinner    Vote[]            @relation("WinnerIdea")
@@ -31,6 +35,11 @@ model Idea {
   @@index([createdAt])
   @@index([generatedAt])
   @@index([isReserved])
+}
+
+enum Origin {
+  AI
+  COMMUNITY
 }
 
 model IdeaTranslation {

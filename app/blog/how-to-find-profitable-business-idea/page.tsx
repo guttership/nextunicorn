@@ -42,7 +42,7 @@ export default function BlogPostHowToFind() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           How to Find a Profitable Business Idea in 2025
         </h1>
 
@@ -79,7 +79,7 @@ export default function BlogPostHowToFind() {
                     </p>
                     <ul className="space-y-2 text-slate-300">
                       <li>→ You understand the problem intimately</li>
-                      <li>→ You're your first customer (free validation)</li>
+                      <li>→ You&apos;re your first customer (free validation)</li>
                       <li>→ You already know the solution that would satisfy YOU</li>
                       <li>→ You have access to similar people</li>
                     </ul>
@@ -102,7 +102,7 @@ export default function BlogPostHowToFind() {
                   <div>
                     <h3 className="text-xl font-bold text-pink-400 mb-2">Step 2: Validate BEFORE coding</h3>
                     <p className="text-slate-300 mb-4">
-                      Don't touch your code editor until you've validated these 3 things:
+                      Don&apos;t touch your code editor until you&apos;ve validated these 3 things:
                     </p>
                     <div className="space-y-4">
                       <div className="p-4 bg-slate-800/50 rounded">
@@ -119,7 +119,7 @@ export default function BlogPostHowToFind() {
                       <div className="p-4 bg-slate-800/50 rounded">
                         <h4 className="font-bold text-slate-200 mb-2">B. People PAY to solve it</h4>
                         <p className="text-slate-300 text-sm mb-2">
-                          "It's annoying but free" ≠ Business. Check:
+                          "It&apos;s annoying but free" ≠ Business. Check:
                         </p>
                         <ul className="space-y-1 text-slate-300 text-sm">
                           <li>• Do paid solutions already exist?</li>
@@ -154,10 +154,10 @@ export default function BlogPostHowToFind() {
                   <div>
                     <h3 className="text-xl font-bold text-pink-400 mb-2">Step 3: Sell BEFORE building</h3>
                     <p className="text-slate-300 mb-4">
-                      The ultimate test: get people to pay for a product that doesn't exist yet.
+                      The ultimate test: get people to pay for a product that doesn&apos;t exist yet.
                     </p>
                     <div className="space-y-3 text-slate-300">
-                      <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                      <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                         <p className="font-bold text-pink-300 mb-2">Pre-sale protocol:</p>
                         <ol className="space-y-2 text-sm">
                           <li><strong>Day 1-2</strong>: Basic landing page (problem + solution + pricing + "Beta access")</li>
@@ -167,8 +167,8 @@ export default function BlogPostHowToFind() {
                         </ol>
                       </div>
                       <p className="text-sm">
-                        <strong className="text-pink-400">Golden rule:</strong> If you don't have at least 3 pre-sales 
-                        at $50+ after 2 weeks → The idea isn't worth developing.
+                        <strong className="text-pink-400">Golden rule:</strong> If you don&apos;t have at least 3 pre-sales 
+                        at $50+ after 2 weeks → The idea isn&apos;t worth developing.
                       </p>
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export default function BlogPostHowToFind() {
                       </div>
                       <p className="text-pink-400 mt-4">
                         <strong>Goal:</strong> Deliver to first 3 customers in 2 weeks. 
-                        Not in 2 months. Not "when it's perfect". In 2 weeks.
+                        Not in 2 months. Not "when it&apos;s perfect". In 2 weeks.
                       </p>
                     </div>
                   </div>
@@ -259,7 +259,7 @@ export default function BlogPostHowToFind() {
               <div className="space-y-4 text-slate-300">
                 <p className="font-bold text-pink-400">Rule #1: Charge from day 1</p>
                 <p className="text-sm">
-                  A free product will NEVER be taken seriously. You won't get real feedback. 
+                  A free product will NEVER be taken seriously. You won&apos;t get real feedback. 
                   People only value what they pay for.
                 </p>
                 
@@ -272,7 +272,7 @@ export default function BlogPostHowToFind() {
                     <li>• You think $200/month? → Try $600</li>
                   </ul>
                   <p className="text-pink-400 mt-2">
-                    If nobody says "it's too expensive", it's too cheap.
+                    If nobody says "it&apos;s too expensive", it&apos;s too cheap.
                   </p>
                 </div>
 
@@ -294,7 +294,7 @@ export default function BlogPostHowToFind() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   See today's ideas →
                 </Link>

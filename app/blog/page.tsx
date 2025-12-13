@@ -85,7 +85,7 @@ export default function BlogPage() {
       <div className="max-w-5xl mx-auto px-4 py-12 pb-24">
         {/* Title */}
         <div className="mb-12 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
             {lang === "fr" ? "Blog NextUnicorn" : "NextUnicorn Blog"}
           </h1>
           <p className="text-slate-400 font-mono text-sm md:text-base max-w-2xl mx-auto">

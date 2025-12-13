@@ -34,7 +34,7 @@ export default function BlogPostMicroSaaS() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           Micro-SaaS pour Bootstrappers : Le Guide Complet
         </h1>
 
@@ -60,7 +60,7 @@ export default function BlogPostMicroSaaS() {
                   <li>✓ Ne nécessite pas de levée de fonds</li>
                   <li>✓ S'adresse à une niche précise</li>
                 </ul>
-                <div className="mt-4 p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                <div className="mt-4 p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                   <p className="font-bold text-pink-300 mb-2">Exemples concrets :</p>
                   <ul className="space-y-1 text-sm">
                     <li>• Un outil de backup automatique pour bases PostgreSQL → 8k€ MRR</li>
@@ -206,7 +206,7 @@ export default function BlogPostMicroSaaS() {
                   </p>
                 </div>
 
-                <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
+                <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded">
                   <p className="font-bold text-pink-300 mb-2">⚠️ Évitez ces erreurs :</p>
                   <ul className="space-y-1 text-slate-300">
                     <li>❌ Micro-services (vous êtes SEUL, pas Netflix)</li>
@@ -295,7 +295,7 @@ export default function BlogPostMicroSaaS() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">📈 Distribution : Comment trouver vos premiers clients</h2>
 
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <p className="font-bold text-pink-300 mb-4">
                 La vérité qui fait mal : Votre produit ne se vendra PAS tout seul.
@@ -444,7 +444,7 @@ export default function BlogPostMicroSaaS() {
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">🎯 Checklist de lancement</h2>
 
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <div className="space-y-2 text-slate-300 text-sm">
                 <p className="font-bold text-pink-300 mb-3">Avant de lancer :</p>
@@ -498,7 +498,7 @@ export default function BlogPostMicroSaaS() {
                   <li>→ <strong>Mois 7-9</strong> : Ça commence à rouler. Vous voyez la lumière.</li>
                   <li>→ <strong>Mois 10-12</strong> : Vous avez un vrai business. Fierté méritée.</li>
                 </ul>
-                <div className="p-4 bg-gradient-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
+                <div className="p-4 bg-linear-to-r from-pink-900/20 to-rose-900/20 border border-pink-800/30 rounded mt-6">
                   <p className="font-bold text-pink-300 mb-2">Règles d'or :</p>
                   <ul className="space-y-2">
                     <li>✓ Ship rapide, itère vite</li>
@@ -522,7 +522,7 @@ export default function BlogPostMicroSaaS() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   Découvrir les idées NextUnicorn →
                 </Link>

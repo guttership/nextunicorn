@@ -82,6 +82,7 @@ async function seed() {
         aiPromptId: `idea-${i + 1}`,
         generatedAt: today,
         isChampion: false,
+        origin: 'AI',
         score: 0,
       },
     });

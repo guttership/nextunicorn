@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 // Simple in-memory rate limiting (resets on server restart)
 const rateLimit = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_VOTES_PER_WINDOW = 30; // Max 30 votes per minute per IP
+
+// Community validation constants (env-overridable)
+const COMMUNITY_VALIDATION_VOTES_THRESHOLD = parseInt(process.env.COMMUNITY_VALIDATION_VOTES_THRESHOLD || "50");
+const COMMUNITY_VALIDATION_WINDOW_DAYS = parseInt(process.env.COMMUNITY_VALIDATION_WINDOW_DAYS || "30");
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -73,6 +80,38 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await handleVote(winnerId, loserId, voterId);
+
+    // After vote, check for community validation threshold
+    try {
+      const winner = await prisma.idea.findUnique({ where: { id: winnerId } });
+      if (winner && winner.origin === "COMMUNITY" && !winner.isCommunityValidated) {
+        const windowStart = new Date();
+        windowStart.setDate(windowStart.getDate() - COMMUNITY_VALIDATION_WINDOW_DAYS);
+
+        const votesCount = await prisma.vote.count({
+          where: {
+            createdAt: { gte: windowStart },
+            OR: [
+              { winnerIdeaId: winnerId },
+              { loserIdeaId: winnerId },
+            ],
+          },
+        });
+
+        if (votesCount >= COMMUNITY_VALIDATION_VOTES_THRESHOLD) {
+          await prisma.idea.update({
+            where: { id: winnerId },
+            data: {
+              isCommunityValidated: true,
+              communityValidatedAt: new Date(),
+            },
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Community validation check failed:", err);
+    }
+
     return NextResponse.json(result);
   } catch (error) {
     console.error("Vote error:", error);

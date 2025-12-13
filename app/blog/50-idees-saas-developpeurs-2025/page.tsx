@@ -55,7 +55,7 @@ export default function BlogPost50IdeesSaaS() {
       title: "50 SaaS Ideas for Developers in 2025",
       date: "November 19, 2025",
       readTime: "8 min",
-      intro: "You're a developer looking for a micro-SaaS idea to launch? Here are 50 validated ideas you can build solo or with a small team, focusing on profitability and technical feasibility.",
+      intro: "You&apos;re a developer looking for a micro-SaaS idea to launch? Here are 50 validated ideas you can build solo or with a small team, focusing on profitability and technical feasibility.",
       whyThese: "🎯 Why these ideas?",
       whyTheseText: "Each idea was selected based on 3 criteria: technical feasibility for a solo dev, recurring monetization potential (MRR), and sufficient market size to be profitable quickly.",
       automation: "💼 Automation & Productivity",
@@ -191,7 +191,7 @@ export default function BlogPost50IdeesSaaS() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-clicker)' }}>
           {t.title}
         </h1>
 
@@ -297,7 +297,7 @@ export default function BlogPost50IdeesSaaS() {
           </Card>
 
           <h2 className="text-2xl font-bold text-slate-200 mt-12 mb-4">{t.howToChoose}</h2>
-          <Card className="bg-gradient-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
+          <Card className="bg-linear-to-br from-pink-900/20 to-rose-900/20 border-pink-800/50 mb-6">
             <CardContent className="pt-6">
               <div className="space-y-4 text-slate-300">
                 <p><strong className="text-pink-400">{t.chooseRule1}</strong> - {t.chooseRule1Text}</p>
@@ -329,7 +329,7 @@ export default function BlogPost50IdeesSaaS() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
                 <Link 
                   href="/"
-                  className="inline-block bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
+                  className="inline-block bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-bold py-3 px-6 rounded transition-all"
                 >
                   {t.ctaButton}
                 </Link>

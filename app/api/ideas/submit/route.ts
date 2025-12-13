@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { supportedLanguages } from "@/app/lib/i18n";
 import OpenAI from "openai";
 
 const prisma = new PrismaClient();
@@ -66,7 +67,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    let { title, slogan, description } = body;
+    let { title, slogan, description, audience } = body;
+    // audience optional; expected values could be 'indie-dev', 'b2b', 'developer', etc.
+    audience = audience ? sanitizeInput(String(audience), 50) : null;
 
     if (!title || !slogan || !description) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -81,49 +84,57 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Content too short" }, { status: 400 });
     }
 
-    // AI Moderation
+    // AI Moderation (skip gracefully if OpenAI isn't configured or fails)
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    
     const model = process.env.OPENAI_MODEL || "raptor-mini";
 
-    const moderationResponse = await openai.chat.completions.create({
-      model,
-      messages: [
-        { role: "system", content: MODERATION_PROMPT },
-        { 
-          role: "user", 
-          content: `Title: ${title}\nSlogan: ${slogan}\nDescription: ${description}` 
-        }
-      ],
-      response_format: { type: "json_object" }
-    });
+    let moderation: { approved: boolean; aiPrompt?: string; reason?: string } = { approved: true, aiPrompt: "" };
+    if (process.env.OPENAI_API_KEY) {
+      try {
+        const moderationResponse = await openai.chat.completions.create({
+          model,
+          messages: [
+            { role: "system", content: MODERATION_PROMPT },
+            {
+              role: "user",
+              content: `Title: ${title}\nSlogan: ${slogan}\nDescription: ${description}`,
+            },
+          ],
+          response_format: { type: "json_object" },
+        });
 
-    const moderation = JSON.parse(moderationResponse.choices[0].message.content || "{}");
-
-    if (!moderation.approved) {
-      return NextResponse.json({ 
-        error: `Idea rejected: ${moderation.reason}` 
-      }, { status: 400 });
+        const moderationResult = JSON.parse(moderationResponse.choices[0].message.content || "{}");
+        moderation = { approved: !!moderationResult.approved, aiPrompt: moderationResult.aiPrompt || "", reason: moderationResult.reason };
+      } catch (mErr) {
+        console.warn("Moderation error, proceeding without AI moderation:", mErr);
+        moderation = { approved: true, aiPrompt: "" };
+      }
+    } else {
+      console.warn("OPENAI_API_KEY not set, skipping AI moderation and translation");
+      moderation = { approved: true, aiPrompt: "" };
     }
 
-    // Auto-translate with AI
-    const translationResponse = await openai.chat.completions.create({
-      model,
-      messages: [
-        { 
-          role: "user", 
-          content: `Translate to JSON:
-{
-  "fr": {"slogan": "French translation of: ${slogan}", "description": "French translation of: ${description}"},
-  "de": {"slogan": "German translation of: ${slogan}", "description": "German translation of: ${description}"},
-  "es": {"slogan": "Spanish translation of: ${slogan}", "description": "Spanish translation of: ${description}"}
-}` 
-        }
-      ],
-      response_format: { type: "json_object" }
-    });
+    if (!moderation.approved) {
+      return NextResponse.json({ error: `Idea rejected: ${moderation.reason}` }, { status: 400 });
+    }
 
-    const translations = JSON.parse(translationResponse.choices[0].message.content || "{}");
+    // Auto-translate with AI for configured languages (excluding English)
+    const targetLangs = supportedLanguages.filter((l) => l !== "en");
+    const translationPromptLangs = targetLangs.map((l) => `"${l}"`).join(", ");
+    const translationPrompt = `Translate the provided title, slogan and description into JSON for the following languages: [${translationPromptLangs}].\n\nReturn JSON in the form:\n{ "fr": {"title":"..","slogan":"..","description":"..","aiPrompt":".."}, ... }\n\nOriginal:\nTitle: ${title}\nSlogan: ${slogan}\nDescription: ${description}`;
+
+    let translations: Record<string, any> = {};
+    try {
+      const translationResponse = await openai.chat.completions.create({
+        model,
+        messages: [{ role: "user", content: translationPrompt }],
+        response_format: { type: "json_object" },
+      });
+      translations = JSON.parse(translationResponse.choices[0].message.content || "{}");
+    } catch (tErr) {
+      console.warn("Translation generation failed, continuing without translations:", tErr);
+      translations = {};
+    }
 
     // Save to database
     const idea = await prisma.idea.create({
@@ -131,25 +142,32 @@ export async function POST(request: NextRequest) {
         title,
         slogan,
         description,
-        aiPrompt: moderation.aiPrompt,
+        aiPrompt: moderation.aiPrompt || "",
         aiPromptId: `user-${Date.now()}`,
         isDaily: false,
         score: 0,
+        origin: 'COMMUNITY',
+        audience,
       },
     });
 
-    // Save translations
-    for (const lang of ["fr", "de", "es"]) {
-      await prisma.ideaTranslation.create({
-        data: {
-          ideaId: idea.id,
-          language: lang,
-          title: translations[lang]?.title || title,
-          slogan: translations[lang]?.slogan || slogan,
-          description: translations[lang]?.description || description,
-          aiPrompt: translations[lang]?.aiPrompt || moderation.aiPrompt,
-        },
-      });
+    // Save translations for supported languages (excluding English)
+    for (const lang of targetLangs) {
+      try {
+        await prisma.ideaTranslation.create({
+          data: {
+            ideaId: idea.id,
+            language: lang,
+            title: translations[lang]?.title || title,
+            slogan: translations[lang]?.slogan || slogan,
+            description: translations[lang]?.description || description,
+            aiPrompt: translations[lang]?.aiPrompt || moderation.aiPrompt || "",
+          },
+        });
+      } catch (createErr) {
+        // Log but don't stop the entire submission
+        console.warn(`Failed to save translation for ${lang}:`, createErr);
+      }
     }
 
     return NextResponse.json({ 

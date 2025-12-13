@@ -102,7 +102,7 @@ export async function GET() {
     const existingIdeas = await prisma.idea.findMany({
       select: { title: true }
     });
-    const existingTitles = existingIdeas.map(i => i.title);
+    const existingTitles = existingIdeas.map((i: { title: string }) => i.title);
     console.log(`[CRON] Found ${existingTitles.length} existing ideas`);
 
     // 4. Generate 10 new ideas

@@ -15,7 +15,15 @@ export async function GET() {
       take: 10,
     });
 
-    const leaderboard = advertisers.map((ad, index) => ({
+    type AdvertiserWithSlot = {
+      id: number;
+      saasName: string;
+      logoUrl: string;
+      clicks: number;
+      adSlot: { price: number };
+    };
+
+    const leaderboard = advertisers.map((ad: AdvertiserWithSlot, index: number) => ({
       rank: index + 1,
       id: ad.id,
       saasName: ad.saasName,

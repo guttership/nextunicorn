@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       select: { title: true, slogan: true }
     });
     
-    const existingTitles = existingIdeas.map(i => i.title);
+    const existingTitles = existingIdeas.map((i: { title: string }) => i.title);
     
     const today = new Date();
     today.setHours(0, 0, 0, 0);
