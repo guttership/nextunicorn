@@ -99,13 +99,13 @@ export default function DuelPage() {
     };
   };
 
-  const loadDuel = async (excludeId?: number, showLoading = true) => {
+  const loadDuel = async (excludeId?: number, excludeOpponentId?: number, showLoading = true) => {
     try {
       if (showLoading) setLoading(true);
       setError(null);
       setSelectedCard(null);
       setLoserCard(null);
-      const duelData = await getDailyDuel(excludeId, voterId);
+      const duelData = await getDailyDuel(excludeId, voterId, excludeOpponentId);
       
       if (!duelData) {
         setError("no-ideas");
@@ -184,8 +184,8 @@ export default function DuelPage() {
       // Wait for animations to complete (300ms)
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      // Load next duel silently
-      await loadDuel(winnerId, false);
+      // Load next duel silently and avoid re-proposing the immediate opponent
+      await loadDuel(winnerId, loserId, false);
       
       // Reset everything
       setSelectedCard(null);

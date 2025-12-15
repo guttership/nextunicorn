@@ -18,7 +18,7 @@ type IdeaLike = {
 };
 import { revalidatePath } from "next/cache";
 
-export async function getDailyDuel(excludeIdeaId?: number, voterId?: string) {
+export async function getDailyDuel(excludeIdeaId?: number, voterId?: string, excludeOpponentId?: number) {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -67,6 +67,7 @@ export async function getDailyDuel(excludeIdeaId?: number, voterId?: string) {
         // Get available opponents (not already voted with this idea by THIS voter)
         const availableOpponents = allIdeas.filter((idea: IdeaLike) => {
           if (idea.id === excludeIdeaId) return false;
+          if (excludeOpponentId && idea.id === excludeOpponentId) return false; // never re-propose recent opponent
           const pairKey = `${Math.min(excludeIdeaId, idea.id)}-${Math.max(excludeIdeaId, idea.id)}`;
           return !votedPairs.has(pairKey);
         });
@@ -96,12 +97,37 @@ export async function getDailyDuel(excludeIdeaId?: number, voterId?: string) {
 
     // If there are today's ideas, prioritize them
     if (todayIdeas.length > 0) {
-      // Pick a random new idea
-      const newIdea = todayIdeas[Math.floor(Math.random() * todayIdeas.length)];
+        // Pick the most recently generated idea
+        todayIdeas.sort((a: IdeaLike, b: IdeaLike) => {
+          const ad = new Date(a.generatedAt as string | number | Date).getTime();
+          const bd = new Date(b.generatedAt as string | number | Date).getTime();
+          return bd - ad;
+        });
+        const newIdea = todayIdeas[0];
       
       // Find available opponents (from ALL ideas, not just today)
+      // Prefer opponents from the top 10 ranked ideas
+      const topTen = allIdeas.slice(0, 10);
+      const topOpponents = topTen.filter((idea: IdeaLike) => {
+        if (idea.id === newIdea.id) return false;
+        if (excludeOpponentId && idea.id === excludeOpponentId) return false;
+        const pairKey = `${Math.min(newIdea.id, idea.id)}-${Math.max(newIdea.id, idea.id)}`;
+        return !votedPairs.has(pairKey);
+      });
+
+      if (topOpponents.length > 0) {
+        const opponent = topOpponents[Math.floor(Math.random() * topOpponents.length)];
+        return {
+          ideaA: ideaToObject(newIdea),
+          ideaB: ideaToObject(opponent),
+          noMoreDuels: false,
+        };
+      }
+
+      // Fallback to any available opponent
       const availableOpponents = allIdeas.filter((idea: IdeaLike) => {
         if (idea.id === newIdea.id) return false;
+        if (excludeOpponentId && idea.id === excludeOpponentId) return false;
         const pairKey = `${Math.min(newIdea.id, idea.id)}-${Math.max(newIdea.id, idea.id)}`;
         return !votedPairs.has(pairKey);
       });
@@ -127,9 +153,18 @@ export async function getDailyDuel(excludeIdeaId?: number, voterId?: string) {
       }
     }
 
-    // If there are unvoted pairs, pick a random one
+    // If there are unvoted pairs, pick a random one (avoid immediate previous pair if provided)
     if (unvotedPairs.length > 0) {
-      const [ideaA, ideaB] = unvotedPairs[Math.floor(Math.random() * unvotedPairs.length)];
+      // Filter out the exact recent pair if both ids provided
+      const filteredPairs = (excludeIdeaId && excludeOpponentId)
+        ? unvotedPairs.filter(([a, b]) => !((a.id === excludeIdeaId && b.id === excludeOpponentId) || (a.id === excludeOpponentId && b.id === excludeIdeaId)))
+        : unvotedPairs;
+
+      if (filteredPairs.length === 0) {
+        return { noMoreDuels: true };
+      }
+
+      const [ideaA, ideaB] = filteredPairs[Math.floor(Math.random() * filteredPairs.length)];
       return {
         ideaA: ideaToObject(ideaA),
         ideaB: ideaToObject(ideaB),
@@ -215,12 +250,25 @@ export async function getIdeaRanking(limit: number = 10) {
       },
       include: {
         translations: true,
+        _count: {
+          select: { votesAsWinner: true, votesAsLoser: true }
+        }
       },
     });
 
-    console.log('[DEBUG getIdeaRanking] Total ideas found:', ideas.length);
+    // Remove ideas that are older than 10 days and have never received any vote
+    const tenDaysAgo = new Date();
+    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
 
-    return ideas.map((idea: IdeaLike, index: number) => ({
+    const filtered = ideas.filter((idea: any) => {
+      const votesCount = (idea._count?.votesAsWinner || 0) + (idea._count?.votesAsLoser || 0);
+      if (votesCount === 0 && idea.createdAt < tenDaysAgo) return false;
+      return true;
+    });
+
+    console.log('[DEBUG getIdeaRanking] Total ideas found:', ideas.length, 'after filter:', filtered.length);
+
+    return filtered.map((idea: any, index: number) => ({
       rank: index + 1,
       id: idea.id,
       title: idea.title,
@@ -229,9 +277,11 @@ export async function getIdeaRanking(limit: number = 10) {
       score: idea.score,
       aiPromptId: idea.aiPromptId,
       isReserved: idea.isReserved,
-      translations: idea.translations,      origin: idea.origin || 'AI',
+      translations: idea.translations,
+      origin: idea.origin || 'AI',
       isCommunityValidated: !!idea.isCommunityValidated,
-      audience: idea.audience || null,    }));
+      audience: idea.audience || null,
+    }));
   } catch (error) {
     console.error("Error getting idea ranking:", error);
     throw error;
