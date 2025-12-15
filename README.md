@@ -85,3 +85,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+**OpenAI Model Selection**
+
+Set `OPENAI_MODEL` in your environment to your preferred model (for example `gpt-5-mini`). The app will attempt to use the value of `OPENAI_MODEL` first; if that model is not available to your account the system falls back automatically in this order:
+
+- `gpt-5-mini`
+- `gpt-4o-mini`
+- `gpt-4-mini`
+
+This allows high-quality translations and moderation while maintaining availability in case a model is not accessible for your API key. To control which model is used in production, set `OPENAI_MODEL` in your platform's environment variables (Vercel, Netlify, etc.).
