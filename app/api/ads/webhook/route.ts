@@ -29,6 +29,18 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     const metadata = session.metadata || {};
 
+    // Ignore events from other projects (check success_url or cancel_url)
+    const isNextUnicornEvent = 
+      session.success_url?.includes("nextunicorn.app") ||
+      session.cancel_url?.includes("nextunicorn.app") ||
+      metadata.project === "nextunicorn";
+    
+    if (!isNextUnicornEvent) {
+      // Not our event, acknowledge and ignore
+      console.log(`[WEBHOOK] Ignoring event from other project`);
+      return NextResponse.json({ received: true });
+    }
+
     // Check if it's an idea reservation (has ideaId in metadata)
     if (metadata.ideaId) {
       try {
