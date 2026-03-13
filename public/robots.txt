@@ -5,7 +5,6 @@ Allow: /leaderboard
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://nextunicorn.app/sitemap.xml
 Sitemap: https://nextunicorn.app/sitemap/0.xml
 
 # Crawl-delay
