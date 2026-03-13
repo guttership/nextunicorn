@@ -131,17 +131,17 @@ export default function DuelPage() {
       setLoading(true);
       
       // Simulate progressive steps for better UX
-      setGenerationStep("Suppression des anciennes idées...");
+      setGenerationStep(lang === "fr" ? "Préparation du prochain lot d'idées..." : "Preparing the next idea batch...");
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      setGenerationStep("Connexion à OpenAI GPT-5-mini...");
+      setGenerationStep(lang === "fr" ? "Analyse des signaux de vote..." : "Analyzing voting signals...");
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      setGenerationStep("Génération de 10 nouvelles idées innovantes...");
+      setGenerationStep(lang === "fr" ? "Génération de nouvelles idées à fort potentiel..." : "Generating new high-potential ideas...");
       const response = await fetch('/api/ideas/generate', { method: 'POST' });
       
       if (response.ok) {
-        setGenerationStep("Chargement des idées fraîches...");
+        setGenerationStep(lang === "fr" ? "Mise en ligne des nouvelles idées..." : "Publishing fresh ideas...");
         await loadDuel();
         setGenerating(false);
         setLoading(false);
@@ -302,12 +302,22 @@ export default function DuelPage() {
                   />
                 </div>
               </div>
-              <h1 className="text-6xl sm:text-6xl lg:text-8xl font-normal text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-rose-500 mb-4" style={{ fontFamily: 'var(--font-clicker)' }}>
-                {t("title", lang)}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl leading-[1.2] pb-1 font-normal text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-rose-500 mb-4" style={{ fontFamily: 'var(--font-clicker)' }}>
+                {t("hero_headline", lang)}
               </h1>
               <div className="text-slate-400 font-mono text-[10px] sm:text-sm space-y-1">
-                <p>{t("signature_line1", lang)}</p>
-                <p className="text-pink-600 font-semibold">{t("signature_line2", lang)}</p>
+                <p>{t("hero_subheadline_line1", lang)}</p>
+                <p>{t("hero_subheadline_line2", lang)}</p>
+                <p className="text-pink-600 font-semibold">{t("hero_subheadline_line3", lang)}</p>
+                <p className="text-slate-500">{t("hero_one_liner", lang)}</p>
+                <div className="pt-2">
+                  <Link
+                    href="/startup-ideas"
+                    className="inline-block rounded border border-slate-700 px-3 py-1 text-[10px] sm:text-xs font-mono font-bold text-slate-200 transition-colors hover:border-pink-600 hover:text-white"
+                  >
+                    {t("hero_cta", lang)}
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -342,15 +352,15 @@ export default function DuelPage() {
           {!loading && error === "no-ideas" && (
             <div className="text-center max-w-md px-4">
               <div className="mb-6">
-                <span className="text-6xl">🦄</span>
+                <span className="text-3xl font-mono text-pink-500">NEXT</span>
               </div>
               <h2 className="text-2xl font-bold text-slate-100 font-mono mb-4">
-                {lang === "fr" ? "Pas d'idées en base" : "No Ideas Yet"}
+                {lang === "fr" ? "Le duel arrive" : "The duel is almost ready"}
               </h2>
               <p className="text-slate-400 mb-6 font-mono text-sm">
                 {lang === "fr" 
-                  ? "Génération des idées SaaS en cours avec OpenAI GPT-5-mini..." 
-                  : "Generating SaaS ideas with OpenAI GPT-5-mini..."}
+                  ? "Aucune idée active pour l'instant. Lancez une génération pour alimenter le prochain round." 
+                  : "No active ideas yet. Generate a fresh batch to start the next round."}
               </p>
               <button
                 onClick={handleGenerateIdeas}
@@ -358,8 +368,8 @@ export default function DuelPage() {
                 className="bg-linear-to-r from-pink-500 to-rose-500 text-white font-mono font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-pink-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {generating 
-                  ? (lang === "fr" ? "Génération..." : "Generating...") 
-                  : (lang === "fr" ? "Générer les idées" : "Generate Ideas")}
+                  ? (lang === "fr" ? "Génération en cours..." : "Generating...") 
+                  : (lang === "fr" ? "Lancer une nouvelle vague" : "Generate fresh ideas")}
               </button>
             </div>
           )}
@@ -367,27 +377,27 @@ export default function DuelPage() {
           {!loading && error === "no-more-duels" && (
             <div className="text-center max-w-md px-4">
               <div className="mb-6">
-                <span className="text-6xl">🎉</span>
+                <span className="text-3xl font-mono text-pink-500">DONE</span>
               </div>
               <h2 className="text-2xl font-bold text-slate-100 font-mono mb-4">
-                {lang === "fr" ? "Vous avez tout voté !" : "You&apos;ve voted on everything!"}
+                {lang === "fr" ? "Round terminé" : "Round completed"}
               </h2>
               <p className="text-slate-400 mb-6 font-mono text-sm">
                 {lang === "fr" 
-                  ? "Bravo ! Vous avez participé à tous les duels possibles. Revenez demain pour découvrir 10 nouvelles idées fraîches !" 
-                  : "Congrats! You&apos;ve voted on all possible duels. Come back tomorrow for 10 fresh new ideas!"}
+                  ? "Vous avez voté sur tous les duels disponibles. Consultez le classement ou revenez au prochain batch." 
+                  : "You voted on every available matchup. Check the leaderboard or come back for the next batch."}
               </p>
               <div className="space-y-3">
                 <a
                   href="/leaderboard"
                   className="block bg-pink-600 hover:bg-pink-700 text-white font-mono font-bold py-3 px-6 rounded-lg transition-all"
                 >
-                  {lang === "fr" ? "Voir le classement" : "View Hall of Fame"}
+                  {lang === "fr" ? "Voir le classement" : "Open leaderboard"}
                 </a>
                 <p className="text-xs text-slate-500 font-mono">
                   {lang === "fr" 
-                    ? "Nouvelles idées générées tous les jours à 2h du matin" 
-                    : "New ideas generated daily at 2 AM"}
+                    ? "De nouvelles idées sont publiées chaque jour" 
+                    : "Fresh ideas are published daily"}
                 </p>
               </div>
             </div>
