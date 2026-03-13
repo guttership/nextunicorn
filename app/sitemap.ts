@@ -1,10 +1,55 @@
 import { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+import { IdeaStatus } from '@prisma/client';
+
+import { prisma } from '@/app/lib/db/prisma';
+import { buildIdeaSlug } from '@/app/lib/idea-slugs';
+
+const IDEAS_PER_SITEMAP = 1000;
+
+export async function generateSitemaps() {
+  const totalIdeas = await prisma.idea.count({
+    where: {
+      isReserved: false,
+      status: { in: [IdeaStatus.ACTIVE, IdeaStatus.TRENDING, IdeaStatus.ARCHIVED] },
+    },
+  });
+
+  const pages = Math.max(1, Math.ceil(totalIdeas / IDEAS_PER_SITEMAP));
+  return Array.from({ length: pages }, (_, id) => ({ id }));
+}
+
+export default async function sitemap(
+  props: { id?: number | string } = {}
+): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://nextunicorn.app';
   const currentDate = new Date();
+  const numericId = Number(props.id ?? 0) || 0;
 
-  return [
+  const ideas = await prisma.idea.findMany({
+    where: {
+      isReserved: false,
+      status: { in: [IdeaStatus.ACTIVE, IdeaStatus.TRENDING, IdeaStatus.ARCHIVED] },
+    },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      generatedAt: true,
+    },
+    orderBy: [{ rankingScore: 'desc' }, { createdAt: 'desc' }],
+    skip: numericId * IDEAS_PER_SITEMAP,
+    take: IDEAS_PER_SITEMAP,
+  });
+
+  const ideaPages: MetadataRoute.Sitemap = ideas.map((idea) => ({
+    url: `${baseUrl}/startup-ideas/${buildIdeaSlug({ id: idea.id, title: idea.title })}`,
+    lastModified: idea.generatedAt ?? idea.createdAt,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  const staticPages: MetadataRoute.Sitemap = numericId === 0 ? [
     {
       url: baseUrl,
       lastModified: currentDate,
@@ -13,6 +58,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/leaderboard`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/startup-ideas`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/trending-startup-ideas`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/micro-saas-ideas`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/ai-saas-ideas`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/micro-saas-ideas-for-developers`,
       lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 0.9,
@@ -95,5 +170,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.3,
     },
-  ];
+  ] : [];
+
+  return [...staticPages, ...ideaPages];
 }

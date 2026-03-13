@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/db/prisma";
 import { generateDailySaaSIdeas } from "@/app/lib/gemini";
+import { addDays, cleanupIdeaLifecycle, extractCategoryTags, optimizePromptProfile } from "@/app/lib/idea-engine";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max
@@ -59,7 +60,11 @@ export async function GET() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // 1. Mark old champion as no longer champion (with retry for cold start)
+    // 1. Sync lifecycle analytics before generating new ideas
+    console.log('[CRON] Syncing lifecycle statuses...');
+    const lifecycleSummary = await cleanupIdeaLifecycle();
+
+    // 2. Mark old champion as no longer champion (with retry for cold start)
     console.log('[CRON] Updating champions...');
     await retryOperation(() =>
       prisma.idea.updateMany({
@@ -68,7 +73,7 @@ export async function GET() {
       })
     );
 
-    // 2. Find yesterday's top idea and make it today's champion
+    // 3. Find yesterday's top idea and make it today's champion
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
@@ -80,7 +85,7 @@ export async function GET() {
         },
       },
       orderBy: {
-        score: "desc",
+        rankingScore: "desc",
       },
     });
 
@@ -97,7 +102,7 @@ export async function GET() {
       console.log('[CRON] No champion found from yesterday');
     }
 
-    // 3. Get existing ideas to avoid duplicates
+    // 4. Get existing ideas to avoid duplicates
     console.log('[CRON] Fetching existing ideas...');
     const existingIdeas = await prisma.idea.findMany({
       select: { title: true }
@@ -105,12 +110,13 @@ export async function GET() {
     const existingTitles = existingIdeas.map((i: { title: string }) => i.title);
     console.log(`[CRON] Found ${existingTitles.length} existing ideas`);
 
-    // 4. Generate 10 new ideas
+    // 5. Generate 10 new ideas
     console.log('[CRON] Calling OpenAI to generate new ideas...');
-    const newIdeas = await generateDailySaaSIdeas(existingTitles);
+    const promptProfile = await optimizePromptProfile();
+    const newIdeas = await generateDailySaaSIdeas(existingTitles, promptProfile.generatedPrompt);
     console.log(`[CRON] Generated ${newIdeas.length} new ideas from OpenAI`);
 
-    // 5. Create ideas with translations
+    // 6. Create ideas with translations
     console.log('[CRON] Saving ideas to database...');
     const createdIdeas = await Promise.all(
       newIdeas.map(async (idea, index) => {
@@ -124,6 +130,10 @@ export async function GET() {
             generatedAt: today,
             score: 0,
             isDaily: true,
+            status: 'ACTIVE',
+            expiresAt: addDays(today, 15),
+            categoryTags: extractCategoryTags(idea.title, idea.slogan, idea.description, idea.aiPrompt),
+            promptProfileId: promptProfile.id,
           },
         });
 
@@ -170,12 +180,15 @@ export async function GET() {
     console.log(`[CRON] ✅ Daily update completed successfully!`);
     console.log(`[CRON] - Champion: ${champion?.title || 'none'}`);
     console.log(`[CRON] - Ideas created: ${createdIdeas.length}`);
+    console.log(`[CRON] - Prompt profile version: ${promptProfile.version}`);
     console.log(`[CRON] - Duration: ${duration}s`);
 
     return NextResponse.json({ 
       success: true,
       champion: champion?.title || 'none',
       ideasGenerated: createdIdeas.length,
+      lifecycleSummary,
+      promptProfileVersion: promptProfile.version,
       timestamp: new Date().toISOString(),
       duration: `${duration}s`
     });
