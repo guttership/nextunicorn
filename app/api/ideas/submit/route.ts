@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { supportedLanguages } from "@/app/lib/i18n";
+import { addDays, extractCategoryTags } from "@/app/lib/idea-engine";
 import OpenAI from "openai";
 
 const prisma = new PrismaClient();
@@ -176,6 +177,9 @@ export async function POST(request: NextRequest) {
         score: 0,
         origin: 'COMMUNITY',
         audience,
+        status: 'ACTIVE',
+        expiresAt: addDays(new Date(), 15),
+        categoryTags: extractCategoryTags(title, slogan, description, moderation.aiPrompt || "", audience || ""),
       },
     });
 

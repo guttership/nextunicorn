@@ -27,19 +27,52 @@ model Idea {
   isCommunityValidated Boolean       @default(false)
   communityValidatedAt DateTime?
   audience         String?
+  status           IdeaStatus        @default(ACTIVE)
+  archivedAt       DateTime?
+  expiresAt        DateTime
+  totalVotes       Int               @default(0)
+  winCount         Int               @default(0)
+  lossCount        Int               @default(0)
+  duelExposures    Int               @default(0)
+  categoryTags     String[]          @default([])
+  firstExposedAt   DateTime?
+  lastExposedAt    DateTime?
+  firstVoteAt      DateTime?
+  lastVoteAt       DateTime?
+  winRate          Float             @default(0)
+  engagementScore  Float             @default(0)
+  rankingScore     Float             @default(0)
+  trendScore       Float             @default(0)
+  promptProfileId  Int?
+  promptProfile    PromptProfile?    @relation(fields: [promptProfileId], references: [id], onDelete: SetNull)
   translations     IdeaTranslation[]
   votesAsLoser     Vote[]            @relation("LoserIdea")
   votesAsWinner    Vote[]            @relation("WinnerIdea")
+  duelAppearancesA DuelExposure[]    @relation("IdeaA")
+  duelAppearancesB DuelExposure[]    @relation("IdeaB")
 
   @@index([score])
   @@index([createdAt])
   @@index([generatedAt])
   @@index([isReserved])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([duelExposures])
+  @@index([totalVotes])
+  @@index([rankingScore])
+  @@index([trendScore])
 }
 
 enum Origin {
   AI
   COMMUNITY
+}
+
+enum IdeaStatus {
+  ACTIVE
+  ARCHIVED
+  TRENDING
+  UNPOPULAR
 }
 
 model IdeaTranslation {
@@ -68,6 +101,45 @@ model Vote {
   @@unique([voterId, duelId])
   @@index([voterId])
   @@index([duelId])
+  @@index([createdAt])
+}
+
+model DuelExposure {
+  id           Int      @id @default(autoincrement())
+  duelKey      String
+  voterId      String?
+  ideaAId      Int
+  ideaBId      Int
+  shownAt      DateTime @default(now())
+  votedAt      DateTime?
+  winnerIdeaId Int?
+  loserIdeaId  Int?
+  ideaA        Idea     @relation("IdeaA", fields: [ideaAId], references: [id], onDelete: Cascade)
+  ideaB        Idea     @relation("IdeaB", fields: [ideaBId], references: [id], onDelete: Cascade)
+
+  @@index([duelKey])
+  @@index([voterId])
+  @@index([shownAt])
+  @@index([ideaAId])
+  @@index([ideaBId])
+}
+
+model PromptProfile {
+  id                Int      @id @default(autoincrement())
+  version           Int      @unique
+  baseInstruction   String
+  positiveTags      String[] @default([])
+  negativeTags      String[] @default([])
+  generatedPrompt   String
+  rationale         String?
+  active            Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  topIdeasCount     Int      @default(0)
+  bottomIdeasCount  Int      @default(0)
+  ignoredIdeasCount Int      @default(0)
+  ideas             Idea[]
+
+  @@index([active])
   @@index([createdAt])
 }
 

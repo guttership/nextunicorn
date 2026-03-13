@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateDailySaaSIdeas } from "@/app/lib/gemini";
 import { prisma } from "@/app/lib/db/prisma";
+import { addDays, extractCategoryTags, optimizePromptProfile } from "@/app/lib/idea-engine";
 
 // Secret key for API protection (should match CRON_SECRET in .env)
 const API_SECRET = process.env.CRON_SECRET || process.env.API_SECRET;
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
         },
       },
       orderBy: {
-        score: "desc",
+        rankingScore: "desc",
       },
     });
 
@@ -61,8 +62,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const promptProfile = await optimizePromptProfile();
+
     // Generate 10 new ideas from OpenAI (avoiding duplicates)
-    const newIdeas = await generateDailySaaSIdeas(existingTitles);
+    const newIdeas = await generateDailySaaSIdeas(existingTitles, promptProfile.generatedPrompt);
 
     // Create ideas with translations
     const createdIdeas = await Promise.all(
@@ -77,6 +80,10 @@ export async function POST(request: NextRequest) {
             generatedAt: today,
             score: 0,
             isDaily: true,
+            status: "ACTIVE",
+            expiresAt: addDays(today, 15),
+            categoryTags: extractCategoryTags(idea.title, idea.slogan, idea.description, idea.aiPrompt),
+            promptProfileId: promptProfile.id,
           },
         });
 
@@ -123,6 +130,7 @@ export async function POST(request: NextRequest) {
         message: "Ideas generated successfully",
         championId: champion?.id,
         newIdeasCount: createdIdeas.length,
+        promptProfileVersion: promptProfile.version,
       },
       { status: 201 }
     );

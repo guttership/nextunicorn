@@ -2,6 +2,7 @@
 
 import { prisma } from "@/app/lib/db/prisma";
 import { generateDailySaaSIdeas } from "@/app/lib/ai/gemini";
+import { addDays, extractCategoryTags } from "@/app/lib/idea-engine";
 
 export async function seedDailyIdeas() {
   try {
@@ -37,6 +38,9 @@ export async function seedDailyIdeas() {
             aiPrompt: idea.description, // Use description as aiPrompt for now
             aiPromptId: idea.aiPromptId,
             isDaily: true,
+            status: "ACTIVE",
+            expiresAt: addDays(new Date(), 15),
+            categoryTags: extractCategoryTags(idea.title, idea.slogan, idea.description, idea.description),
           },
         })
       )

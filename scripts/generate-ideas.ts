@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import OpenAI from "openai";
 
+import { addDays, extractCategoryTags } from "../app/lib/idea-engine";
+
 const prisma = new PrismaClient();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -57,6 +59,9 @@ async function generateIdeas() {
           isDaily: true,
           score: 0,
           origin: 'AI',
+          status: 'ACTIVE',
+          expiresAt: addDays(new Date(), 15),
+          categoryTags: extractCategoryTags(parsed.title, parsed.slogan, parsed.description, prompt),
         },
       });
 

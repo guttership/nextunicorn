@@ -86,7 +86,7 @@ Example item (JSON):
 
 const PROMPT_VARIANT = (process.env.IDEA_PROMPT_VARIANT || 'A').toUpperCase();
 
-export async function generateDailySaaSIdeas(existingTitles: string[] = []): Promise<GeneratedIdea[]> {
+export async function generateDailySaaSIdeas(existingTitles: string[] = [], generationPrompt?: string): Promise<GeneratedIdea[]> {
   try {
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
@@ -101,7 +101,7 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = []): Pro
     
     const model = process.env.OPENAI_MODEL || "gpt-5-mini-2025-08-07";
 
-    const selectedPrompt = PROMPT_VARIANT === 'B' ? IDEA_GENERATION_PROMPT_B : IDEA_GENERATION_PROMPT;
+    const selectedPrompt = generationPrompt || (PROMPT_VARIANT === 'B' ? IDEA_GENERATION_PROMPT_B : IDEA_GENERATION_PROMPT);
 
     const completion = await openai.chat.completions.create({
       model,
