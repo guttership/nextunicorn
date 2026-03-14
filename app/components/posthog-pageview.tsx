@@ -9,6 +9,7 @@ export function PostHogPageView() {
   const searchParams = useSearchParams()
   const posthog = usePostHog()
   const scrollMilestones = useRef<Set<number>>(new Set())
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (pathname && posthog) {
@@ -17,8 +18,26 @@ export function PostHogPageView() {
       if (search) {
         url += `?${search}`
       }
-      posthog.capture('$pageview', { $current_url: url })
+
+      let attempts = 0
+      const captureWhenReady = () => {
+        const ready = Boolean((posthog as unknown as { __loaded?: boolean }).__loaded)
+        if (ready || attempts >= 8) {
+          posthog.capture('$pageview', { $current_url: url })
+          return
+        }
+        attempts += 1
+        retryTimer.current = setTimeout(captureWhenReady, 250)
+      }
+
+      captureWhenReady()
       scrollMilestones.current.clear()
+    }
+
+    return () => {
+      if (retryTimer.current) {
+        clearTimeout(retryTimer.current)
+      }
     }
   }, [pathname, searchParams, posthog])
 
