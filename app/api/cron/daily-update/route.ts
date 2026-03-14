@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/db/prisma";
 import { generateDailySaaSIdeas } from "@/app/lib/gemini";
-import { addDays, cleanupIdeaLifecycle, extractCategoryTags, optimizePromptProfile } from "@/app/lib/idea-engine";
+import { addDays, cleanupIdeaLifecycle, deduplicateSimilarIdeas, extractCategoryTags, optimizePromptProfile } from "@/app/lib/idea-engine";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max
@@ -100,6 +100,14 @@ export async function GET() {
       console.log(`[CRON] Champion updated: ${champion.title}`);
     } else {
       console.log('[CRON] No champion found from yesterday');
+    }
+
+    // 3.5. Deduplicate similar ideas (archive lower-voted duplicates)
+    console.log('[CRON] Deduplicating similar ideas...');
+    const dedupResult = await deduplicateSimilarIdeas(0.45);
+    console.log(`[CRON] Dedup: ${dedupResult.archived} ideas archived, ${dedupResult.kept} kept`);
+    if (dedupResult.pairs.length > 0) {
+      console.log('[CRON] Archived similar pairs:', dedupResult.pairs.map(([a, b]) => `"${a}" ≈ "${b}"`).join(' | '));
     }
 
     // 4. Get existing ideas to avoid duplicates

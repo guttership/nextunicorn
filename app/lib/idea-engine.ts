@@ -74,6 +74,35 @@ export function normalizeText(input: string) {
   return input.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
 }
 
+// --- Idea similarity deduplication ---
+
+const SIMILARITY_STOP_WORDS = new Set([
+  'a','an','the','for','to','of','and','or','in','on','at','is','by','be',
+  'app','saas','platform','tool','service','software','with','your','you',
+  'my','our','that','this','it','its','from','about','into','small','big',
+  'smart','better','simple','easy','new','free','pro','get','use','make',
+]);
+
+function titleTokens(text: string): Set<string> {
+  return new Set(
+    normalizeText(text)
+      .split(/\s+/)
+      .filter(w => w.length > 2 && !SIMILARITY_STOP_WORDS.has(w))
+  );
+}
+
+function jaccardSimilarity(setA: Set<string>, setB: Set<string>): number {
+  if (setA.size === 0 && setB.size === 0) return 1;
+  let intersection = 0;
+  for (const w of setA) if (setB.has(w)) intersection++;
+  const union = setA.size + setB.size - intersection;
+  return union === 0 ? 0 : intersection / union;
+}
+
+export function areTitlesSimilar(titleA: string, titleB: string, threshold = 0.45): boolean {
+  return jaccardSimilarity(titleTokens(titleA), titleTokens(titleB)) >= threshold;
+}
+
 export function extractCategoryTags(...parts: Array<string | null | undefined>) {
   const haystack = normalizeText(parts.filter(Boolean).join(" "));
   const tags = new Set<string>();
@@ -531,6 +560,7 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
       { rankingScore: "desc" },
       { createdAt: "desc" },
     ],
+    take: 150,
   });
 
   if (eligibleIdeas.length < 2) {
@@ -607,7 +637,9 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
     const previousWinnerOpponent = weightedPick(previousWinnerOpponentPool, (idea) => opponentWeight(idea));
 
     if (previousWinnerOpponent) {
-      await recordDuelExposure(previousWinner.id, previousWinnerOpponent.id, voterId);
+      void recordDuelExposure(previousWinner.id, previousWinnerOpponent.id, voterId).catch((error) => {
+        console.error("Failed to record duel exposure:", error);
+      });
 
       const hydrated = await hydratePair(previousWinner.id, previousWinnerOpponent.id);
       if (!hydrated) {
@@ -670,7 +702,9 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
     return { noMoreDuels: true as const };
   }
 
-  await recordDuelExposure(outsider.id, opponent.id, voterId);
+  void recordDuelExposure(outsider.id, opponent.id, voterId).catch((error) => {
+    console.error("Failed to record duel exposure:", error);
+  });
 
   const hydrated = await hydratePair(outsider.id, opponent.id);
   if (!hydrated) {
@@ -702,6 +736,43 @@ export async function cleanupIdeaLifecycle() {
     by: ["status"],
     _count: { _all: true },
   });
+}
+
+export async function deduplicateSimilarIdeas(
+  threshold = 0.45
+): Promise<{ archived: number; kept: number; pairs: [string, string][] }> {
+  const ideas = await prisma.idea.findMany({
+    where: {
+      status: { in: [IdeaStatus.ACTIVE, IdeaStatus.TRENDING, IdeaStatus.UNPOPULAR] },
+      isReserved: false,
+    },
+    select: { id: true, title: true, totalVotes: true },
+    orderBy: { totalVotes: 'desc' }, // highest-voted idea wins ties
+  });
+
+  const toArchive = new Set<number>();
+  const pairs: [string, string][] = [];
+
+  for (let i = 0; i < ideas.length; i++) {
+    if (toArchive.has(ideas[i].id)) continue;
+    for (let j = i + 1; j < ideas.length; j++) {
+      if (toArchive.has(ideas[j].id)) continue;
+      if (areTitlesSimilar(ideas[i].title, ideas[j].title, threshold)) {
+        // ideas[i] has >= votes (sorted by totalVotes desc) → archive ideas[j]
+        toArchive.add(ideas[j].id);
+        pairs.push([ideas[i].title, ideas[j].title]);
+      }
+    }
+  }
+
+  if (toArchive.size > 0) {
+    await prisma.idea.updateMany({
+      where: { id: { in: Array.from(toArchive) } },
+      data: { status: IdeaStatus.ARCHIVED, archivedAt: new Date() },
+    });
+  }
+
+  return { archived: toArchive.size, kept: ideas.length - toArchive.size, pairs };
 }
 
 export type ActivePromptProfile = PromptProfile;

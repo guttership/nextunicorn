@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import { areTitlesSimilar } from '@/app/lib/idea-engine';
 
 export interface GeneratedIdea {
   title: string;
@@ -12,79 +13,200 @@ export interface GeneratedIdea {
   };
 }
 
-const IDEA_GENERATION_PROMPT = `Generate 10 profitable and monetizable SaaS ideas that ANYONE can understand.
+const IDEA_GENERATION_PROMPT = `Generate exactly 10 SaaS startup ideas in plain language.
 
-CRITICAL REQUIREMENTS:
-- Ideas MUST be IMMEDIATELY understandable by the general public (no jargon!)
-- Solve OBVIOUS everyday problems that everyone faces or can relate to
-- Clear, visible value proposition that makes sense in 5 seconds
-- Mix of B2B (50%) and B2C (50%) - all must be easy to grasp
-- Avoid technical niches, developer tools, or industry-specific solutions
-- NO buzzwords, NO complex terminology, NO niche markets
+GOAL:
+- Make each idea immediately understandable in under 5 seconds.
+- Keep each description short and clear, never longer than 20 words.
 
-ORIGINALITY IS KEY:
-- AVOID common SaaS clichés: NO password managers, NO to-do apps, NO email tools
-- AVOID saturated markets: NO meditation apps, NO habit trackers, NO generic schedulers
-- AVOID obvious AI wrappers: NO "AI assistant for X", NO "chatbot for Y"
-- Think FRESH angles on real problems - what hasn't been done yet?
-- Look for EMERGING needs, not crowded spaces
+MANDATORY RULES:
+- No jargon, no buzzwords, no vague concepts.
+- Focus on concrete pain points and obvious user value.
+- Avoid saturated templates (to-do app, generic chatbot, habit app, meditation app, basic scheduler).
+- Do not output developer-only or highly niche concepts.
+- Keep title and slogan easy to read by non-technical founders.
 
-CLARITY OVER COMPLEXITY:
-- If you need to explain what industry/sector it's for, it's TOO NICHE
-
-IMPORTANT: Return your response in JSON format with the following structure:
-
-Each idea:
+Return JSON only in this exact shape:
 {
-  "title": "Simple, clear name (2-3 words max, NO jargon)",
-  "slogan": "What it does in plain language (6-8 words)",
-  "description": "The problem + how it helps (max 20 words, conversational tone)",
-  "aiPrompt": "Concrete example anyone can relate to (1 sentence)",
-  "translations": {
-    "fr": {"title": "French title", "slogan": "French translation", "description": "French translation", "aiPrompt": "French example"},
-    "de": {"title": "German title", "slogan": "German translation", "description": "German translation", "aiPrompt": "German example"},
-    "es": {"title": "Spanish title", "slogan": "Spanish translation", "description": "Spanish translation", "aiPrompt": "Spanish example"}
-  }
+  "ideas": [
+    {
+      "title": "2-4 words, simple",
+      "slogan": "6-10 words, concrete value",
+      "description": "Max 20 words. Problem + clear outcome.",
+      "aiPrompt": "One-sentence usage scenario"
+    }
+  ]
 }
 
-Return ONLY valid JSON: {"ideas": [10 objects]}`;
+Do not include markdown. Do not include extra keys.`;
 
-// New, improved prompt (variant B) — more structured, action-focused and validation-oriented
-const IDEA_GENERATION_PROMPT_B = `Generate 10 original SaaS ideas in JSON. For each idea return the following fields:
+const IDEA_GENERATION_PROMPT_B = `Generate exactly 10 SaaS startup ideas as JSON.
 
-- title: short name (<=6 words, no jargon)
-- problem: one-sentence problem statement in plain language
-- target: who benefits (e.g. "freelancers who invoice manually")
-- whyNow: one line why this is timely
-- features: array of top 3 features (short phrases)
-- mvpSteps: array of 3 actionable MVP steps (each 1 sentence)
-- estTimeHours: estimated dev time for MVP (number)
-- validationTests: array of 3 low-cost validation tests (each 1 sentence)
-- aiPrompt: one-sentence concrete example anyone can relate to
-- translations: { fr, de, es } with title, slogan, description, aiPrompt (fallback to English if unclear)
+For each idea return:
+- title (2-4 words)
+- problem (1 sentence, plain language)
+- target (who benefits)
+- whyNow (1 sentence)
+- aiPrompt (1 sentence, concrete scenario)
 
-REQUIREMENTS:
-- Use plain language, avoid buzzwords and jargon
-- No password managers, to-do apps, meditation apps, or crowded categories
-- Prefer ideas that are easy to validate and build an MVP for in under 100 hours
-- Provide JSON only — exact structure: {"ideas": [ ... ]}
+Rules:
+- No jargon.
+- No crowded cliches.
+- Keep it understandable for founders and indie makers.
+- Keep descriptions short in final output.
 
-Example item (JSON):
-{
-  "title": "QuickSplit",
-  "problem": "People struggle to split group bills from photos",
-  "target": "friends & families",
-  "whyNow": "more digital payments and social spending",
-  "features": ["Photo bill parsing","Auto-split suggestions","One-click payment links"],
-  "mvpSteps": ["Parse bill from image","Compute shares","Send payment links"],
-  "estTimeHours": 40,
-  "validationTests": ["Post idea on subreddit","Run 5 user interviews","Collect 50 email signups via landing page"],
-  "aiPrompt": "Take a photo of a pizza receipt and split by items",
-  "translations": {"fr": {"title":"PartageFacture","slogan":"Partager l'addition en un clic","description":"Prendre une photo d'une facture, la diviser et payer","aiPrompt":"Prendre une photo de l'addition et diviser"},"de": {...},"es": {...}}
-}
+Return only JSON in this shape: {"ideas": [...]}.
 `;
 
 const PROMPT_VARIANT = (process.env.IDEA_PROMPT_VARIANT || 'A').toUpperCase();
+const DESCRIPTION_MAX_WORDS = 20;
+
+function trimToWords(input: string, maxWords: number) {
+  const cleaned = (input || "").replace(/\s+/g, " ").trim();
+  if (!cleaned) return "";
+  const words = cleaned.split(" ");
+  return words.length <= maxWords ? cleaned : words.slice(0, maxWords).join(" ");
+}
+
+function oneLine(input: string) {
+  return (input || "").replace(/\s+/g, " ").replace(/[\n\r]+/g, " ").trim();
+}
+
+function normalizeGeneratedIdea(raw: any) {
+  const title = oneLine(raw?.title || "").slice(0, 80);
+  const slogan = oneLine(raw?.slogan || raw?.problem || title).slice(0, 140);
+  const descriptionBase = raw?.description || raw?.problem || slogan;
+  const description = trimToWords(oneLine(descriptionBase), DESCRIPTION_MAX_WORDS);
+  const aiPrompt = oneLine(raw?.aiPrompt || description || slogan).slice(0, 220);
+
+  return { title, slogan, description, aiPrompt };
+}
+
+async function chatWithFallback(openai: OpenAI, messages: Array<{ role: "system" | "user"; content: string }>) {
+  const preferredModel = process.env.OPENAI_MODEL;
+  const candidates = Array.from(new Set([
+    preferredModel,
+    "gpt-5-mini",
+    "gpt-4o-mini",
+    "gpt-4-mini",
+    "gpt-5-mini-2025-08-07",
+  ].filter(Boolean) as string[]));
+
+  let lastError: unknown;
+
+  for (const model of candidates) {
+    try {
+      const response = await openai.chat.completions.create({
+        model,
+        messages,
+        response_format: { type: "json_object" },
+      });
+      return response;
+    } catch (error) {
+      lastError = error;
+      const message = error instanceof Error ? error.message : String(error);
+      if (/model_not_found|not found/i.test(message)) {
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw lastError;
+}
+
+async function improveTranslations(openai: OpenAI, ideas: Array<{ title: string; slogan: string; description: string; aiPrompt: string }>) {
+  const payload = ideas.map((idea, index) => ({ id: index, ...idea }));
+
+  const translationPrompt = `You are a native localization expert for startup products.
+Translate each item to fr, de, es with natural, idiomatic phrasing.
+
+QUALITY RULES:
+- Do NOT translate word-for-word.
+- Keep startup/product tone clear and concise.
+- Keep meaning identical to source.
+- title: short and punchy
+- slogan: clear value proposition
+- description: max 20 words, same or shorter than source
+- aiPrompt: realistic one-sentence scenario
+
+Return JSON only in this exact shape:
+{
+  "translations": [
+    {
+      "id": 0,
+      "fr": {"title":"...","slogan":"...","description":"...","aiPrompt":"..."},
+      "de": {"title":"...","slogan":"...","description":"...","aiPrompt":"..."},
+      "es": {"title":"...","slogan":"...","description":"...","aiPrompt":"..."}
+    }
+  ]
+}
+
+Source items:
+${JSON.stringify(payload)}`;
+
+  const response = await chatWithFallback(openai, [
+    {
+      role: "system",
+      content: "You produce high-quality, natural translations for product copy.",
+    },
+    {
+      role: "user",
+      content: translationPrompt,
+    },
+  ]);
+
+  const raw = response.choices[0]?.message?.content || "{}";
+  const parsed = JSON.parse(raw);
+  const rows = Array.isArray(parsed?.translations) ? parsed.translations : [];
+
+  const byId = new Map<number, any>();
+  for (const row of rows) {
+    if (typeof row?.id === "number") {
+      byId.set(row.id, row);
+    }
+  }
+
+  return ideas.map((idea, index) => {
+    const translated = byId.get(index) || {};
+
+    const mapLocale = (locale: "fr" | "de" | "es") => {
+      const src = translated?.[locale] || {};
+      return {
+        title: oneLine(src.title || idea.title),
+        slogan: oneLine(src.slogan || idea.slogan),
+        description: trimToWords(oneLine(src.description || idea.description), DESCRIPTION_MAX_WORDS),
+        aiPrompt: oneLine(src.aiPrompt || idea.aiPrompt),
+      };
+    };
+
+    return {
+      fr: mapLocale("fr"),
+      de: mapLocale("de"),
+      es: mapLocale("es"),
+    };
+  });
+}
+
+// Filter new ideas that are too similar to existing ones or to each other
+function deduplicateNewIdeas<T extends { title: string }>(
+  ideas: T[],
+  existingTitles: string[],
+  threshold = 0.45
+): T[] {
+  // Remove ideas too similar to any existing DB title
+  const filtered = ideas.filter(
+    idea => !existingTitles.some(existing => areTitlesSimilar(idea.title, existing, threshold))
+  );
+  // Deduplicate within the batch (keep first occurrence of each similar group)
+  const deduped: T[] = [];
+  for (const idea of filtered) {
+    if (!deduped.some(kept => areTitlesSimilar(idea.title, kept.title, threshold))) {
+      deduped.push(idea);
+    }
+  }
+  return deduped;
+}
 
 export async function generateDailySaaSIdeas(existingTitles: string[] = [], generationPrompt?: string): Promise<GeneratedIdea[]> {
   try {
@@ -99,90 +221,70 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = [], gene
     
     const randomContext = `\n\nGeneration timestamp: ${Date.now()}. Focus on PROFITABLE, MONETIZABLE ideas with clear business models.${existingContext}`;
     
-    const model = process.env.OPENAI_MODEL || "gpt-5-mini-2025-08-07";
-
     const selectedPrompt = generationPrompt || (PROMPT_VARIANT === 'B' ? IDEA_GENERATION_PROMPT_B : IDEA_GENERATION_PROMPT);
 
-    const completion = await openai.chat.completions.create({
-      model,
-      messages: [
-        {
-          role: "system",
-          content: "You are a successful SaaS entrepreneur and investor. You only suggest ideas with proven market demand and clear paths to profitability."
-        },
-        {
-          role: "user",
-          content: selectedPrompt + randomContext
-        }
-      ],
-      response_format: { type: "json_object" }
-    });
+    const completion = await chatWithFallback(openai, [
+      {
+        role: "system",
+        content: "You are a SaaS product strategist. Output clear, concrete, founder-friendly ideas in compact wording.",
+      },
+      {
+        role: "user",
+        content: selectedPrompt + randomContext,
+      },
+    ]);
 
-    console.log("OpenAI raw response:", JSON.stringify(completion, null, 2));
-    
     let text = completion.choices[0]?.message?.content || "";
-    
-    // Remove markdown code blocks if present
     text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
-    // Parse the JSON response
     const parsed = JSON.parse(text);
-    const ideas = parsed.ideas || parsed;
+    const rawIdeas = parsed.ideas || parsed;
 
-    if (!Array.isArray(ideas) || ideas.length < 2) {
-      throw new Error(`Expected at least 2 ideas, got ${ideas.length}`);
+    if (!Array.isArray(rawIdeas) || rawIdeas.length < 2) {
+      throw new Error(`Expected at least 2 ideas, got ${rawIdeas?.length ?? 0}`);
     }
 
-    // Validate each idea has required fields
-    ideas.forEach((idea, index) => {
+    const normalizedIdeas = rawIdeas.map((raw, index) => {
+      const converted = raw?.problem && !raw?.slogan
+        ? {
+            ...raw,
+            slogan: raw.problem,
+            description: raw.target ? `For ${raw.target}. ${raw.whyNow || ""}` : raw.problem,
+          }
+        : raw;
+
+      const idea = normalizeGeneratedIdea(converted);
+
       if (!idea.title || !idea.aiPrompt) {
         throw new Error(`Idea ${index} is missing required fields (title or aiPrompt)`);
       }
-      
-      // Convert prompt B format to prompt A format if needed
-      if (idea.problem && !idea.slogan) {
-        // Prompt B format detected - convert to prompt A
-        idea.slogan = idea.problem; // Use problem as slogan
-        idea.description = idea.target ? `For ${idea.target}. ${idea.whyNow || ''}` : idea.problem;
-      }
-      
-      // Ensure slogan and description exist
-      if (!idea.slogan) {
-        idea.slogan = idea.title;
-      }
-      if (!idea.description) {
-        idea.description = idea.slogan;
-      }
-      
-      // Ensure translations exist with default values if missing
-      if (!idea.translations) {
-        idea.translations = {
-          fr: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt },
-          de: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt },
-          es: { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt }
-        };
-      }
-      // Validate each translation has required fields
-      ['fr', 'de', 'es'].forEach(lang => {
-        if (!idea.translations[lang]) {
-          idea.translations[lang] = { title: idea.title, slogan: idea.slogan, description: idea.description, aiPrompt: idea.aiPrompt };
-        }
-        if (!idea.translations[lang].title) {
-          idea.translations[lang].title = idea.title;
-        }
-        if (!idea.translations[lang].slogan) {
-          idea.translations[lang].slogan = idea.slogan;
-        }
-        if (!idea.translations[lang].description) {
-          idea.translations[lang].description = idea.description;
-        }
-        if (!idea.translations[lang].aiPrompt) {
-          idea.translations[lang].aiPrompt = idea.aiPrompt;
-        }
-      });
+
+      return idea;
     });
 
-    return ideas;
+    // Remove ideas too similar to existing DB titles or to each other
+    const dedupedIdeas = deduplicateNewIdeas(normalizedIdeas, existingTitles);
+    if (dedupedIdeas.length < 2) {
+      throw new Error(`After deduplication only ${dedupedIdeas.length} unique ideas remain`);
+    }
+    console.log(`[GEMINI] ${normalizedIdeas.length} ideas generated, ${dedupedIdeas.length} kept after dedup`);
+
+    let translations;
+    try {
+      translations = await improveTranslations(openai, dedupedIdeas);
+    } catch (translationError) {
+      console.warn("Translation quality pass failed, using source fallback:", translationError);
+      translations = dedupedIdeas.map((idea) => ({
+        fr: { ...idea },
+        de: { ...idea },
+        es: { ...idea },
+      }));
+    }
+
+    return dedupedIdeas.map((idea, index) => ({
+      ...idea,
+      translations: translations[index],
+    }));
   } catch (error) {
     console.error("Error generating SaaS ideas:", error);
     throw error;
