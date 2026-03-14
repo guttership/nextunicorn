@@ -511,9 +511,7 @@ export async function optimizePromptProfile() {
   });
 }
 
-export async function selectDuelIdeas(voterId?: string, excludeIdeaId?: number, excludeOpponentId?: number) {
-  await syncIdeaLifecycleStatuses();
-
+export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: number, excludeOpponentId?: number) {
   const eligibleIdeas = await prisma.idea.findMany({
     where: {
       isReserved: false,
@@ -533,9 +531,15 @@ export async function selectDuelIdeas(voterId?: string, excludeIdeaId?: number, 
     return null;
   }
 
+  const eligibleIdeaIds = eligibleIdeas.map((idea) => idea.id);
+
   const voterVotes = voterId
     ? await prisma.vote.findMany({
-        where: { voterId },
+        where: {
+          voterId,
+          winnerIdeaId: { in: eligibleIdeaIds },
+          loserIdeaId: { in: eligibleIdeaIds },
+        },
         select: { winnerIdeaId: true, loserIdeaId: true },
       })
     : [];
@@ -544,10 +548,37 @@ export async function selectDuelIdeas(voterId?: string, excludeIdeaId?: number, 
     voterVotes.map((vote) => `${Math.min(vote.winnerIdeaId, vote.loserIdeaId)}-${Math.max(vote.winnerIdeaId, vote.loserIdeaId)}`)
   );
 
-  const basePool = eligibleIdeas.filter((idea) => {
-    if (excludeIdeaId && idea.id === excludeIdeaId) {
-      return false;
+  const previousWinner = previousWinnerIdeaId
+    ? eligibleIdeas.find((idea) => idea.id === previousWinnerIdeaId)
+    : undefined;
+
+  // Keep the previous winner on the left when a valid unseen matchup exists.
+  if (previousWinner && (!excludeOpponentId || previousWinner.id !== excludeOpponentId)) {
+    const previousWinnerOpponentPool = eligibleIdeas.filter((idea) => {
+      if (idea.id === previousWinner.id) {
+        return false;
+      }
+      if (excludeOpponentId && idea.id === excludeOpponentId) {
+        return false;
+      }
+      const pairKey = `${Math.min(idea.id, previousWinner.id)}-${Math.max(idea.id, previousWinner.id)}`;
+      return !votedPairs.has(pairKey);
+    });
+
+    const previousWinnerOpponent = weightedPick(previousWinnerOpponentPool, (idea) => opponentWeight(idea));
+
+    if (previousWinnerOpponent) {
+      await recordDuelExposure(previousWinner.id, previousWinnerOpponent.id, voterId);
+
+      return {
+        ideaA: previousWinner,
+        ideaB: previousWinnerOpponent,
+        noMoreDuels: false as const,
+      };
     }
+  }
+
+  const basePool = eligibleIdeas.filter((idea) => {
     if (excludeOpponentId && idea.id === excludeOpponentId) {
       return false;
     }

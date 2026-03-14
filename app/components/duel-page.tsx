@@ -114,7 +114,17 @@ export default function DuelPage() {
         setError("no-more-duels");
         setDuel(null);
       } else if ('ideaA' in duelData && 'ideaB' in duelData) {
-        setDuel(duelData as DuelData);
+        const nextDuel = duelData as DuelData;
+
+        if (excludeId && nextDuel.ideaB.id === excludeId) {
+          setDuel({
+            ...nextDuel,
+            ideaA: nextDuel.ideaB,
+            ideaB: nextDuel.ideaA,
+          });
+        } else {
+          setDuel(nextDuel);
+        }
       }
     } catch (error) {
       console.error("Failed to load duel:", error);
@@ -172,8 +182,8 @@ export default function DuelPage() {
       setSelectedCard(choice);
       setLoserCard(loser); // Mark loser but DON'T animate yet
       
-      // Wait to show the selection (1000ms to see which card won)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Keep a short confirmation delay, but avoid slowing down the duel loop.
+      await new Promise(resolve => setTimeout(resolve, 250));
       
       // NOW trigger exit animation
       setShowExitAnimation(true);
@@ -181,8 +191,7 @@ export default function DuelPage() {
       // Register vote
       await handleVote(winnerId, loserId, voterId);
       
-      // Wait for animations to complete (300ms)
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 120));
       
       // Load next duel silently and avoid re-proposing the immediate opponent
       await loadDuel(winnerId, loserId, false);

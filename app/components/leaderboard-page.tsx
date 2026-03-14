@@ -18,6 +18,7 @@ interface RankedIdea {
   slogan?: string | null;
   description?: string | null;
   score?: number;
+  totalVotes?: number;
   aiPromptId?: string | null;
   isReserved?: boolean;
   translations?: Array<{
@@ -183,6 +184,7 @@ export default function LeaderboardPage() {
             {t("hallOfFame", lang)}
           </h1>
           <p className="text-slate-400 font-mono text-sm md:text-base">{t("topIdeas", lang)}</p>
+          <p className="text-slate-500 font-mono text-xs md:text-sm mt-2">These ideas are ranked by total community votes.</p>
         </div>
 
         {/* Ideas Ranking Table - Desktop */}
@@ -193,7 +195,7 @@ export default function LeaderboardPage() {
                 <TableHead className="text-pink-500 font-mono font-bold w-16">#</TableHead>
                 <TableHead className="text-pink-500 font-mono font-bold">TITLE</TableHead>
                 <TableHead className="text-pink-500 font-mono font-bold">SLOGAN</TableHead>
-                <TableHead className="text-pink-500 font-mono font-bold text-right">SCORE</TableHead>
+                <TableHead className="text-pink-500 font-mono font-bold text-right">VOTES</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -212,7 +214,7 @@ export default function LeaderboardPage() {
                     <TableCell className="text-right font-mono font-bold text-lg">
                       <span className="text-pink-500 flex items-center justify-end gap-1">
                         {index === 0 && <Flame className="w-4 h-4 text-pink-500" />}
-                        {idea.score}
+                        {idea.totalVotes ?? 0}
                       </span>
                     </TableCell>
                   </TableRow>
@@ -243,7 +245,7 @@ export default function LeaderboardPage() {
                   </span>
                   <span className="text-pink-500 font-mono font-bold text-xl flex items-center gap-1">
                     {index === 0 && <Flame className="w-5 h-5" />}
-                    {idea.score}
+                    {idea.totalVotes ?? 0}
                   </span>
                 </div>
                 <h3 className="font-mono text-slate-100 font-bold mb-1">{getIdeaText(idea).title}</h3>

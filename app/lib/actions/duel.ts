@@ -129,10 +129,11 @@ export async function handleVote(winnerId: number, loserId: number, voterId: str
       },
     });
 
-    await markExposureAsVoted(winnerId, loserId, voterId);
-    await recomputeIdeaAnalytics(winnerId);
-    await recomputeIdeaAnalytics(loserId);
-    await syncIdeaLifecycleStatuses();
+    await Promise.all([
+      markExposureAsVoted(winnerId, loserId, voterId),
+      recomputeIdeaAnalytics(winnerId),
+      recomputeIdeaAnalytics(loserId),
+    ]);
 
     revalidatePath("/leaderboard");
 
@@ -146,7 +147,6 @@ export async function handleVote(winnerId: number, loserId: number, voterId: str
 export async function getIdeaRanking(limit = 10) {
   try {
     revalidatePath("/leaderboard");
-    await syncIdeaLifecycleStatuses();
 
     const ideas = await prisma.idea.findMany({
       where: {
@@ -156,7 +156,7 @@ export async function getIdeaRanking(limit = 10) {
         },
       },
       orderBy: [
-        { rankingScore: "desc" },
+        { totalVotes: "desc" },
         { score: "desc" },
         { createdAt: "desc" },
       ],
