@@ -518,8 +518,14 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
       expiresAt: { gt: new Date() },
       status: { in: [IdeaStatus.ACTIVE, IdeaStatus.TRENDING] },
     },
-    include: {
-      translations: true,
+    select: {
+      id: true,
+      duelExposures: true,
+      totalVotes: true,
+      createdAt: true,
+      winRate: true,
+      status: true,
+      rankingScore: true,
     },
     orderBy: [
       { rankingScore: "desc" },
@@ -530,6 +536,39 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
   if (eligibleIdeas.length < 2) {
     return null;
   }
+
+  const hydratePair = async (ideaAId: number, ideaBId: number) => {
+    const fullIdeas = await prisma.idea.findMany({
+      where: { id: { in: [ideaAId, ideaBId] } },
+      select: {
+        id: true,
+        title: true,
+        slogan: true,
+        description: true,
+        aiPromptId: true,
+        aiPrompt: true,
+        translations: true,
+        origin: true,
+        isCommunityValidated: true,
+        audience: true,
+        score: true,
+        status: true,
+        totalVotes: true,
+        duelExposures: true,
+        winRate: true,
+      },
+    });
+
+    const byId = new Map(fullIdeas.map((idea) => [idea.id, idea]));
+    const ideaA = byId.get(ideaAId);
+    const ideaB = byId.get(ideaBId);
+
+    if (!ideaA || !ideaB) {
+      return null;
+    }
+
+    return { ideaA, ideaB };
+  };
 
   const eligibleIdeaIds = eligibleIdeas.map((idea) => idea.id);
 
@@ -570,9 +609,14 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
     if (previousWinnerOpponent) {
       await recordDuelExposure(previousWinner.id, previousWinnerOpponent.id, voterId);
 
+      const hydrated = await hydratePair(previousWinner.id, previousWinnerOpponent.id);
+      if (!hydrated) {
+        return { noMoreDuels: true as const };
+      }
+
       return {
-        ideaA: previousWinner,
-        ideaB: previousWinnerOpponent,
+        ideaA: hydrated.ideaA,
+        ideaB: hydrated.ideaB,
         noMoreDuels: false as const,
       };
     }
@@ -628,9 +672,14 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
 
   await recordDuelExposure(outsider.id, opponent.id, voterId);
 
+  const hydrated = await hydratePair(outsider.id, opponent.id);
+  if (!hydrated) {
+    return { noMoreDuels: true as const };
+  }
+
   return {
-    ideaA: outsider,
-    ideaB: opponent,
+    ideaA: hydrated.ideaA,
+    ideaB: hydrated.ideaB,
     noMoreDuels: false as const,
   };
 }

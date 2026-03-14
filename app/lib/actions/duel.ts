@@ -5,9 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/app/lib/db/prisma";
 import {
   markExposureAsVoted,
-  recomputeIdeaAnalytics,
   selectDuelIdeas,
-  syncIdeaLifecycleStatuses,
 } from "@/app/lib/idea-engine";
 
 type IdeaLike = {
@@ -129,11 +127,7 @@ export async function handleVote(winnerId: number, loserId: number, voterId: str
       },
     });
 
-    await Promise.all([
-      markExposureAsVoted(winnerId, loserId, voterId),
-      recomputeIdeaAnalytics(winnerId),
-      recomputeIdeaAnalytics(loserId),
-    ]);
+    await markExposureAsVoted(winnerId, loserId, voterId);
 
     revalidatePath("/leaderboard");
 
