@@ -189,8 +189,6 @@ export default function DuelPage() {
       setShowExitAnimation(true);
 
       const votePromise = handleVote(winnerId, loserId, voterId);
-
-      await new Promise(resolve => setTimeout(resolve, 80));
       
       // Load next duel silently and avoid re-proposing the immediate opponent
       await loadDuel(winnerId, loserId, false);

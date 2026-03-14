@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Clicker_Script } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
+import { PostHogProvider } from "./components/posthog-provider";
+import { PostHogPageView } from "./components/posthog-pageview";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -179,7 +182,12 @@ export default function RootLayout({
       <body
         className={`${jetbrainsMono.variable} ${clickerScript.variable} antialiased bg-slate-950 text-slate-100`}
       >
-        {children}
+        <PostHogProvider>
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          {children}
+        </PostHogProvider>
         <SpeedInsights />
         <Analytics />
       </body>
