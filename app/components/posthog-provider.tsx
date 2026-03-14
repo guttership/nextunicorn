@@ -21,6 +21,17 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageleave: true,
       defaults: '2026-01-30',
     })
+
+    // Ensure a globally accessible instance for debugging in browser console.
+    ;(window as unknown as { posthog?: typeof posthog }).posthog = posthog
+
+    // Send one lightweight runtime probe per browser tab session.
+    if (!sessionStorage.getItem('ph_runtime_probe_sent')) {
+      posthog.capture('posthog_runtime_probe', {
+        host_mode: process.env.NEXT_PUBLIC_POSTHOG_HOST || '/ingest',
+      })
+      sessionStorage.setItem('ph_runtime_probe_sent', '1')
+    }
   }, [])
 
   return <PHProvider client={posthog}>{children}</PHProvider>
