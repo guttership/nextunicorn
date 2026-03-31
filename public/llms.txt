@@ -1,0 +1,39 @@
+# NextUnicorn
+
+> Daily AI-generated SaaS startup ideas, ranked by community votes.
+
+## What is NextUnicorn?
+
+NextUnicorn is a free platform that publishes fresh SaaS startup ideas every day. Each idea enters a head-to-head voting arena where entrepreneurs, developers, and indie hackers decide which concepts have the most potential. The best ideas rise to the top of the leaderboard.
+
+## Key pages
+
+- Homepage (voting arena): https://nextunicorn.app
+- Startup Ideas catalog: https://nextunicorn.app/startup-ideas
+- Trending Startup Ideas: https://nextunicorn.app/trending-startup-ideas
+- AI SaaS Ideas: https://nextunicorn.app/ai-saas-ideas
+- Micro SaaS Ideas: https://nextunicorn.app/micro-saas-ideas
+- Micro SaaS Ideas for Developers: https://nextunicorn.app/micro-saas-ideas-for-developers
+- Leaderboard (Hall of Fame): https://nextunicorn.app/leaderboard
+- Blog: https://nextunicorn.app/blog
+- About: https://nextunicorn.app/about
+- Advertise: https://nextunicorn.app/advertise
+
+## How it works
+
+1. Every day, AI generates 10 new SaaS ideas based on market trends and community voting signals.
+2. Ideas are paired in head-to-head duels. Users swipe or click to choose the stronger concept.
+3. Winning ideas accumulate ranking points. The leaderboard shows the all-time best ideas.
+4. Each idea has a dedicated page with problem statement, target users, business model, features, and community vote statistics.
+
+## Target audience
+
+Entrepreneurs, software developers, indie hackers, startup founders, and anyone looking for validated SaaS product ideas.
+
+## Languages
+
+Content is available in English (primary), French, German, and Spanish.
+
+## Contact
+
+https://nextunicorn.app/contact

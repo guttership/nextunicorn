@@ -129,7 +129,31 @@ export default async function sitemap(
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/blog/how-to-find-next-unicorn-startup-idea`,
+      lastModified: new Date('2025-12-01'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/blog/micro-saas-bootstrappers-guide`,
+      lastModified: new Date('2025-11-17'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/micro-saas-bootstrappers-guide-en`,
+      lastModified: new Date('2025-11-17'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/micro-saas-bootstrappers-guide-de`,
+      lastModified: new Date('2025-11-17'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/micro-saas-bootstrappers-guide-es`,
       lastModified: new Date('2025-11-17'),
       changeFrequency: 'monthly',
       priority: 0.8,

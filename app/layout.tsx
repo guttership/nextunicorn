@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { PostHogProvider } from "./components/posthog-provider";
 import { PostHogPageView } from "./components/posthog-pageview";
+import { GoogleAnalytics } from "./components/google-analytics";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -91,17 +92,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
-    alternates: {
+  alternates: {
     canonical: 'https://nextunicorn.app',
-    languages: {
-      'en-US': 'https://nextunicorn.app',
-      'fr-FR': 'https://nextunicorn.app/fr',
-      'de-DE': 'https://nextunicorn.app/de',
-      'es-ES': 'https://nextunicorn.app/es',
-    },
   },
 };
 
@@ -128,11 +120,6 @@ export default function RootLayout({
       priceCurrency: 'USD',
       description: 'Free unlimited access to AI-generated SaaS ideas'
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '1250'
-    },
     author: {
       '@type': 'Organization',
       name: 'NextUnicorn'
@@ -147,36 +134,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* Google Analytics */}
-          {/* Google Analytics - hydratation safe */}
-          {typeof window !== 'undefined' && process.env.NEXT_PUBLIC_GA_ID && (
-            <>
-              <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-                  `,
-                }}
-              />
-            </>
-          )}
+
         {/* Google AdSense */}
         <script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
           crossOrigin="anonymous"
         ></script>
-        {/* Schema.org JSON-LD - hydratation safe */}
-        {typeof window !== 'undefined' && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-        )}
+        {/* Schema.org JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />
@@ -195,6 +164,7 @@ export default function RootLayout({
         </PostHogProvider>
         <SpeedInsights />
         <Analytics />
+        <GoogleAnalytics />
       </body>
     </html>
   );
