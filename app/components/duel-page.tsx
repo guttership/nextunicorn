@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { getDailyDuel, handleVote } from "@/app/lib/actions/duel";
+import { generateIdeasBatch, getDailyDuel, handleVote } from "@/app/lib/actions/duel";
 import Link from "next/link";
 import { ThumbsUp, X } from "lucide-react";
 import { Language, detectLanguage, t } from "@/app/lib/i18n";
@@ -148,17 +148,16 @@ export default function DuelPage() {
       await new Promise(resolve => setTimeout(resolve, 500));
       
       setGenerationStep(lang === "fr" ? "Génération de nouvelles idées à fort potentiel..." : "Generating new high-potential ideas...");
-      const response = await fetch('/api/ideas/generate', { method: 'POST' });
+      const generationResult = await generateIdeasBatch();
       
-      if (response.ok) {
+      if (generationResult.ok) {
         setGenerationStep(lang === "fr" ? "Mise en ligne des nouvelles idées..." : "Publishing fresh ideas...");
         await loadDuel();
         setGenerating(false);
         setLoading(false);
         setGenerationStep("");
       } else {
-        const result = await response.json();
-        setError(result.error || "Failed to generate ideas");
+        setError(generationResult.error || "Failed to generate ideas");
         setGenerating(false);
         setLoading(false);
         setGenerationStep("");

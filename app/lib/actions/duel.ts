@@ -184,3 +184,48 @@ export async function getIdeaRanking(limit = 10) {
     throw error;
   }
 }
+
+export async function generateIdeasBatch() {
+  try {
+    const apiSecret = process.env.CRON_SECRET || process.env.API_SECRET;
+    const vercelUrl = process.env.VERCEL_URL;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (vercelUrl ? `https://${vercelUrl}` : "http://localhost:3000");
+
+    const headers: Record<string, string> = {};
+    if (apiSecret) {
+      headers.authorization = `Bearer ${apiSecret}`;
+    }
+
+    const response = await fetch(`${baseUrl}/api/ideas/generate`, {
+      method: "POST",
+      headers,
+      cache: "no-store",
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        error:
+          typeof result?.error === "string"
+            ? result.error
+            : "Failed to generate ideas",
+      };
+    }
+
+    return {
+      ok: true,
+      data: result,
+    };
+  } catch (error) {
+    console.error("Error generating ideas batch:", error);
+    return {
+      ok: false,
+      error: "Failed to generate ideas",
+    };
+  }
+}

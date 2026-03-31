@@ -23,7 +23,7 @@ For each idea, provide a JSON object with this exact structure:
   "description": "2-3 sentence description of the problem solved and how (max 200 chars)"
 }
 
-Return ONLY a valid JSON array, no other text. Example format:
+Return ONLY a valid JSON array, no other text. The response MUST be valid JSON. Example format:
 [
   {"title": "IdeaName", "slogan": "The slogan", "description": "Description..."},
   ...
@@ -39,7 +39,7 @@ Focus on:
 - API/infrastructure services
 - Vertical SaaS for specific industries
 
-Generate creative, feasible, and inspiring ideas:`;
+Respond ONLY with a valid JSON array as described above. The word 'json' must appear in your response instructions.`;
 
   const result = await model.generateContent(prompt);
   const text = result.response.text();

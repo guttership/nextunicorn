@@ -135,9 +135,11 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error in idea generation:", error);
+    const errMsg = error instanceof Error ? error.message : String(error);
+    const errStack = error instanceof Error ? error.stack : "";
+    console.error("Error in idea generation:", errMsg, errStack);
     return NextResponse.json(
-      { error: "Failed to generate ideas" },
+      { error: "Failed to generate ideas", details: errMsg },
       { status: 500 }
     );
   }

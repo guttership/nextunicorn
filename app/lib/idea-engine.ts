@@ -199,6 +199,7 @@ export function buildGenerationPrompt(positiveTags: string[] = [], negativeTags:
     `Favor domains such as ${preferred}.`,
     `Reduce or avoid ideas in these categories: ${avoided}.`,
     "Keep some variation, but stay close to segments with strong engagement and clear ROI.",
+    'Generate exactly 10 ideas. Return JSON only in this exact shape: {"ideas": [{"title": "...", "slogan": "Problem it solves", "description": "For [target]. [Why now]", "aiPrompt": "One-sentence usage scenario"}]}.',
   ].join(" ");
 }
 

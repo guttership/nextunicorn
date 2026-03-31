@@ -223,6 +223,11 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = [], gene
     
     const selectedPrompt = generationPrompt || (PROMPT_VARIANT === 'B' ? IDEA_GENERATION_PROMPT_B : IDEA_GENERATION_PROMPT);
 
+    // OpenAI requires the word "json" in messages when using response_format json_object
+    const promptWithJsonHint = selectedPrompt.toLowerCase().includes('json')
+      ? selectedPrompt
+      : selectedPrompt + '\n\nReturn your answer as JSON only.';
+
     const completion = await chatWithFallback(openai, [
       {
         role: "system",
@@ -230,7 +235,7 @@ export async function generateDailySaaSIdeas(existingTitles: string[] = [], gene
       },
       {
         role: "user",
-        content: selectedPrompt + randomContext,
+        content: promptWithJsonHint + randomContext,
       },
     ]);
 

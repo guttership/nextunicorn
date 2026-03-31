@@ -92,13 +92,19 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
       // Get top ideas
       const ideasResponse = await fetch("/api/ranking");
       const ideasData = await ideasResponse.json();
-      setIdeas(ideasData);
+      // Correction : la réponse est un tableau ou un objet ?
+      const ideas = Array.isArray(ideasData)
+        ? ideasData
+        : (ideasData.ranking || ideasData.ideas || []);
+      console.log('[DEBUG] ideasData:', ideasData);
+      console.log('[DEBUG] ideas:', ideas);
+      setIdeas(ideas);
 
       // Get ads
       const adsResponse = await fetch("/api/ads/active?position=left");
       const adsData = await adsResponse.json();
       console.log('[MOBILE] Ads response:', adsData);
-      
+
       // Extract all recto faces from cards
       const adsList: Advertiser[] = [];
       if (adsData.cards && Array.isArray(adsData.cards)) {
@@ -115,7 +121,7 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
       const newStack: IdeaItem[] = [];
       let adIndex = 0;
 
-      ideasData.forEach((idea: Idea, index: number) => {
+      ideas.forEach((idea: Idea, index: number) => {
         newStack.push({ type: "idea", data: idea });
         // Add ad every 3 ideas (rotate through ads if we have any)
         if ((index + 1) % 3 === 0 && adsList.length > 0) {
@@ -124,6 +130,7 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
         }
       });
 
+      console.log('[DEBUG] newStack:', newStack);
       setStack(newStack);
     } catch (error) {
       console.error("Error loading ideas:", error);
