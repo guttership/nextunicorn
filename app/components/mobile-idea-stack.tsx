@@ -143,10 +143,23 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
     if (!voterId) return;
 
     try {
-      await fetch("/api/votes", {
+      const nextIdea = stack
+        .slice(currentIndex + 1)
+        .find((item): item is { type: "idea"; data: Idea } => item.type === "idea" && (item.data as Idea).id !== ideaId);
+
+      if (!nextIdea) {
+        moveToNext();
+        return;
+      }
+
+      await fetch("/api/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ideaId, voterId, value }),
+        body: JSON.stringify({
+          winnerId: value === "up" ? ideaId : (nextIdea.data as Idea).id,
+          loserId: value === "up" ? (nextIdea.data as Idea).id : ideaId,
+          voterId,
+        }),
       });
     } catch (error) {
       console.error("Vote error:", error);

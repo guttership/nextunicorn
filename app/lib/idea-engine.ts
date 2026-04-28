@@ -542,7 +542,7 @@ export async function optimizePromptProfile() {
 }
 
 export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: number, excludeOpponentId?: number) {
-  const eligibleIdeas = await prisma.idea.findMany({
+  const strictEligibleIdeas = await prisma.idea.findMany({
     where: {
       isReserved: false,
       expiresAt: { gt: new Date() },
@@ -563,6 +563,29 @@ export async function selectDuelIdeas(voterId?: string, previousWinnerIdeaId?: n
     ],
     take: 150,
   });
+
+  // Keep duel available even when the lifecycle job has temporarily exhausted ACTIVE/TRENDING ideas.
+  const eligibleIdeas = strictEligibleIdeas.length >= 2
+    ? strictEligibleIdeas
+    : await prisma.idea.findMany({
+        where: {
+          isReserved: false,
+        },
+        select: {
+          id: true,
+          duelExposures: true,
+          totalVotes: true,
+          createdAt: true,
+          winRate: true,
+          status: true,
+          rankingScore: true,
+        },
+        orderBy: [
+          { rankingScore: "desc" },
+          { createdAt: "desc" },
+        ],
+        take: 150,
+      });
 
   if (eligibleIdeas.length < 2) {
     return null;
