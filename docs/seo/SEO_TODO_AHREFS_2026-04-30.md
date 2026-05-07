@@ -1,5 +1,7 @@
 # TODO SEO Ahrefs 2026-04-30
 
+Dernier suivi Git/Vercel: 2026-05-07
+
 ## Maillage interne faible (20+ pages a faible profondeur)
 
 Contrainte respectee: aucun changement visuel n'a ete applique automatiquement pour traiter ce point.
