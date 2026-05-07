@@ -6,6 +6,16 @@ import { addDays, cleanupIdeaLifecycle, deduplicateSimilarIdeas, extractCategory
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max
 
+function isAuthorizedCronRequest(request: Request) {
+  const expectedSecret = process.env.CRON_SECRET || process.env.API_SECRET;
+  if (!expectedSecret) {
+    return process.env.NODE_ENV !== "production";
+  }
+
+  const providedSecret = request.headers.get("authorization")?.replace("Bearer ", "");
+  return providedSecret === expectedSecret;
+}
+
 // Helper function to retry database operations (for Neon cold starts)
 async function retryOperation<T>(
   operation: () => Promise<T>,
@@ -15,9 +25,9 @@ async function retryOperation<T>(
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await operation();
-    } catch (error: any) {
+    } catch (error) {
       const isLastRetry = i === maxRetries - 1;
-      const errorMessage = error?.message || String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       
       // Log the error
       console.log(`[CRON] Attempt ${i + 1}/${maxRetries} failed: ${errorMessage}`);
@@ -49,7 +59,11 @@ async function ensureDatabaseConnection(maxRetries = 3): Promise<void> {
   );
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (!isAuthorizedCronRequest(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     console.log('[CRON] Starting daily update...');
     const startTime = Date.now();

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { IdeaStatus } from "@prisma/client";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import { prisma } from "@/app/lib/db/prisma";
 import { buildIdeaSlug, parseIdeaIdFromSlug } from "@/app/lib/idea-slugs";
+import { absoluteUrl } from "@/app/lib/seo";
 import IdeaShareActions from "@/app/components/idea-share-actions";
 
 type IdeaDetailPageProps = {
@@ -136,13 +137,13 @@ export async function generateMetadata({ params }: IdeaDetailPageProps): Promise
       ...idea.categoryTags,
     ],
     alternates: {
-      canonical: `https://nextunicorn.app/startup-ideas/${canonicalSlug}`,
+      canonical: absoluteUrl(`/startup-ideas/${canonicalSlug}`),
     },
     openGraph: {
       title,
       description,
       type: "article",
-      url: `https://nextunicorn.app/startup-ideas/${canonicalSlug}`,
+      url: absoluteUrl(`/startup-ideas/${canonicalSlug}`),
     },
     twitter: {
       card: "summary_large_image",
@@ -180,13 +181,16 @@ export default async function StartupIdeaDetailPage({ params }: IdeaDetailPagePr
   }
 
   const canonicalSlug = buildIdeaSlug({ id: idea.id, title: idea.title });
+  if (slug !== canonicalSlug) {
+    permanentRedirect(`/startup-ideas/${canonicalSlug}`);
+  }
   const relatedIdeas = await getRelatedIdeas(idea.id, idea.categoryTags);
   const targetUsers = idea.audience?.trim() || "Founders, operators, and developers looking for a focused SaaS opportunity.";
   const tags = idea.categoryTags.length > 0 ? idea.categoryTags : ["startup", "saas"];
   const keywordLine = tags.map(toLabel).join(", ");
   const roundedWinRate = `${Math.round(idea.winRate * 100)}%`;
   const status = statusLabel(idea.status);
-  const canonicalUrl = `https://nextunicorn.app/startup-ideas/${canonicalSlug}`;
+  const canonicalUrl = absoluteUrl(`/startup-ideas/${canonicalSlug}`);
   const copyablePitch = `${idea.title} helps teams solve operational bottlenecks around ${keywordLine.toLowerCase()} with a focused SaaS workflow that reduces manual effort and improves consistency.`;
 
   const jsonLd = [
@@ -198,7 +202,7 @@ export default async function StartupIdeaDetailPage({ params }: IdeaDetailPagePr
           "@type": "ListItem",
           position: 1,
           name: "Startup Ideas",
-          item: "https://nextunicorn.app/startup-ideas",
+          item: absoluteUrl('/startup-ideas'),
         },
         {
           "@type": "ListItem",

@@ -9,7 +9,6 @@ import { Language, detectLanguage, t, formatPrice } from "@/app/lib/i18n";
 import { getTranslatedIdea } from "@/app/lib/ideas-translations";
 import { LanguageSelector } from "@/app/components/language-selector";
 import Image from "next/image";
-import { Card } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 
 interface RankedIdea {

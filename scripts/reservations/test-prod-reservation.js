@@ -1,5 +1,11 @@
 const https = require('https');
 
+const adminSecret = process.env.ADMIN_PASSWORD || process.env.CRON_SECRET;
+if (!adminSecret) {
+  console.error('ADMIN_PASSWORD or CRON_SECRET is required to call /api/test-webhook.');
+  process.exit(1);
+}
+
 // Simuler une réservation en production en appelant directement l'endpoint de test
 const data = JSON.stringify({
   ideaId: 30,
@@ -13,7 +19,8 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Content-Length': data.length
+    'Content-Length': data.length,
+    'x-admin-secret': adminSecret
   }
 };
 

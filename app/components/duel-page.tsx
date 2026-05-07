@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { generateIdeasBatch, getDailyDuel, handleVote } from "@/app/lib/actions/duel";
@@ -60,16 +60,6 @@ export default function DuelPage() {
     return "";
   });
 
-  useEffect(() => {
-    setLang(detectLanguage());
-    loadDuel();
-  }, []);
-
-  // Trigger entry animation when new duel loads (no loserCard, not loading)
-  const isEntering = duel && loserCard === null && !loading;
-  // Exit animation ONLY when showExitAnimation is true
-  const isExiting = showExitAnimation;
-
   const getIdeaText = (idea: Idea) => {
     // Try manual translations first
     const translated = getTranslatedIdea(idea.aiPromptId, lang);
@@ -99,7 +89,7 @@ export default function DuelPage() {
     };
   };
 
-  const loadDuel = async (excludeId?: number, excludeOpponentId?: number, showLoading = true) => {
+  const loadDuel = useCallback(async (excludeId?: number, excludeOpponentId?: number, showLoading = true) => {
     try {
       if (showLoading) setLoading(true);
       setError(null);
@@ -132,7 +122,17 @@ export default function DuelPage() {
     } finally {
       if (showLoading) setLoading(false);
     }
-  };
+  }, [voterId]);
+
+  useEffect(() => {
+    setLang(detectLanguage());
+    loadDuel();
+  }, [loadDuel]);
+
+  // Trigger entry animation when new duel loads (no loserCard, not loading)
+  const isEntering = duel && loserCard === null && !loading;
+  // Exit animation ONLY when showExitAnimation is true
+  const isExiting = showExitAnimation;
 
   const handleGenerateIdeas = async () => {
     try {
@@ -659,6 +659,7 @@ export default function DuelPage() {
             rel="noopener noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="https://cdn-b.saashub.com/img/badges/approved-color.png?v=1" 
               alt="NextUnicorn App badge" 
@@ -673,6 +674,7 @@ export default function DuelPage() {
             rel="noopener noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1046541&theme=dark&t=1764944139684" 
               alt="NextUnicorn - Tinder for SaaS ideas - Vote & discover tomorrow's unicorns | Product Hunt" 

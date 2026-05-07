@@ -30,6 +30,10 @@ interface Advertiser {
   targetUrl: string;
 }
 
+interface AdsCard {
+  recto?: Advertiser | null;
+}
+
 interface IdeaItem {
   type: "idea" | "ad";
   data: Idea | Advertiser;
@@ -41,8 +45,6 @@ interface MobileIdeaStackProps {
 }
 
 export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
-  const [ads, setAds] = useState<Advertiser[]>([]);
   const [stack, setStack] = useState<IdeaItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -98,7 +100,6 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
         : (ideasData.ranking || ideasData.ideas || []);
       console.log('[DEBUG] ideasData:', ideasData);
       console.log('[DEBUG] ideas:', ideas);
-      setIdeas(ideas);
 
       // Get ads
       const adsResponse = await fetch("/api/ads/active?position=left");
@@ -108,14 +109,13 @@ export function MobileIdeaStack({ lang, voterId }: MobileIdeaStackProps) {
       // Extract all recto faces from cards
       const adsList: Advertiser[] = [];
       if (adsData.cards && Array.isArray(adsData.cards)) {
-        adsData.cards.forEach((card: any) => {
+        (adsData.cards as AdsCard[]).forEach((card) => {
           if (card.recto && card.recto.id) {
             adsList.push(card.recto);
           }
         });
       }
       console.log('[MOBILE] Extracted ads:', adsList);
-      setAds(adsList);
 
       // Build stack
       const newStack: IdeaItem[] = [];

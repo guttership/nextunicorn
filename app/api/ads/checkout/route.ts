@@ -37,19 +37,24 @@ export async function POST(request: Request) {
     }
 
     // Build line items
-    const lineItems: any = [
+    const priceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
+      currency: "usd",
+      product_data: {
+        name: `NextUnicorn Ad Spot #${pricing.currentSpot}`,
+        description: plan === "one-shot"
+          ? "One-time 30-day ad spot"
+          : `${plan === "yearly" ? "Yearly" : "Monthly"} subscription - cancel anytime`,
+      },
+      unit_amount: amount * 100, // Convert to cents
+    };
+
+    if (isSubscription && interval) {
+      priceData.recurring = { interval };
+    }
+
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: `NextUnicorn Ad Spot #${pricing.currentSpot}`,
-            description: plan === "one-shot" 
-              ? "One-time 30-day ad spot"
-              : `${plan === "yearly" ? "Yearly" : "Monthly"} subscription - cancel anytime`,
-          },
-          unit_amount: amount * 100, // Convert to cents
-          ...(isSubscription && { recurring: { interval } }),
-        },
+        price_data: priceData,
         quantity: 1,
       },
     ];

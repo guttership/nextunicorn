@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { PostHogProvider } from "./components/posthog-provider";
 import { PostHogPageView } from "./components/posthog-pageview";
 import { GoogleAnalytics } from "./components/google-analytics";
+import { SITE_URL, absoluteUrl } from "@/app/lib/seo";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -21,7 +22,7 @@ const clickerScript = Clicker_Script({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nextunicorn.app'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'NextUnicorn - Find Your Next Unicorn Startup Idea | SaaS Ideas for Developers',
     template: '%s | NextUnicorn'
@@ -93,7 +94,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://nextunicorn.app',
+    canonical: absoluteUrl('/'),
   },
 };
 
@@ -108,7 +109,7 @@ export default function RootLayout({
     name: 'NextUnicorn',
     applicationCategory: 'BusinessApplication',
     description: 'Free repository of AI-generated SaaS ideas for entrepreneurs, developers, and indie hackers. Discover validated startup ideas daily.',
-    url: 'https://nextunicorn.app',
+    url: absoluteUrl('/'),
     operatingSystem: 'Any',
     audience: {
       '@type': 'Audience',
@@ -123,11 +124,6 @@ export default function RootLayout({
     author: {
       '@type': 'Organization',
       name: 'NextUnicorn'
-    },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://nextunicorn.app/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string'
     }
   };
 

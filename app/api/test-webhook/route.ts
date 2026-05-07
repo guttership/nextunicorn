@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { isAdminRequest, unauthorizedAdminResponse } from "@/app/api/admin/_auth";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
+  if (!isAdminRequest(request)) {
+    return unauthorizedAdminResponse();
+  }
+
   try {
     const { ideaId, email } = await request.json();
 

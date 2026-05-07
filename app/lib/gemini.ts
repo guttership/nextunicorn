@@ -72,12 +72,24 @@ function oneLine(input: string) {
   return (input || "").replace(/\s+/g, " ").replace(/[\n\r]+/g, " ").trim();
 }
 
-function normalizeGeneratedIdea(raw: any) {
-  const title = oneLine(raw?.title || "").slice(0, 80);
-  const slogan = oneLine(raw?.slogan || raw?.problem || title).slice(0, 140);
-  const descriptionBase = raw?.description || raw?.problem || slogan;
+type RawGeneratedIdea = {
+  title?: unknown;
+  slogan?: unknown;
+  problem?: unknown;
+  description?: unknown;
+  aiPrompt?: unknown;
+};
+
+function asString(value: unknown) {
+  return typeof value === "string" ? value : "";
+}
+
+function normalizeGeneratedIdea(raw: RawGeneratedIdea) {
+  const title = oneLine(asString(raw.title)).slice(0, 80);
+  const slogan = oneLine(asString(raw.slogan) || asString(raw.problem) || title).slice(0, 140);
+  const descriptionBase = asString(raw.description) || asString(raw.problem) || slogan;
   const description = trimToWords(oneLine(descriptionBase), DESCRIPTION_MAX_WORDS);
-  const aiPrompt = oneLine(raw?.aiPrompt || description || slogan).slice(0, 220);
+  const aiPrompt = oneLine(asString(raw.aiPrompt) || description || slogan).slice(0, 220);
 
   return { title, slogan, description, aiPrompt };
 }
@@ -160,7 +172,14 @@ ${JSON.stringify(payload)}`;
   const parsed = JSON.parse(raw);
   const rows = Array.isArray(parsed?.translations) ? parsed.translations : [];
 
-  const byId = new Map<number, any>();
+  type TranslationRow = {
+    id?: unknown;
+    fr?: Partial<Omit<GeneratedIdea, "translations">>;
+    de?: Partial<Omit<GeneratedIdea, "translations">>;
+    es?: Partial<Omit<GeneratedIdea, "translations">>;
+  };
+
+  const byId = new Map<number, TranslationRow>();
   for (const row of rows) {
     if (typeof row?.id === "number") {
       byId.set(row.id, row);

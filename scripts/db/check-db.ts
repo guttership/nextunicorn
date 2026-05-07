@@ -5,7 +5,7 @@ async function main() {
 
   try {
     // Test connection
-    const result = await prisma.$queryRaw`SELECT 1`;
+    await prisma.$queryRaw`SELECT 1`;
     console.log("Database connection successful");
 
     // Count ideas

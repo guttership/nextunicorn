@@ -1,14 +1,11 @@
 import "dotenv/config.js";
 import * as fs from "fs";
 import * as path from "path";
-import { fileURLToPath } from "url";
 import { OpenRouter } from "@openrouter/sdk";
 import { PrismaClient } from "@prisma/client";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 // Load .env.local manually
-const envPath = path.join(__dirname, ".env.local");
+const envPath = path.join(process.cwd(), ".env.local");
 const envContent = fs.readFileSync(envPath, "utf-8");
 envContent.split("\n").forEach((line) => {
   const [key, value] = line.split("=");

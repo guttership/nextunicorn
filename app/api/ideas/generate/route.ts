@@ -3,19 +3,19 @@ import { generateDailySaaSIdeas } from "@/app/lib/gemini";
 import { prisma } from "@/app/lib/db/prisma";
 import { addDays, extractCategoryTags, optimizePromptProfile } from "@/app/lib/idea-engine";
 
-// Secret key for API protection (should match CRON_SECRET in .env)
-const API_SECRET = process.env.CRON_SECRET || process.env.API_SECRET;
+function isAuthorizedGenerationRequest(request: NextRequest) {
+  const expectedSecret = process.env.CRON_SECRET || process.env.API_SECRET;
+  if (!expectedSecret) {
+    return process.env.NODE_ENV !== "production";
+  }
+
+  const providedSecret = request.headers.get("authorization")?.replace("Bearer ", "");
+  return providedSecret === expectedSecret;
+}
 
 export async function POST(request: NextRequest) {
   try {
-    // Check authorization
-    const authHeader = request.headers.get("authorization");
-    const providedSecret = authHeader?.replace("Bearer ", "");
-    
-    // Also check for Vercel Cron header
-    const isVercelCron = request.headers.get("x-vercel-cron") === "true";
-    
-    if (!isVercelCron && providedSecret !== API_SECRET) {
+    if (!isAuthorizedGenerationRequest(request)) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }

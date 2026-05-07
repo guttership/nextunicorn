@@ -73,12 +73,12 @@ Créer un fichier `.env.example` pour documenter les variables nécessaires :
 
 ```env
 # OpenAI API Key (required for idea generation)
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=<openai-api-key>
 
 # Stripe (required for payments)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=<stripe-publishable-key>
+STRIPE_SECRET_KEY=<stripe-secret-key>
+STRIPE_WEBHOOK_SECRET=<stripe-webhook-secret>
 
 # Database (Vercel Postgres when deployed)
 DATABASE_URL=postgresql://...
@@ -92,10 +92,10 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 Copier `.env.example` → `.env.local` et remplir avec tes vraies clés :
 
 ```env
-OPENAI_API_KEY=sk-proj-xxxxxxxxxx
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxx
-STRIPE_SECRET_KEY=sk_test_xxxxxxxxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxx
+OPENAI_API_KEY=<openai-api-key>
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=<stripe-test-publishable-key>
+STRIPE_SECRET_KEY=<stripe-test-secret-key>
+STRIPE_WEBHOOK_SECRET=<stripe-test-webhook-secret>
 DATABASE_URL=file:./nextunicorn.db
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
@@ -207,10 +207,10 @@ git push -u origin main
 Dans "Environment Variables" section, ajoute :
 
 ```
-OPENAI_API_KEY = sk-proj-xxxxxxxxxx
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = pk_live_xxxxxxxxxx
-STRIPE_SECRET_KEY = sk_live_xxxxxxxxxx
-STRIPE_WEBHOOK_SECRET = whsec_xxxxxxxxxx
+OPENAI_API_KEY = <openai-api-key>
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = <stripe-live-publishable-key>
+STRIPE_SECRET_KEY = <stripe-live-secret-key>
+STRIPE_WEBHOOK_SECRET = <stripe-live-webhook-secret>
 DATABASE_URL = (on va le générer après)
 NEXT_PUBLIC_APP_URL = https://nextunicorn.vercel.app
 ```

@@ -90,8 +90,9 @@ export async function POST(request: NextRequest) {
     const preferredModel = process.env.OPENAI_MODEL;
     const modelCandidates = [preferredModel, "gpt-5-mini", "gpt-4o-mini", "gpt-4-mini"].filter(Boolean) as string[];
 
-    async function callChatWithFallback(opts: { messages: any[]; response_format?: any }) {
-      let lastErr: any;
+    type ChatCreateParams = Parameters<typeof openai.chat.completions.create>[0];
+    async function callChatWithFallback(opts: { messages: ChatCreateParams["messages"]; response_format?: ChatCreateParams["response_format"] }) {
+      let lastErr: unknown;
       for (const candidate of modelCandidates) {
         try {
           console.log(`Trying model: ${candidate}`);
@@ -99,11 +100,12 @@ export async function POST(request: NextRequest) {
           console.log(`Model ${candidate} succeeded`);
           // attach used model for debugging
           return { response: resp, model: candidate };
-        } catch (err: any) {
+        } catch (err) {
           lastErr = err;
           // If OpenAI returns model_not_found, try next candidate
-          const code = err?.code || err?.status || err?.response?.status;
-          const message = String(err?.message || "");
+          const maybeError = err as { code?: unknown; status?: unknown; response?: { status?: unknown }; message?: unknown };
+          const code = maybeError.code || maybeError.status || maybeError.response?.status;
+          const message = String(maybeError.message || "");
           if (message?.includes("model_not_found") || code === 404 || /model .* not found/i.test(message)) {
             console.warn(`Model ${candidate} not available, trying next candidate`);
             continue;
@@ -146,14 +148,20 @@ export async function POST(request: NextRequest) {
     const translationPromptLangs = targetLangs.map((l) => `"${l}"`).join(", ");
     const translationPrompt = `Translate the provided title, slogan and description into JSON for the following languages: [${translationPromptLangs}].\n\nReturn JSON in the form:\n{ "fr": {"title":"..","slogan":"..","description":"..","aiPrompt":".."}, ... }\n\nOriginal:\nTitle: ${title}\nSlogan: ${slogan}\nDescription: ${description}`;
 
-    let translations: Record<string, any> = {};
+    type TranslationValue = {
+      title?: string;
+      slogan?: string;
+      description?: string;
+      aiPrompt?: string;
+    };
+    let translations: Record<string, TranslationValue> = {};
     try {
       console.log("Requesting translations");
       const { response: translationResponse, model: translationModel } = await callChatWithFallback({ messages: [{ role: "user", content: translationPrompt }], response_format: { type: "json_object" } });
       console.log("Translation model used:", translationModel);
       const content = translationResponse.choices?.[0]?.message?.content;
       console.log("Translation raw response:", content);
-      translations = typeof content === "string" ? JSON.parse(content || "{}") : (content || {});
+      translations = typeof content === "string" ? JSON.parse(content || "{}") : {};
       console.log("Parsed translations keys:", Object.keys(translations));
       // Normalize keys like 'fr-FR' -> 'fr'
       for (const key of Object.keys(translations)) {

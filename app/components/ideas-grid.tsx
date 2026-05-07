@@ -39,7 +39,10 @@ export default function IdeasGrid({ ideas, lang }: IdeasGridProps) {
   };
 
   // Build grid with ads every 3 items
-  const gridItems: Array<{ type: "idea" | "ad"; content: any; key: string }> = [];
+  const gridItems: Array<
+    | { type: "idea"; content: Idea; key: string }
+    | { type: "ad"; content: number; key: string }
+  > = [];
   let adIndex = 0;
 
   ideas.forEach((idea, index) => {

@@ -30,7 +30,7 @@ async function simulateReservation() {
   console.log('3. Le total d\'idées devrait être réduit de 1');
   
   console.log('\n🔄 Pour annuler la réservation (remettre l\'idée en ligne) :');
-  console.log('   node unreserve-idea.js');
+  console.log('   node scripts/reservations/unreserve-idea.js');
   
   await prisma.$disconnect();
 }

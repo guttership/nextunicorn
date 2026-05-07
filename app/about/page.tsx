@@ -1,12 +1,18 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { absoluteUrl } from "@/app/lib/seo";
+
 export const metadata: Metadata = {
   title: "About NextUnicorn - The Story Behind the Battle Arena for SaaS Ideas",
   description: "Learn how NextUnicorn was created to help entrepreneurs validate startup ideas through community voting. Discover the mission, vision, and the team behind this innovative platform.",
+  alternates: {
+    canonical: absoluteUrl('/about'),
+  },
   openGraph: {
     title: "About NextUnicorn - The Story Behind the Battle Arena",
     description: "The mission to democratize startup idea validation through AI and community wisdom.",
+    url: absoluteUrl('/about'),
   },
 };
 

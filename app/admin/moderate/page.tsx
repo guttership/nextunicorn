@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Card } from "@/app/components/ui/card";
 
@@ -16,27 +16,43 @@ interface PendingAd {
 export default function ModeratePage() {
   const [pendingAds, setPendingAds] = useState<PendingAd[]>([]);
   const [password, setPassword] = useState("");
+  const [adminSecret, setAdminSecret] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const checkAuth = () => {
-    // Simple password check (à remplacer par un vrai système d'auth)
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD || password === "admin123") {
+  const loadPendingAds = useCallback(async (secret: string) => {
+    const response = await fetch("/api/admin/pending-ads", {
+      headers: { "x-admin-secret": secret },
+    });
+
+    if (!response.ok) {
+      setIsAuthenticated(false);
+      setAdminSecret("");
+      return false;
+    }
+
+    const data = await response.json();
+    setPendingAds(data.ads || []);
+    return true;
+  }, []);
+
+  const checkAuth = async () => {
+    const isValid = await loadPendingAds(password);
+    if (isValid) {
+      setAdminSecret(password);
       setIsAuthenticated(true);
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetch("/api/admin/pending-ads")
-        .then((res) => res.json())
-        .then((data) => setPendingAds(data.ads || []));
+    if (isAuthenticated && adminSecret) {
+      void loadPendingAds(adminSecret);
     }
-  }, [isAuthenticated]);
+  }, [adminSecret, isAuthenticated, loadPendingAds]);
 
   const handleApprove = async (id: number) => {
     await fetch("/api/admin/approve-ad", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-secret": adminSecret },
       body: JSON.stringify({ id, approved: true }),
     });
     setPendingAds(pendingAds.filter((ad) => ad.id !== id));
@@ -45,7 +61,7 @@ export default function ModeratePage() {
   const handleReject = async (id: number) => {
     await fetch("/api/admin/approve-ad", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-secret": adminSecret },
       body: JSON.stringify({ id, approved: false }),
     });
     setPendingAds(pendingAds.filter((ad) => ad.id !== id));

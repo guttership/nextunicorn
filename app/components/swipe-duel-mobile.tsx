@@ -92,49 +92,48 @@ export function SwipeDuelMobile({
     setIsDragging(true);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const currentX = e.clientX;
-    const diff = currentX - startX;
-    setTranslateX(diff);
-
-    if (diff > 50) {
-      setSwipeDirection("right");
-    } else if (diff < -50) {
-      setSwipeDirection("left");
-    } else {
-      setSwipeDirection(null);
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    if (translateX > 100) {
-      setTranslateX(0);
-      setSwipeDirection(null);
-      onVote("A");
-    } else if (translateX < -100) {
-      setTranslateX(0);
-      setSwipeDirection(null);
-      onVote("B");
-    } else {
-      setTranslateX(0);
-      setSwipeDirection(null);
-    }
-  };
-
   useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove as any);
-      window.addEventListener("mouseup", handleMouseUp);
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove as any);
-        window.removeEventListener("mouseup", handleMouseUp);
-      };
+    if (!isDragging) {
+      return;
     }
-  }, [isDragging, startX, translateX]);
+
+    const handleWindowMouseMove = (event: MouseEvent) => {
+      const diff = event.clientX - startX;
+      setTranslateX(diff);
+
+      if (diff > 50) {
+        setSwipeDirection("right");
+      } else if (diff < -50) {
+        setSwipeDirection("left");
+      } else {
+        setSwipeDirection(null);
+      }
+    };
+
+    const handleWindowMouseUp = () => {
+      setIsDragging(false);
+
+      if (translateX > 100) {
+        setTranslateX(0);
+        setSwipeDirection(null);
+        onVote("A");
+      } else if (translateX < -100) {
+        setTranslateX(0);
+        setSwipeDirection(null);
+        onVote("B");
+      } else {
+        setTranslateX(0);
+        setSwipeDirection(null);
+      }
+    };
+
+    window.addEventListener("mousemove", handleWindowMouseMove);
+    window.addEventListener("mouseup", handleWindowMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleWindowMouseMove);
+      window.removeEventListener("mouseup", handleWindowMouseUp);
+    };
+  }, [isDragging, onVote, startX, translateX]);
 
   return (
     <div

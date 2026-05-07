@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
-
 const commands = {
   setup: {
     desc: "Configuration initiale du projet",

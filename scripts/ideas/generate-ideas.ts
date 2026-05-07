@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import OpenAI from "openai";
 
-import { addDays, extractCategoryTags } from "../app/lib/idea-engine";
+import { addDays, extractCategoryTags } from "@/app/lib/idea-engine";
 
 const prisma = new PrismaClient();
 const openai = new OpenAI({

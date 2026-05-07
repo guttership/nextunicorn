@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import Link from "next/link";
-import { Language, detectLanguage, t } from "@/app/lib/i18n";
+import { Language, detectLanguage } from "@/app/lib/i18n";
 import { LanguageSelector } from "@/app/components/language-selector";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 

@@ -1,13 +1,18 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { absoluteUrl } from "@/app/lib/seo";
+
 export const metadata: Metadata = {
   title: "Contact Us - NextUnicorn",
   description: "Get in touch with the NextUnicorn team. We'd love to hear your feedback, answer your questions, or discuss partnership opportunities.",
+  alternates: {
+    canonical: absoluteUrl('/contact'),
+  },
   openGraph: {
     title: "Contact Us - NextUnicorn",
     description: "Get in touch with the NextUnicorn team. We'd love to hear your feedback, answer your questions, or discuss partnership opportunities.",
-    url: "https://nextunicorn.app/contact",
+    url: absoluteUrl('/contact'),
     siteName: "NextUnicorn",
     locale: "en_US",
     type: "website",
