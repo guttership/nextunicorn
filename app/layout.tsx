@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     default: 'NextUnicorn - Find Your Next Unicorn Startup Idea | SaaS Ideas for Developers',
     template: '%s | NextUnicorn'
   },
-  description: 'Discover your next unicorn startup idea with daily AI-generated SaaS concepts. Build the next unicorn app from our repository of validated, profitable business ideas for developers and entrepreneurs. Free forever.',
+  description: 'Discover AI-generated SaaS startup ideas, ranked by community votes. Explore validated concepts for founders, developers, and indie hackers.',
   keywords: [
     'next unicorn',
     'next unicorn startup',

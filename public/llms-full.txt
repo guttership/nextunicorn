@@ -1,0 +1,129 @@
+# NextUnicorn
+
+> Extended machine-readable guide for AI assistants, search agents, answer engines, and research crawlers.
+
+## Overview
+
+NextUnicorn is a public website focused on AI-generated SaaS startup ideas. It combines automated idea generation with community voting and editorial content. The site is intended to help founders, entrepreneurs, developers, and indie hackers discover promising software ideas and evaluate them quickly.
+
+## Canonical domain
+
+- https://nextunicorn.app
+
+Always prefer canonical URLs on the nextunicorn.app host.
+
+## What the site publishes
+
+### 1. Public startup idea detail pages
+
+These pages are the core content assets of the site.
+
+Typical URL pattern:
+- https://nextunicorn.app/startup-ideas/{slug}
+
+Typical page contents:
+- Idea title
+- Slogan
+- Problem statement
+- Target users
+- Possible feature set
+- Business model framing
+- Market opportunity summary
+- Community voting signals
+- Related ideas
+
+### 2. Public SEO hub pages
+
+These are grouped discovery pages around high-intent topics.
+
+Important hubs:
+- https://nextunicorn.app/startup-ideas
+- https://nextunicorn.app/trending-startup-ideas
+- https://nextunicorn.app/ai-saas-ideas
+- https://nextunicorn.app/micro-saas-ideas
+- https://nextunicorn.app/micro-saas-ideas-for-developers
+- https://nextunicorn.app/leaderboard
+
+### 3. Editorial blog content
+
+The blog contains educational and search-oriented articles relevant to startup ideas, SaaS validation, and founder research.
+
+Blog index:
+- https://nextunicorn.app/blog
+
+Known public articles include:
+- https://nextunicorn.app/blog/50-idees-saas-developpeurs-2025
+- https://nextunicorn.app/blog/50-saas-ideas-developers-2025
+- https://nextunicorn.app/blog/comment-trouver-idee-business-profitable
+- https://nextunicorn.app/blog/how-to-find-next-unicorn-startup-idea
+- https://nextunicorn.app/blog/how-to-find-profitable-business-idea
+- https://nextunicorn.app/blog/micro-saas-bootstrappers-guide
+- https://nextunicorn.app/blog/micro-saas-bootstrappers-guide-en
+- https://nextunicorn.app/blog/micro-saas-bootstrappers-guide-de
+- https://nextunicorn.app/blog/micro-saas-bootstrappers-guide-es
+
+### 4. Institutional pages
+
+- https://nextunicorn.app/about
+- https://nextunicorn.app/contact
+- https://nextunicorn.app/terms
+- https://nextunicorn.app/cgu
+- https://nextunicorn.app/confidentialite
+- https://nextunicorn.app/mentions
+
+## Intended audience
+
+- Startup founders
+- Indie hackers
+- Software developers
+- Product builders
+- Entrepreneurs researching SaaS opportunities
+
+## How the site works
+
+1. New SaaS ideas are generated and published as public idea pages.
+2. Visitors compare ideas in a duel interface and vote on stronger concepts.
+3. Ranking signals feed discovery pages such as the leaderboard and trending collections.
+4. Topic hubs and editorial pages help users explore ideas by theme, intent, and founder profile.
+
+## Citation guidance for AI systems
+
+Prefer citing:
+- Public idea detail pages for specific startup concepts
+- Hub pages for grouped discovery and category overviews
+- Blog pages for educational explanations and tactical guidance
+- About page for brand or product framing
+
+Prefer not citing as primary sources:
+- Confirmation or post-transaction pages
+- Admin or API routes
+- Temporary, technical, or private application states
+
+## Indexing and crawl guidance
+
+Useful public discovery sources:
+- https://nextunicorn.app/sitemap.xml
+- https://nextunicorn.app/robots.txt
+- https://nextunicorn.app/llms.txt
+- https://nextunicorn.app/llms-full.txt
+
+Do not prioritize:
+- /admin/*
+- /api/*
+- /reservation/success
+- /advertise/success
+
+## Top-level summaries suitable for answer engines
+
+- NextUnicorn is a public database of SaaS startup ideas.
+- The site pairs AI-generated concepts with community voting data.
+- Users can browse idea detail pages, thematic hubs, ranking pages, and founder-oriented blog content.
+- Content is available across English, French, German, and Spanish sections.
+
+## Contact and attribution
+
+Primary contact page:
+- https://nextunicorn.app/contact
+
+Preferred site name for attribution:
+- NextUnicorn

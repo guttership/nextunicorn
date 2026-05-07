@@ -5,7 +5,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 
 import { prisma } from "@/app/lib/db/prisma";
 import { buildIdeaSlug, parseIdeaIdFromSlug } from "@/app/lib/idea-slugs";
-import { absoluteUrl } from "@/app/lib/seo";
+import { absoluteUrl, truncateMetaDescription } from "@/app/lib/seo";
 import IdeaShareActions from "@/app/components/idea-share-actions";
 
 type IdeaDetailPageProps = {
@@ -124,7 +124,10 @@ export async function generateMetadata({ params }: IdeaDetailPageProps): Promise
 
   const canonicalSlug = buildIdeaSlug({ id: idea.id, title: idea.title });
   const title = `${idea.title} — SaaS Startup Idea | NextUnicorn`;
-  const description = `${idea.slogan} Explore this startup idea, target users, market opportunity, business model, and live community votes on NextUnicorn.`;
+  const canonicalUrl = absoluteUrl(`/startup-ideas/${canonicalSlug}`);
+  const description = truncateMetaDescription(
+    `${idea.slogan} Explore this startup idea with target users, business model, and community vote signals on NextUnicorn.`
+  );
 
   return {
     title,
@@ -137,18 +140,30 @@ export async function generateMetadata({ params }: IdeaDetailPageProps): Promise
       ...idea.categoryTags,
     ],
     alternates: {
-      canonical: absoluteUrl(`/startup-ideas/${canonicalSlug}`),
+      canonical: canonicalUrl,
     },
     openGraph: {
       title,
       description,
       type: "article",
-      url: absoluteUrl(`/startup-ideas/${canonicalSlug}`),
+      url: canonicalUrl,
+      siteName: "NextUnicorn",
+      locale: "en_US",
+      images: [
+        {
+          url: absoluteUrl('/og-image.png'),
+          width: 1200,
+          height: 630,
+          alt: `${idea.title} - Startup idea on NextUnicorn`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [absoluteUrl('/og-image.png')],
+      creator: "@nextunicorn",
     },
   };
 }
