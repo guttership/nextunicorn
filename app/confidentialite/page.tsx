@@ -26,6 +26,12 @@ export default function Confidentialite() {
           <p>Email: designmoiunmouton@gmail.com</p>
         </section>
       </div>
+      <div className="max-w-4xl mx-auto px-4 pb-8 font-mono text-xs text-slate-500 flex gap-6 flex-wrap">
+        <Link href="/cgu" className="hover:text-pink-500">CGU</Link>
+        <Link href="/mentions" className="hover:text-pink-500">Mentions légales</Link>
+        <Link href="/contact" className="hover:text-pink-500">Contact</Link>
+        <Link href="/startup-ideas" className="hover:text-pink-500">Idées de startup</Link>
+      </div>
     </div>
   );
 }

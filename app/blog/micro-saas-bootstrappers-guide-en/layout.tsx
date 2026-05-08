@@ -5,12 +5,6 @@ export const metadata: Metadata = {
   description: "How to launch a profitable micro-SaaS without raising funds or a team. Complete playbook from 0 to $5k MRR solo. B2B strategies, pricing, distribution.",
   alternates: {
     canonical: "https://nextunicorn.app/blog/micro-saas-bootstrappers-guide-en",
-    languages: {
-      'fr': '/blog/micro-saas-bootstrappers-guide',
-      'en': '/blog/micro-saas-bootstrappers-guide-en',
-      'de': '/blog/micro-saas-bootstrappers-guide-de',
-      'es': '/blog/micro-saas-bootstrappers-guide-es',
-    }
   },
   openGraph: {
     title: "Micro-SaaS for Bootstrappers: Complete Guide",

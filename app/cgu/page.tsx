@@ -119,6 +119,12 @@ export default function CGU() {
         <section className="border-t border-slate-700 pt-6 mt-8">
           <p className="text-slate-500 text-xs">En utilisant cette Plateforme, vous reconnaissez avoir lu, compris et accepté intégralement les présentes conditions générales d&apos;utilisation.</p>
         </section>
+        <section className="flex gap-6 flex-wrap pt-4">
+          <Link href="/confidentialite" className="text-slate-500 hover:text-pink-500 text-xs">Politique de confidentialité</Link>
+          <Link href="/mentions" className="text-slate-500 hover:text-pink-500 text-xs">Mentions légales</Link>
+          <Link href="/contact" className="text-slate-500 hover:text-pink-500 text-xs">Contact</Link>
+          <Link href="/startup-ideas" className="text-slate-500 hover:text-pink-500 text-xs">Idées de startup</Link>
+        </section>
 
       </div>
     </div>

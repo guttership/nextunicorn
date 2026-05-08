@@ -56,6 +56,38 @@ const blogPosts: BlogPost[] = [
     date: "2025-11-18",
     readTime: "10 min",
     lang: "en"
+  },
+  {
+    slug: "how-to-find-next-unicorn-startup-idea",
+    title: "How to Find the Next Unicorn Startup Idea in 2025",
+    excerpt: "Discover the proven framework to find your next unicorn startup idea. Learn how successful entrepreneurs identify billion-dollar opportunities before anyone else.",
+    date: "2025-12-01",
+    readTime: "10 min",
+    lang: "en"
+  },
+  {
+    slug: "micro-saas-bootstrappers-guide-en",
+    title: "Micro-SaaS for Bootstrappers: Complete Guide 2025",
+    excerpt: "How to launch a profitable micro-SaaS without raising funds or a team. Complete playbook from 0 to $5k MRR solo. B2B strategies, pricing, distribution.",
+    date: "2025-11-17",
+    readTime: "12 min",
+    lang: "en"
+  },
+  {
+    slug: "micro-saas-bootstrappers-guide-de",
+    title: "Micro-SaaS für Bootstrapper: Der komplette Leitfaden",
+    excerpt: "Wie man ein profitables Micro-SaaS ohne Fundraising launcht. Komplettes Playbook um solo von 0 auf 5k€ MRR zu kommen.",
+    date: "2025-11-17",
+    readTime: "12 min",
+    lang: "de"
+  },
+  {
+    slug: "micro-saas-bootstrappers-guide-es",
+    title: "Micro-SaaS para Bootstrappers: La Guía Completa",
+    excerpt: "Cómo lanzar un micro-SaaS rentable sin recaudar fondos, sin equipo y sin sacrificar tu salud mental. Playbook completo para ir de 0 a 5k€ MRR en solitario.",
+    date: "2025-11-17",
+    readTime: "12 min",
+    lang: "es"
   }
 ];
 
