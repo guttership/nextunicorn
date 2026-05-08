@@ -99,6 +99,7 @@ export default function BlogPage() {
   }, []);
 
   const filteredPosts = blogPosts.filter(post => post.lang === lang);
+  const crawlablePosts = blogPosts.filter(post => post.lang === "de" || post.lang === "es");
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -174,6 +175,16 @@ export default function BlogPage() {
             </p>
           </div>
         </div>
+
+        <nav aria-label="Blog post index" className="sr-only">
+          <ul>
+            {crawlablePosts.map((post) => (
+              <li key={`crawlable-${post.slug}`}>
+                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </div>
   );
