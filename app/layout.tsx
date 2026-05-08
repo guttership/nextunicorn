@@ -158,6 +158,23 @@ export default function RootLayout({
           </Suspense>
           {children}
         </PostHogProvider>
+        <nav aria-label="Crawlable site index" className="sr-only">
+          <a href="/">Home</a>
+          <a href="/startup-ideas">Startup ideas</a>
+          <a href="/leaderboard">Leaderboard</a>
+          <a href="/blog">Blog</a>
+          <a href="/blog/micro-saas-bootstrappers-guide">Micro-SaaS guide FR</a>
+          <a href="/blog/micro-saas-bootstrappers-guide-en">Micro-SaaS guide EN</a>
+          <a href="/blog/micro-saas-bootstrappers-guide-de">Micro-SaaS guide DE</a>
+          <a href="/blog/micro-saas-bootstrappers-guide-es">Micro-SaaS guide ES</a>
+          <a href="/blog/how-to-find-next-unicorn-startup-idea">Find next unicorn idea</a>
+          <a href="/contact">Contact</a>
+          <a href="/about">About</a>
+          <a href="/cgu">CGU</a>
+          <a href="/confidentialite">Confidentialite</a>
+          <a href="/mentions">Mentions</a>
+          <a href="/terms">Terms</a>
+        </nav>
         <SpeedInsights />
         <Analytics />
         <GoogleAnalytics />
